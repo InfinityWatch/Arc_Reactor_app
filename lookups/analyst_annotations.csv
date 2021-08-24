@@ -1,0 +1,13 @@
+annotatedAffectedAsset,annotatedComment,annotatedEventEnd,annotatedEventStart,annotatedIndicator,annotatedRating,annotatedSubmissionTime,annotatedTactic,annotatedTechnique1,annotatedType,annotatedUsername
+hostname or asset description,BE CONCISE YET DESCRIPTIVE AS POSSIBLE EXAMPLE NEEDED PER TACTIC FOR RESULTS,,,example_needed,suspicious,7/15/2020 20:04,initial_access,*,splunk_changelog,Administrator
+hostname or asset description,BE CONCISE YET DESCRIPTIVE AS POSSIBLE EXAMPLE NEEDED PER TACTIC FOR RESULTS,,,example_needed,benign,7/15/2020 20:08,execution,*,splunk_changelog,Administrator
+hostname or asset description,BE CONCISE YET DESCRIPTIVE AS POSSIBLE EXAMPLE NEEDED PER TACTIC FOR RESULTS,,,example_needed,benign,7/15/2020 20:09,persistence,*,subject,Administrator
+hostname or asset description,BE CONCISE YET DESCRIPTIVE AS POSSIBLE EXAMPLE NEEDED PER TACTIC FOR RESULTS,,,example_needed,benign,7/15/2020 20:10,privilege_escalation,*,ip,Administrator
+hostname or asset description,BE CONCISE YET DESCRIPTIVE AS POSSIBLE EXAMPLE NEEDED PER TACTIC FOR RESULTS,,,example_needed,benign,7/15/2020 20:11,defense_evasion,*,ip,Administrator
+hostname or asset description,BE CONCISE YET DESCRIPTIVE AS POSSIBLE EXAMPLE NEEDED PER TACTIC FOR RESULTS,,,example_needed,benign,7/15/2020 20:11,credential_access,*,ip,Administrator
+hostname or asset description,BE CONCISE YET DESCRIPTIVE AS POSSIBLE EXAMPLE NEEDED PER TACTIC FOR RESULTS,,,example_needed,benign,7/15/2020 20:12,discovery,*,hash,Administrator
+hostname or asset description,BE CONCISE YET DESCRIPTIVE AS POSSIBLE EXAMPLE NEEDED PER TACTIC FOR RESULTS,,,example_needed,suspicious,7/15/2020 20:13,lateral_movement,*,subject,Administrator
+hostname or asset description,BE CONCISE YET DESCRIPTIVE AS POSSIBLE EXAMPLE NEEDED PER TACTIC FOR RESULTS,,,example_needed,benign,7/15/2020 20:13,collection,*,ip,Administrator
+hostname or asset description,BE CONCISE YET DESCRIPTIVE AS POSSIBLE EXAMPLE NEEDED PER TACTIC FOR RESULTS,,,example_needed,benign,7/15/2020 20:14,command_and_control,*,ip,Administrator
+hostname or asset description,BE CONCISE YET DESCRIPTIVE AS POSSIBLE EXAMPLE NEEDED PER TACTIC FOR RESULTS,,,example_needed,benign,7/15/2020 20:15,exfiltration,*,filename,Administrator
+hostname or asset description,BE CONCISE YET DESCRIPTIVE AS POSSIBLE EXAMPLE NEEDED PER TACTIC FOR RESULTS,,,example_needed,benign,7/15/2020 20:15,impact,*,email,Administrator

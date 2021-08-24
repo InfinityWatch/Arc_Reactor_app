@@ -1,0 +1,63 @@
+{
+    "modelName": "Powershell",
+    "displayName": "Powershell",
+    "description": "",
+    "objectSummary": {
+        "Event-Based": 0,
+        "Transaction-Based": 0,
+        "Search-Based": 1
+    },
+    "objects": [
+        {
+            "objectName": "powershell",
+            "displayName": "powershell",
+            "parentName": "BaseSearch",
+            "comment": "",
+            "fields": [
+                {
+                    "fieldName": "InvocationLine",
+                    "owner": "powershell",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "InvocationLine",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "OSVersion",
+                    "owner": "powershell",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "OSVersion",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "OperatingSystem",
+                    "owner": "powershell",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "OperatingSystem",
+                    "comment": ""
+                }
+            ],
+            "calculations": [],
+            "constraints": [],
+            "lineage": "powershell",
+            "baseSearch": "`powershell`"
+        }
+    ],
+    "objectNameList": [
+        "powershell"
+    ]
+}

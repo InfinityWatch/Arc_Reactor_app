@@ -1,0 +1,152 @@
+<form theme="dark">
+  <label>Tstats Process Overview</label>
+  <search id="searchbase">
+    <query>`sysmon` EventID=1 | fields CommandLine Hashes User Image Computer ParentCommandLine ParentProcessId ProcessId CurrentDirectory host
+      </query>
+  </search>
+  <fieldset submitButton="true">
+    <input type="time" token="time">
+      <label></label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Processes Over Time</title>
+      <chart>
+        <title></title>
+        <search>
+          <query>| tstats count from datamodel=Sysmon.sysmon where sysmon.EventID=1 by _time | timechart count</query>
+        </search>
+        <option name="charting.chart">area</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Top Command Line</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Sysmon.sysmon where sysmon.EventID=1 by sysmon.CommandLine | sort - count</query>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top Process Creators</title>
+      <chart>
+        <search>
+          <query>| tstats count from datamodel=Sysmon.sysmon where sysmon.EventID=1 by sysmon.User | sort - count</query>
+        </search>
+        <option name="charting.chart">bar</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="height">469</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Top Images</title>
+      <table>
+        <search>
+          <query> | tstats count from datamodel=Sysmon.sysmon where sysmon.EventID=1 by sysmon.Image | sort - count</query>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Critical Processes</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Sysmon.sysmon where sysmon.EventID=1 sysmon.Image IN ("*\\powershell.exe" ,"*\\msbuild.exe" ,"*\\psexec.exe" ,"*\\at.exe" ,"*\\schtasks.exe" ,"*\\net.exe" ,"*\\vssadmin.exe" ,"*\\utilman.exe" ,"*\\wmic.exe" ,"*\\mshta.exe" ,"*\\wscript.exe" ,"*\\cscript.exe" ,"*\\cmd.exe" ,"*\\whoami.exe" ,"*\\mmc.exe" ,"*\\systeminfo.exe" ,"*\\csvde.exe") by sysmon.Image sysmon.User sysmon.Computer |sort - count</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Hashes by Image</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Sysmon.sysmon where sysmon.EventID=1 by sysmon.Hashes  sysmon.Image 
+| sort - count</query>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Interesting File Creation Processes</title>
+      <table>
+        <title>Looking for multiple EXE's and not Splunk Google Mozilla Officeclick and Symatec</title>
+        <search>
+          <query>| tstats count from datamodel=Sysmon.sysmon where sysmon.EventID=1 NOT sysmon.ParentCommandLine IN  ("*Splunk*", "*Google*", "*Mozilla*", "*OfficeClick*", "*Symantec*") sysmon.Image IN ("*\\powershell.exe", "*\\ftp.exe", "*\\msbuild.exe", "*\\psexec.exe", "*\\at.exe", "*\\schtasks.exe", "*\\net.exe", "*\\vssadmin.exe", "*\\utilman.exe", "*\\wmic.exe", "*\\mshta.exe", "*\\wscript.exe", "*\\cscript.exe", "*\\cmd.exe", "*\\whoami.exe", "*\\mmc.exe", "*\\systeminfo.exe", "*\\csvde.exe", "*\\certutil.exe")  by _time sysmon.ParentCommandLine sysmon.Image sysmon.ParentProcessId sysmon.ProcessId sysmon.CurrentDirectory</query>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Interesting File Creation Processes</title>
+      <table>
+        <title>Looking for multiple EXE's and not Splunk Google Mozilla Officeclick and Symatec</title>
+        <search>
+          <query>| tstats count from datamodel=Sysmon.sysmon where sysmon.EventID=1 NOT sysmon.ParentCommandLine IN  ("*Splunk*", "*Google*", "*Mozilla*", "*OfficeClick*", "*Symantec*") sysmon.Image IN ("*\\powershell.exe", "*\\ftp.exe", "*\\msbuild.exe", "*\\psexec.exe", "*\\at.exe", "*\\schtasks.exe", "*\\net.exe", "*\\vssadmin.exe", "*\\utilman.exe", "*\\wmic.exe", "*\\mshta.exe", "*\\wscript.exe", "*\\cscript.exe", "*\\cmd.exe", "*\\whoami.exe", "*\\mmc.exe", "*\\systeminfo.exe", "*\\csvde.exe", "*\\certutil.exe") by sysmon.Computer</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>

@@ -1,0 +1,221 @@
+<form theme="dark">
+  <label>Six IOC Event IDs</label>
+  <!-- The author of this page is GySgt Stogner, Kenneth. All questions can be forwarded to kenneth.j.stogner.mil@mail.mil  -->
+  <!-- more information on the queries can be found on https://www.slideshare.net/Hackerhurricane/finding-attacks-with-these-6-events  -->
+  <description>Saved Searches. No timeline available within these parameters.</description>
+  <fieldset submitButton="false">
+    <input type="time" token="field1">
+      <label></label>
+      <default>
+        <earliest>0</earliest>
+        <latest></latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <single>
+        <title>Event ID 4688 EXE</title>
+        <search>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:Event_ID_4688_exe_saved_search" |  stats count as Total</query>
+        </search>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Event ID 4624</title>
+        <search>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:Event_ID_4624_saved_search" |  stats count as Total</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Event ID 4663</title>
+        <search>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:Event_ID_4663_saved_search" |  stats count as Total</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Event ID 4688 PS</title>
+        <search>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:Event_ID_4688_saved_search" |  stats count as Total</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Event ID 5140</title>
+        <search>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:Event_ID_5140_saved_search" |  stats count as Total</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Event ID 5156</title>
+        <search>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:Event_ID_5156_saved_search" |  stats count as Total</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Event ID 7045</title>
+        <search>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:Event_ID_7045_saved_search" |  stats count as Total</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <input type="checkbox" token="4688_exe" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">4688 EXE</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="4624" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">4624</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="4663" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">4663</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="4688_ps" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">4688 PS</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="5140" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">5140</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="5156" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">5156</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="7045" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">7045</choice>
+        <delimiter> </delimiter>
+      </input>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$4688_exe$">
+      <table>
+        <title>Event_ID_4688_EXE's</title>
+        <search>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:Event_ID_4688_exe_saved_search"</query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$4624$">
+      <table>
+        <title>Event_ID_4624 (Login Success)</title>
+        <search>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:Event_ID_4624_saved_search"</query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+        <option name="rowNumbers">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$4663$">
+      <table>
+        <title>Event_ID_4663 ( File/Reg Auditing)</title>
+        <search>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:Event_ID_4663_saved_search"</query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$4688_ps$">
+      <table>
+        <title>Event_ID_4688_powershell</title>
+        <search>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:Event_ID_4688_saved_search"</query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$5140$">
+      <table>
+        <title>Event_ID_5140 (Share Accessed)</title>
+        <search>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:Event_ID_5140_saved_search"</query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+        <option name="rowNumbers">false</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$5156$">
+      <table>
+        <title>Event_ID_5156 (Win FW Connection)</title>
+        <search>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:Event_ID_5156_saved_search"</query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$7045$">
+      <table>
+        <title>Event_ID_7045 (New Service Added)</title>
+        <search>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:Event_ID_7045_saved_search"</query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>

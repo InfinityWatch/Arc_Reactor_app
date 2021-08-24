@@ -1,0 +1,290 @@
+<form theme="dark">
+  <label>Mitre Attack Overview</label>
+  <search id="basesearch">
+    <!-- analyst_annotations is fooo real. analyst_annotations1 is to show proof of concept -->
+    <query>| inputlookup analyst_annotations.csv | table annotatedSubmissionTime annotatedUsername annotatedRating annotatedType annotatedTactic annotatedTechnique1 annotatedEventStart annotatedEventEnd annotatedAffectedAsset annotatedIndicator annotatedComment</query>
+  </search>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="field1">
+      <label>Time</label>
+      <default>
+        <earliest>0</earliest>
+        <latest></latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <single>
+        <title>Initial Access</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="initial_access")) AS initial_access | eval initial_access=initial_access -1</query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Execution</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="execution")) AS execution | eval execution=execution -1</query>
+        </search>
+       </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Persistence</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="persistence")) AS persistence | eval persistence=persistence -1</query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Privilege Escalation</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="privilege_escalation")) AS privilege_escalation | eval privilege_escalation=privilege_escalation -1</query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Defense Evasion</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="defense_evasion")) AS defense_evasion | eval defense_evasion=defense_evasion -1</query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Credential Access</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="credential_access")) AS credential_access | eval credential_access=credential_access -1</query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Discovery</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="discovery")) AS discovery | eval discovery=discovery -1</query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Lateral Movement</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="lateral_movement")) AS lateral_movement | eval lateral_movement=lateral_movement -1</query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Collection</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="collection")) AS collection | eval collection=collection -1</query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>C2</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="command_and_control")) AS command_and_control | eval command_and_control=command_and_control -1</query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Exfiltration</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="exfiltration")) AS exfiltration | eval exfiltration=exfiltration -1</query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Impact</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="impact")) AS impact | eval impact=impact -1</query>
+        </search>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>MITRE ATT&amp;CK FRAMEWORK</title>
+      <table>
+        <search>
+          <query>| inputlookup mitre_attack_framework.csv 
+| table initial_access execution persistence privilege_escalation defense_evasion credential_access discovery lateral_movement collection command_and_control exfiltration impact
+| rename discovery AS "Discovery" initial_access AS "Initial_Access" execution AS "Execution" persistence AS "Persistence" privilege_escalation AS "Privilege_Escalation" defense_evasion AS "Defense_Evasion" credential_access AS "Credential_Access" lateral_movement AS "Lateral_Movement" collection AS "Collection" command_and_control AS "Command_and_Control" exfiltration AS "Exfiltration" impact AS "Impact"
+
+|  join type=left "Defense_Evasion" 
+    [| inputlookup analyst_annotations.csv 
+|  search annotatedTactic="defense_evasion"
+| stats count by annotatedTechnique1
+| rename annotatedTechnique1 AS "Defense_Evasion" count AS count5]
+| where Defense_Evasion!=" "
+| fillnull
+| eval "Defense_EvasionT" = (Defense_Evasion) . "|" . (count5)
+
+|  join type=left "Initial_Access" 
+    [| inputlookup analyst_annotations.csv 
+|  search annotatedTactic="initial_access"
+| stats count by annotatedTechnique1
+| rename annotatedTechnique1 AS "Initial_Access" count AS count1]
+| where Initial_Access!=" "
+| fillnull
+| eval "Initial_AccessT" = (Initial_Access) . "|" . (count1)
+
+|  join type=left "Execution" 
+    [| inputlookup analyst_annotations.csv 
+|  search annotatedTactic="execution"
+| stats count by annotatedTechnique1
+| rename annotatedTechnique1 AS "Execution" count AS count2]
+| where Execution!=" "
+| fillnull
+| eval "ExecutionT" = (Execution) . "|" . (count2)
+
+|  join type=left "Persistence" 
+    [| inputlookup analyst_annotations.csv 
+|  search annotatedTactic="persistence"
+| stats count by annotatedTechnique1
+| rename annotatedTechnique1 AS "Persistence" count AS count3]
+| where Persistence!=" "
+| fillnull
+| eval "PersistenceT" = (Persistence) . "|" . (count3)
+
+|  join type=left "Privilege_Escalation" 
+    [| inputlookup analyst_annotations.csv 
+|  search annotatedTactic="privilege_escalation"
+| stats count by annotatedTechnique1
+| rename annotatedTechnique1 AS "Privilege_Escalation" count AS count4]
+| where Privilege_Escalation!=" "
+| fillnull
+| eval "Privilege_EscalationT" = (Privilege_Escalation) . "|" . (count4)
+
+|  join type=left "Credential_Access" 
+    [| inputlookup analyst_annotations.csv 
+|  search annotatedTactic="credential_access"
+| stats count by annotatedTechnique1
+| rename annotatedTechnique1 AS "Credential_Access" count AS count6]
+| where Credential_Access!=" "
+| fillnull
+| eval "Credential_AccessT" = (Credential_Access) . "|" . (count6)
+
+| join type=left "Discovery" 
+    [| inputlookup analyst_annotations.csv 
+| search annotatedTactic="discovery"
+| stats count by annotatedTechnique1 
+| rename annotatedTechnique1 AS Discovery count AS count7]
+| where Discovery!=" " 
+| fillnull
+| eval DiscoveryT = (Discovery) . "|" . (count7)
+
+|  join type=left "Lateral_Movement" 
+    [| inputlookup analyst_annotations.csv 
+|  search annotatedTactic="lateral_movement"
+| stats count by annotatedTechnique1
+| rename annotatedTechnique1 AS "Lateral_Movement" count AS count8]
+| where Lateral_Movement!=" "
+| fillnull
+| eval "Lateral_MovementT" = (Lateral_Movement) . "|" . (count8)
+
+|  join type=left "Collection" 
+    [| inputlookup analyst_annotations.csv 
+|  search annotatedTactic="collection"
+| stats count by annotatedTechnique1
+| rename annotatedTechnique1 AS "Collection" count AS count9]
+| where Collection!=" "
+| fillnull
+| eval "CollectionT" = (Collection) . "|" . (count9)
+
+|  join type=left "Command_and_Control" 
+    [| inputlookup analyst_annotations.csv 
+|  search annotatedTactic="command_and_control"
+| stats count by annotatedTechnique1
+| rename annotatedTechnique1 AS "Command_and_Control" count AS count10]
+| where Command_and_Control!=" "
+| fillnull
+| eval "C2" = (Command_and_Control) . "|" . (count10)
+
+|  join type=left "Exfiltration" 
+    [| inputlookup analyst_annotations.csv 
+|  search annotatedTactic="exfiltration"
+| stats count by annotatedTechnique1
+| rename annotatedTechnique1 AS "Exfiltration" count AS count11]
+| where Exfiltration!=" "
+| fillnull
+| eval "ExfiltrationT" = (Exfiltration) . "|" . (count11)
+
+|  join type=left "Impact" 
+    [| inputlookup analyst_annotations.csv 
+|  search annotatedTactic="impact"
+| stats count by annotatedTechnique1
+| rename annotatedTechnique1 AS "Impact" count AS count12]
+| where Impact!=" "
+| fillnull
+| eval "ImpactT" = (Impact) . "|" . (count12)
+
+| eval Initial_Access=if(Initial_AccessT="0|0", null, Initial_AccessT)
+| eval Execution=if(ExecutionT="0|0", null, ExecutionT)
+| eval Persistence=if(PersistenceT="0|0", null, PersistenceT)
+| eval Privilege_Escalation=if(Privilege_EscalationT="0|0", null, Privilege_EscalationT)
+| eval Defense_Evasion=if(Defense_EvasionT="0|0", null, Defense_EvasionT)
+| eval Credential_Access=if(Credential_AccessT="0|0", null, Credential_AccessT)
+| eval Discovery=if(DiscoveryT="0|0", null, DiscoveryT)
+| eval Lateral_Movement=if(Lateral_MovementT="0|0", null, Lateral_MovementT)
+| eval Collection=if(CollectionT="0|0", null, CollectionT)
+| eval C2=if(C2="0|0", null, C2)
+| eval Exfiltration=if(ExfiltrationT="0|0", null, ExfiltrationT)
+| eval Impact=if(ImpactT="0|0", null, ImpactT)
+
+| table "Initial_Access"  "Execution" "Persistence"  "Privilege_Escalation"  "Defense_Evasion" "Credential_Access" "Discovery" "Lateral_Movement"  "Collection" "C2" "Exfiltration" "Impact"</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="count">35</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <format type="color" field="Initial_Access">
+          <colorPalette type="expression">if (match(value,"0"),"#65A637", if(match(value,"null"),"#403e3e","#FF0000"))</colorPalette>
+        </format>
+        <format type="color" field="Execution">
+          <colorPalette type="expression">if (match(value,"0"),"#65A637", if(match(value,"null"),"#403e3e","#FF0000"))</colorPalette>
+        </format>
+        <format type="color" field="Persistence">
+          <colorPalette type="expression">if (match(value,"0"),"#65A637", if(match(value,"null"),"#403e3e","#FF0000"))</colorPalette>
+        </format>
+        <format type="color" field="Privilege_Escalation">
+          <colorPalette type="expression">if (match(value,"0"),"#65A637", if(match(value,"null"),"#403e3e","#FF0000"))</colorPalette>
+        </format>
+        <format type="color" field="Defense_Evasion">
+          <colorPalette type="expression">if (match(value,"0"),"#65A637", if(match(value,"null"),"#403e3e","#FF0000"))</colorPalette>
+        </format>
+        <format type="color" field="Credential_Access">
+          <colorPalette type="expression">if (match(value,"0"),"#65A637", if(match(value,"null"),"#403e3e","#FF0000"))</colorPalette>
+        </format>
+        <format type="color" field="Discovery">
+          <colorPalette type="expression">if (match(value,"0"),"#65A637", if(match(value,"null"),"#403e3e","#FF0000"))</colorPalette>
+        </format>
+        <format type="color" field="Lateral_Movement">
+          <colorPalette type="expression">if (match(value,"0"),"#65A637", if(match(value,"null"),"#403e3e","#FF0000"))</colorPalette>
+        </format>
+        <format type="color" field="Collection">
+          <colorPalette type="expression">if (match(value,"0"),"#65A637", if(match(value,"null"),"#403e3e","#FF0000"))</colorPalette>
+        </format>
+        <format type="color" field="C2">
+          <colorPalette type="expression">if (match(value,"0"),"#65A637", if(match(value,"null"),"#403e3e","#FF0000"))</colorPalette>
+        </format>
+        <format type="color" field="Exfiltration">
+          <colorPalette type="expression">if (match(value,"0"),"#65A637", if(match(value,"null"),"#403e3e","#FF0000"))</colorPalette>
+        </format>
+        <format type="color" field="Impact">
+          <colorPalette type="expression">if (match(value,"0"),"#65A637", if(match(value,"null"),"#403e3e","#FF0000"))</colorPalette>
+        </format>
+      </table>
+    </panel>
+  </row>
+</form>

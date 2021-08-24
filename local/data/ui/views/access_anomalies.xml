@@ -1,0 +1,628 @@
+<form theme="dark">
+  <label>Access Anomalies</label>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="time" token="field1">
+      <label></label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Spike in # of Hosts Accessed</title>
+      <single>
+        <search>
+          <query>| tstats summariesonly=t allow_old_summaries=t dc(Authentication.dest) as count from datamodel=Authentication groupby _time span=1d, Authentication.user 
+| rename "Authentication.user" as user 
+| eval maxtime=now() 
+| stats count as num_data_samples max(eval(if(_time &gt;= relative_time(maxtime, "-1d@d"), 'count',null))) as "count" avg(eval(if(_time&lt;relative_time(maxtime,"-1d@d"),'count',null))) as avg stdev(eval(if(_time&lt;relative_time(maxtime,"-1d@d"),'count',null))) as stdev by user
+| eval lower_bound=(avg-stdev*2), upper_bound=(avg+stdev*2) 
+| eval isOutlier=if(('count' &gt; upper_bound) AND num_data_samples &gt;=7, 1, 0) 
+| where isOutlier=1 
+| stats count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">100</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0xf1813f","0xdc4e41"]</option>
+        <option name="rangeValues">[0,1]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">Over 24 hours compared to baseline</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Brute Force Attack by Source</title>
+      <single>
+        <search>
+          <query>| tstats summariesonly=t allow_old_summaries=t count from datamodel=Authentication by Authentication.action, Authentication.src 
+| rename "Authentication.*" as "*"
+| chart last(count) over src by action 
+| where success&gt;0 and failure&gt;20 
+| sort -failure 
+| stats dc(src)</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">100</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0xf1813f","0xdc4e41"]</option>
+        <option name="rangeValues">[0,1]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Brute Force Attack by User</title>
+      <single>
+        <search>
+          <query>| tstats summariesonly=t allow_old_summaries=t count from datamodel=Authentication by Authentication.action, Authentication.user 
+| rename "Authentication.*" as "*"
+| chart last(count) over user by action 
+| where success&gt;0 and failure&gt;20 
+| stats dc(user)</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">100</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0xf1813f","0xdc4e41"]</option>
+        <option name="rangeValues">[0,1]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Users Failing Auth Over 80%</title>
+      <single>
+        <search>
+          <query>| tstats summariesonly=t allow_old_summaries=t count from datamodel=Authentication by Authentication.action, Authentication.user 
+| rename "Authentication.*" as "*" 
+| chart last(count) over user by action 
+| fillnull value=0 
+| where failure &gt;= 10 
+| eval perc_failures = 100*failure/(failure + success) 
+| where perc_failures &gt;= 80 
+| stats count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">100</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0xf1813f","0xdc4e41"]</option>
+        <option name="rangeValues">[0,1]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| tstats summariesonly=t allow_old_summaries=t dc(Authentication.dest) as count from datamodel=Authentication groupby _time span=1d, Authentication.user 
+| rename "Authentication.user" as user 
+| eval maxtime=now() 
+| stats count as num_data_samples max(eval(if(_time &gt;= relative_time(maxtime, "-1d@d"), 'count',null))) as "count" avg(eval(if(_time&lt;relative_time(maxtime,"-1d@d"),'count',null))) as avg stdev(eval(if(_time&lt;relative_time(maxtime,"-1d@d"),'count',null))) as stdev by user
+| eval lower_bound=(avg-stdev*2), upper_bound=(avg+stdev*2) 
+| eval isOutlier=if(('count' &gt; upper_bound) AND num_data_samples &gt;=7, 1, 0) 
+| where isOutlier=1 
+| table "user", "count", avg, upper_bound</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">5</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">false</option>
+        <format type="color" field="# of Hosts">
+          <colorPalette type="list">[#53A051,#006D9C,#F8BE34,#F1813F,#DC4E41]</colorPalette>
+          <scale type="threshold">0,30,70,100</scale>
+        </format>
+        <format type="number" field="Typical # of Hosts">
+          <option name="precision">0</option>
+        </format>
+        <format type="number" field="baseline_avg">
+          <option name="precision">0</option>
+        </format>
+        <format type="number" field="baseline_high">
+          <option name="precision">0</option>
+        </format>
+        <format type="number" field="avg"></format>
+        <format type="number" field="upperBound"></format>
+        <format type="number" field="upper_bound"></format>
+        <drilldown>
+          <link target="_blank">/app/InfoSec_App_for_Splunk/user_investigation?drilldown_user=%22$click.value$%22</link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <search>
+          <query>| tstats summariesonly=t allow_old_summaries=t count from datamodel=Authentication by Authentication.action, Authentication.src 
+| rename "Authentication.*" as "*" 
+| chart last(count) over src by action 
+| where success&gt;0 and failure&gt;20 
+| sort -failure 
+| rename failure as failures 
+| table src, failures</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">5</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <drilldown>
+          <link target="_blank">/app/InfoSec_App_for_Splunk/asset_investigation?drilldown_host=%22$click.value$%22</link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <search>
+          <query>| tstats summariesonly=t allow_old_summaries=t count from datamodel=Authentication by Authentication.action, Authentication.user 
+| rename "Authentication.*" as "*" 
+| chart last(count) over user by action 
+| where success&gt;0 and failure&gt;20 
+| sort -failure 
+| rename failure as failures 
+| table user, failures</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">5</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <drilldown>
+          <link target="_blank">/app/InfoSec_App_for_Splunk/user_investigation?drilldown_user=%22$click.value$%22</link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <search>
+          <query>| tstats summariesonly=t allow_old_summaries=t count from datamodel=Authentication by Authentication.action, Authentication.user 
+| rename "Authentication.*" as "*" 
+| chart last(count) over user by action 
+| fillnull value=0 
+| where failure &gt;= 10 
+| eval percent = 100*failure/(failure + success) 
+| where percent &gt;= 80 
+| table user, success, failure, percent 
+| sort - perc_failures failure 
+| rename percent as "%"</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">5</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">false</option>
+        <format type="number" field="perc_failures">
+          <option name="unit">%</option>
+        </format>
+        <format type="number" field="perc_failures">
+          <option name="unit">%</option>
+        </format>
+        <format type="color" field="perc_failures">
+          <colorPalette type="minMidMax" maxColor="#DC4E41" minColor="#FFFFFF"></colorPalette>
+          <scale type="minMidMax"></scale>
+        </format>
+        <format type="number" field="perc_failures">
+          <option name="unit">%</option>
+        </format>
+        <format type="number" field="perc_failures">
+          <option name="unit">%</option>
+        </format>
+        <format type="color" field="perc_failures">
+          <colorPalette type="minMidMax" maxColor="#DC4E41" minColor="#FFFFFF"></colorPalette>
+          <scale type="minMidMax"></scale>
+        </format>
+        <format type="color" field="failure">
+          <colorPalette type="minMidMax" maxColor="#DC4E41" minColor="#FFFFFF"></colorPalette>
+          <scale type="minMidMax"></scale>
+        </format>
+        <format type="number" field="%">
+          <option name="precision">0</option>
+        </format>
+        <drilldown>
+          <link target="_blank">/app/InfoSec_App_for_Splunk/user_investigation?drilldown_user=%22$click.value$%22</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Successful Auth Sources With the Greatest # of Users</title>
+      <table>
+        <search>
+          <query>| tstats summariesonly=t allow_old_summaries=t dc(Authentication.user) as num_users values(Authentication.user) as users from datamodel=Authentication where Authentication.action=success NOT Authentication.src=unknown groupby Authentication.src 
+| rename Authentication.src as src 
+| eval users=mvjoin(users,", ") 
+| sort - num_users</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">5</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="wrap">false</option>
+        <format type="color" field="num_users">
+          <colorPalette type="minMidMax" maxColor="#DC4E41" minColor="#FFFFFF"></colorPalette>
+          <scale type="minMidMax"></scale>
+        </format>
+        <drilldown>
+          <link target="_blank">/app/InfoSec_App_for_Splunk/asset_investigation?drilldown_host=%22$click.value$%22</link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <title>Failed Auth Sources With the Greatest # of Users</title>
+      <table>
+        <search>
+          <query>| tstats summariesonly=t allow_old_summaries=t dc(Authentication.user) as num_users values(Authentication.user) as users from datamodel=Authentication where Authentication.action=failure groupby Authentication.src 
+| rename Authentication.src as src 
+| eval users=mvjoin(users,", ") 
+| sort - num_users</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">5</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">false</option>
+        <format type="color" field="num_users">
+          <colorPalette type="minMidMax" maxColor="#DC4E41" minColor="#FFFFFF"></colorPalette>
+          <scale type="minMidMax"></scale>
+        </format>
+        <drilldown>
+          <link target="_blank">/app/InfoSec_App_for_Splunk/asset_investigation?drilldown_host=%22$click.value$%22</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Users Taking Privileged Actions First Time in 30 Days</title>
+      <single>
+        <search>
+          <query>| tstats summariesonly=t allow_old_summaries=t count from datamodel=Authentication where nodename="Authentication.Privileged_Authentication" earliest=-30d by Authentication.user, Authentication.dest _time span=1h 
+| rename Authentication."*" as "*" 
+| eventstats earliest(_time) as earliest by user 
+| where earliest &gt;= relative_time(now(), "-24h") 
+| stats count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">100</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Users Taking Privileged Actions</title>
+      <single>
+        <search>
+          <query>| tstats  summariesonly=t allow_old_summaries=t dc(Authentication.user) from datamodel=Authentication where nodename="Authentication.Privileged_Authentication"</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">100</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0x555"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>User Taking Privileged Actions First Time in 30 Days</title>
+      <table>
+        <search>
+          <query>| tstats summariesonly=t allow_old_summaries=t count from datamodel=Authentication where nodename="Authentication.Privileged_Authentication" earliest=-30d by Authentication.user, Authentication.dest _time span=1h 
+| rename Authentication."*" as "*" 
+| eventstats earliest(_time) as earliest by user 
+| where earliest &gt;= relative_time(now(), "-24h") 
+| dedup user, dest 
+| table user, dest</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">5</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">false</option>
+        <drilldown>
+          <link target="_blank">/app/InfoSec_App_for_Splunk/user_investigation?drilldown_user=%22$click.value$%22</link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <title>Top Users Taking Privileged Actions</title>
+      <table>
+        <search>
+          <query>| tstats summariesonly=true allow_old_summaries=true count from datamodel=Authentication where nodename="Authentication.Privileged_Authentication" by _time, Authentication.user span=10m 
+| rename Authentication.user as user 
+| stats sparkline(sum(count),30m) as sparkline, sum(count) as count by user | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">5</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <format type="color" field="count">
+          <colorPalette type="minMidMax" maxColor="#006D9C" minColor="#FFFFFF"></colorPalette>
+          <scale type="minMidMax"></scale>
+        </format>
+        <drilldown>
+          <link target="_blank">/app/InfoSec_App_for_Splunk/user_investigation?drilldown_user=%22$click.value$%22</link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <title>Short Lived Windows Accounts</title>
+      <table>
+        <search>
+          <query>| tstats summariesonly=true allow_old_summaries=true count from datamodel=Change_Analysis where All_Changes.result_id=4720 OR All_Changes.result_id=4726 by All_Changes.result_id All_Changes.user All_Changes.dest _time span=1m
+| rename All_Changes."*" as "*" 
+| eventstats min(_time) as min, max(_time) as max, dc(result_id) as events by user, dest 
+| eval account_life = (max-min) / 60 
+| where events = 2 AND account_life &lt; 180 
+| dedup user, dest 
+| table user, dest, account_life | sort account_life</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">5</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">false</option>
+        <format type="number" field="account_life">
+          <option name="precision">0</option>
+          <option name="unit">min</option>
+        </format>
+        <drilldown>
+          <link target="_blank">/app/InfoSec_App_for_Splunk/user_investigation?drilldown_user=$click.value$</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <html>
+        <h1>Geographically Improbable Access</h1>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| tstats summariesonly=true allow_old_summaries=true values(Authentication.app) as app from datamodel=Authentication.Authentication where Authentication.action=success by Authentication.user, Authentication.src _time span=1s 
+| rename "Authentication.*" as "*" 
+| eventstats dc(src) as src_count by user 
+| search src_count&gt;1 
+| sort 0 + _time 
+| iplocation src 
+| where isnotnull(lat) AND isnotnull(lon) 
+| streamstats window=2 earliest(lat) as prev_lat, earliest(lon) as prev_lon, earliest(_time) as prev_time, earliest(src) as prev_src, earliest(City) as prev_city, earliest(Country) as prev_country, earliest(app) as prev_app by user 
+| where (src != prev_src) 
+| eval lat1_r=((lat * 3.14159265358) / 180), lat2_r=((prev_lat * 3.14159265358) / 180), delta=(((prev_lon - lon) * 3.14159265358) / 180), distance=(3959 * acos(((sin(lat1_r) * sin(lat2_r)) + ((cos(lat1_r) * cos(lat2_r)) * cos(delta))))), distance=round(distance,2) 
+| fields - lat1_r, lat2_r, long1_r, long2_r, delta 
+| eval time_diff=if((('_time' - prev_time) == 0),1,('_time' - prev_time)), speed=round(((distance * 3600) / time_diff),2) 
+| where (speed &gt; 500) 
+| eval prev_time=strftime(prev_time,"%Y-%m-%d %H:%M:%S")
+| table user, src, _time, City, Country, app, prev_src, prev_time, prev_city, prev_country, prev_app, distance, speed</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">5</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">false</option>
+        <format type="number" field="distance_miles">
+          <option name="precision">0</option>
+          <option name="unit">miles</option>
+        </format>
+        <format type="number" field="time_dif">
+          <option name="precision">3</option>
+          <option name="unit">hours</option>
+        </format>
+        <format type="number" field="speed">
+          <option name="precision">0</option>
+          <option name="unit">mph</option>
+        </format>
+        <format type="color" field="Country">
+          <colorPalette type="sharedList"></colorPalette>
+          <scale type="sharedCategory"></scale>
+        </format>
+        <format type="color" field="prev_country">
+          <colorPalette type="sharedList"></colorPalette>
+          <scale type="sharedCategory"></scale>
+        </format>
+        <format type="color" field="user">
+          <colorPalette type="sharedList"></colorPalette>
+          <scale type="sharedCategory"></scale>
+        </format>
+        <drilldown>
+          <link target="_blank">/app/InfoSec_App_for_Splunk/user_investigation?drilldown_user=%22$click.value$%22</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Improbable Access by User</title>
+      <map>
+        <search>
+          <query>| tstats summariesonly=true allow_old_summaries=true values(Authentication.app) as app from datamodel=Authentication.Authentication where Authentication.action=success by Authentication.user, Authentication.src _time span=1s 
+| rename "Authentication.*" as "*" 
+| eventstats dc(src) as src_count by user 
+| search src_count&gt;1 
+| sort 0 + _time 
+| iplocation src 
+| where isnotnull(lat) AND isnotnull(lon) 
+| streamstats window=2 earliest(lat) as prev_lat, earliest(lon) as prev_lon, earliest(_time) as prev_time, earliest(src) as prev_src, earliest(City) as prev_city, earliest(Country) as prev_country, earliest(app) as prev_app by user 
+| where (src != prev_src) 
+| eval lat1_r=((lat * 3.14159265358) / 180), lat2_r=((prev_lat * 3.14159265358) / 180), delta=(((prev_lon - lon) * 3.14159265358) / 180), distance=(3959 * acos(((sin(lat1_r) * sin(lat2_r)) + ((cos(lat1_r) * cos(lat2_r)) * cos(delta))))), distance=round(distance,2) 
+| fields - lat1_r, lat2_r, long1_r, long2_r, delta 
+| eval time_diff=if((('_time' - prev_time) == 0),1,('_time' - prev_time)), speed=round(((distance * 3600) / time_diff),2) 
+| where (speed &gt; 500) 
+| eval latitude=lat 
+| eval longitude=lon 
+| appendpipe 
+    [| eval latitude=prev_lat 
+    | eval longitude=prev_lon] 
+| geostats latfield=latitude longfield=longitude count by user binspanlat=5 binspanlong=5</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="mapping.data.maxClusters">250</option>
+        <option name="mapping.markerLayer.markerMaxSize">50</option>
+        <option name="mapping.markerLayer.markerMinSize">30</option>
+        <option name="mapping.markerLayer.markerOpacity">1</option>
+        <option name="mapping.type">marker</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+      </map>
+    </panel>
+  </row>
+</form>

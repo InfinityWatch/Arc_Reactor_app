@@ -1,0 +1,96 @@
+<!--
+
+IF ADDING OR REMOVING FIELDS FROM THE LOOKUP
+- delete the old lookup (back it up first!)
+	- use an inputlookup and eval statement to make the new field, push it to a temp file, then inputlookup/outputlookup back to the original name
+- in a new search window, run an inputlookup for the new file (MUST do this before trying any dashboard changes)
+- make changes to your dashboard to send the new annotation field
+	- make changes on the Annotation Maker dashboard
+	- make changes on the Annotation Viewer dashboard
+- proceed with work as usual
+
+--><!-- <form onunloadCancelJobs="true" theme="dark"> --><form onunloadCancelJobs="true" theme="dark">
+  <label>Analyst Annotation Viewer</label>
+  <!-- v 0.1 23 June 2020 -->
+  <description>view annotations from a lookup table</description>
+  <init>
+    <set token="colorizeData">
+      <![CDATA[{"benign":#adff22, "benign":#adff22, "suspicious":#ffd700, "malicious":#ff0000}]]>
+    </set>
+  </init>
+  <search id="mainQuery">
+    <query>| inputlookup analyst_annotations.csv $drillDown$</query>
+    <done>
+      <set token="jobSid">$job.sid$</set>
+    </done>
+  </search>
+  <fieldset submitButton="true">
+    <input type="text" token="drillDown" searchWhenChanged="false">
+      <label>Search for Indicator</label>
+      <prefix>| search annotatedIndicator="*</prefix>
+      <suffix>*"</suffix>
+      <default></default>
+    </input>
+    <input type="checkbox" token="drillDown" searchWhenChanged="true">
+      <label>Reset Drilldowns</label>
+      <choice value=" | search * ">Check/Re-Check to Reset</choice>
+    </input>
+  </fieldset>
+  <row>
+    <panel depends="$hideAnnotationTable$">
+      <title>Annotation Table</title>
+      <table>
+        <search base="mainQuery">
+          <query>| table annotatedSubmissionTime annotatedUsername annotatedRating annotatedType annotatedTactic annotatedTechnique1 annotatedEventStart annotatedEventEnd annotatedAffectedAsset annotatedIndicator annotatedComment annotatedQuery | eval hide = "⊘" | sort -annotatedSubmissionTime</query>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="hideAnnotationTable">true</set>
+            </condition>
+            <condition>
+              <unset token="hideAnnotationTable"></unset>
+            </condition>
+          </progress>
+        </search>
+        <option name="count">100</option>
+        <format type="color" field="annotatedRating">
+          <colorPalette type="map">$colorizeData$</colorPalette>
+        </format>
+        <drilldown>
+          <condition field="annotatedSubmissionTime">
+            <set token="drilldown">$drillDown$ AND annotatedSubmissionTime="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedUsername">
+            <set token="drilldown">$drillDown$ AND annotatedUsername="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedRating">
+            <set token="drilldown">$drillDown$ AND annotatedRating="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedType">
+            <set token="drilldown">$drillDown$ AND annotatedType="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedPhase">
+            <set token="drilldown">$drillDown$ AND annotatedPhase="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedEventStart">
+            <set token="drilldown">$drillDown$ AND annotatedEventStart="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedEventEnd">
+            <set token="drilldown">$drillDown$ AND annotatedEventEnd="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedAffectedAsset">
+            <set token="drilldown">$drillDown$ AND annotatedAffectedAsset="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedIndicator">
+            <set token="drilldown">$drillDown$ AND annotatedIndicator="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedComment">
+            <set token="drilldown">$drillDown$ AND annotatedComment="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedQuery">
+            <set token="drilldown">$drillDown$ AND annotatedComment="$click.value2$"</set>
+          </condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+</form>

@@ -1,0 +1,98 @@
+<form theme="dark">
+  <label>Tstats Zeek Conn</label>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="time" token="field1">
+      <label>Time Range</label>
+      <default>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>All Connections</title>
+      <input type="dropdown" token="source_host">
+        <label>Source Host</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search>
+          <query> | tstats count from datamodel=Network_Data.All_Traffic by All_Traffic.src_ip</query>
+        </search>
+        <fieldForLabel>src_ip</fieldForLabel>
+        <fieldForValue>src_ip</fieldForValue>
+      </input>
+      <input type="dropdown" token="dest_host">
+        <label>Destination Host</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search>
+          <query> | tstats count from datamodel=Network_Data.All_Traffic by All_Traffic.dest_ip</query>
+        </search>
+        <fieldForLabel>dest_ip</fieldForLabel>
+        <fieldForValue>dest_ip</fieldForValue>
+      </input>
+      <input type="dropdown" token="source_port" searchWhenChanged="true">
+        <label>Source Port</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search>
+          <query> | tstats count from datamodel=Network_Data.All_Traffic by All_Traffic.src_port</query>
+        </search>
+        <fieldForLabel>service</fieldForLabel>
+        <fieldForValue>service</fieldForValue>
+      </input>
+      <input type="dropdown" token="dest_port" searchWhenChanged="true">
+        <label>Destination Port</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search>
+          <query> | tstats count from datamodel=Network_Data.All_Traffic by All_Traffic.dest_port</query>
+        </search>
+        <fieldForLabel>service</fieldForLabel>
+        <fieldForValue>service</fieldForValue>
+      </input>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.src_ip="$source_host$" All_Traffic.dest_ip="$dest_host$" All_Traffic.src_port="$source_port$" All_Traffic.dest_port="$dest_port$" by All_Traffic.src_ip All_Traffic.dest_ip All_Traffic.src_port All_Traffic.dest_port  | sort - count |  table All_Traffic.src_ip All_Traffic.src_port All_Traffic.dest_ip All_Traffic.dest_port count</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Top Services Last 24 Hours</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic by All_Traffic.service | sort - count</query>
+        </search>
+        <option name="count">10</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top Ports Last 24 hours</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic by All_Traffic.dest_port | sort - count</query>
+        </search>
+        <option name="count">10</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>

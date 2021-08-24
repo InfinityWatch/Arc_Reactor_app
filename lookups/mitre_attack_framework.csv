@@ -1,0 +1,33 @@
+initial_access,execution,persistence,privilege_escalation,defense_evasion,credential_access,discovery,lateral_movement,collection,command_and_control,exfiltration,impact
+Drive-by Compromise,Command and Scripting Interpreter,Account Manipulation,Abuse Elevation Control Mechanism,Abuse Elevation Control Mechanism,Brute Force,Account Discovery,Exploitation of Remote Services,Archive Collected Data,Application Layer Protocol,Automated Exfiltration,Account Access Removal
+Exploit Public-Facing Application,Exploitation for Client Execution,BITS Jobs,Access Token Manipulation,Access Token Manipulation,Credentials from Password Stores,Application Window Discovery,Internal Spearphishing,Audio Capture,Communication Through Removable Media,Data Transfer Size Limits,Data Destruction
+External Remote Services,Inter-Process Communication,Boot or Logon Autostart Execution,Boot or Logon Autostart Execution,BITS Jobs,Exploitation for Credential Access,Browser Bookmark Discovery,Lateral Tool Transfer,Automated Collection,Data Encoding,Exfiltration Over Alternative Protocol,Data Encrypted for Impact
+Hardware Additions,Native API,Boot or Logon Initialization Scripts,Boot or Logon Initialization Scripts,Deobfuscate/Decode Files or Information,Forced Authentication,Domain Trust Discovery,Remote Service Session Hijacking,Clipboard Data,Data Obfuscation,Exfiltration Over C2 Channel,Data Manipulation
+Phishing,Scheduled Task/Job,Browser Extensions,Create or Modify System Process,Direct Volume Access,Input Capture,File and Directory Discovery,Remote Services,Data from Information Repositories,Dynamic Resolution,Exfiltration Over Other Network Medium,Defacement
+Replication Through Removable Media,Shared Modules,Compromise Client Software Binary,Event Triggered Execution,Execution Guardrails,Man-in-the-Middle,Network Service Scanning,Replication Through Removable Media,Data from Local System,Encrypted Channel,Exfiltration Over Physical Medium,Disk Wipe
+Supply Chain Compromise,Software Deployment Tools,Create Account,Exploitation for Privilege Escalation,Exploitation for Defense Evasion,Modify Authentication Process,Network Share Discovery,Software Deployment Tools,Data from Network Shared Drive,Fallback Channels,Exfiltration Over Web Service,Endpoint Denial of Service
+Trusted Relationship,System Services,Create or Modify System Process,Group Policy Modification,File and Directory Permissions Modification,Network Sniffing,Network Sniffing,Taint Shared Content,Data from Removable Media,Ingress Tool Transfer,Scheduled Transfer,Firmware Corruption
+Valid Accounts,User Execution,Event Triggered Execution,Hijack Execution Flow,Group Policy Modification,OS Credential Dumping,Password Policy Discovery,Use Alternate Authentication Material,Data Staged,Multi-Stage Channels,,Inhibit System Recovery
+,Windows Management Instrumentation,External Remote Services,Process Injection,Hide Artifacts,Steal or Forge Kerberos Tickets,Peripheral Device Discovery,,Email Collection,Non-Application Layer Protocol,,Network Denial of Service
+,,Hijack Execution Flow,Scheduled Task/Job,Hijack Execution Flow,Steal Web Session Cookie,Permission Groups Discovery,,Input Capture,Non-Standard Port,,Resource Hijacking
+,,Office Application Startup,Valid Accounts,Impair Defenses,Two-Factor Authentication Interception,Process Discovery,,Man in the Browser,Protocol Tunneling,,Service Stop
+,,Pre-OS Boot,,Indicator Removal on Host,Unsecured Credentials,Query Registry,,Man-in-the-Middle,Proxy,,System Shutdown/Reboot
+,,Scheduled Task/Job,,Indirect Command Execution,,Remote System Discovery,,Screen Capture,Remote Access Software,,
+,,Server Software Component,,Masquerading,,Software Discovery,,Video Capture,Traffic Signaling,,
+,,Traffic Signaling,,Modify Authentication Process,,System Information Discovery,,,Web Service,,
+,,Valid Accounts,,Modify Registry,,System Network Configuration Discovery,,,,,
+,,,,Obfuscated Files or Information,,System Network Connections Discovery,,,,,
+,,,,Pre-OS Boot,,System Owner/User Discovery,,,,,
+,,,,Process Injection,,System Service Discovery,,,,,
+,,,,Rogue Domain Controller,,System Time Discovery,,,,,
+,,,,Rootkit,,,,,,,
+,,,,Signed Binary Proxy Execution,,,,,,,
+,,,,Signed Script Proxy Execution,,,,,,,
+,,,,Subvert Trust Controls,,,,,,,
+,,,,Template Injection,,,,,,,
+,,,,Traffic Signaling,,,,,,,
+,,,,Trusted Developer Utilities Proxy Execution,,,,,,,
+,,,,Use Alternate Authentication Material,,,,,,,
+,,,,Valid Accounts,,,,,,,
+,,,,Virtualization/Sandbox Evasion,,,,,,,
+,,,,XSL Script Processing,,,,,,,

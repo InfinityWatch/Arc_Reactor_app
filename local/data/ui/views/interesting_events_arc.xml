@@ -1,0 +1,58 @@
+<form theme="dark">
+  <label>Interesting Events</label>
+  <description>Click on the event to check it on www.eventid.net</description>
+  <fieldset autoRun="true" submitButton="false">
+    <input type="time" searchWhenChanged="true" token="interval">
+      <label>Select time range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="multiselect" searchWhenChanged="true" token="Computer">
+      <label>Computer</label>
+      <choice value="*">All</choice>
+      <default>*</default>
+      <prefix>(</prefix>
+      <suffix>)</suffix>
+      <valuePrefix>ComputerName="</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+      <delimiter> OR </delimiter>
+      <search>
+        <query>`event_sources` | stats count by ComputerName</query>
+        <earliest>$interval.earliest$</earliest>
+        <latest>$interval.latest$</latest>
+      </search>
+      <fieldForLabel>ComputerName</fieldForLabel>
+      <fieldForValue>ComputerName</fieldForValue>
+    </input>
+    <input type="text" searchWhenChanged="true" token="keyword">
+      <label>Keyword:</label>
+      <default>*</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Interesting Events</title>
+      <table>
+        <title>Computer Clickable</title>
+        <search>
+          <query>`event_sources` AND $Computer$ AND $keyword$  | lookup arc_windows_interesting_events_lookup event_id AS EventCode, source AS SourceName OUTPUT source,description | search description="*" | table _time, ComputerName, EventCode, SourceName, Type, Message,description | rename EventCode as "EventId", description as "Why is it interesting?"</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <drilldown>
+          <link target="_blank">/app/Arc_reactor_app/computer_overview?ComputerName=$click.value2$</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+</form>

@@ -1,0 +1,1059 @@
+<form theme="dark">
+  <label>Case Incident Network Visualization</label>
+  <description>MITRE ATT&amp;CK Framework by Incident</description>
+  <search id="basesearch">
+    <!-- analyst_annotations is fooo real. analyst_annotations1 is to show proof of concept -->
+    <query>| inputlookup analyst_annotations1.csv | fields annotatedSubmissionTime annotatedUsername annotatedRating annotatedType annotatedTactic annotatedTechnique1 annotatedEventStart annotatedEventEnd annotatedAffectedAsset annotatedIndicator annotatedComment</query>
+  </search>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="field1">
+      <label>Time</label>
+      <default>
+        <earliest>0</earliest>
+        <latest></latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <single>
+        <title>Initial Access</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="initial_access")) AS initial_access
+| eval initial_access=initial_access -1</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Execution</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="execution")) AS execution
+| eval execution=execution -1</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Persistence</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="persistence")) AS persistence
+| eval persistence=persistence -1</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Privilege Escalation</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="privilege_escalation")) AS privilege_escalation
+| eval privilege_escalation=privilege_escalation -1</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Defense Evasion</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="defense_evasion")) AS defense_evasion
+| eval defense_evasion=defense_evasion -1</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Credential Access</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="credential_access")) AS credential_access
+| eval credential_access=credential_access -1</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Discovery</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="discovery")) AS discovery
+| eval discovery=discovery -1</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Lateral Movement</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="lateral_movement")) AS lateral_movement
+| eval lateral_movement=lateral_movement -1</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Collection</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="collection")) AS collection
+| eval collection=collection -1</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>C2</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="command_and_control")) AS command_and_control
+| eval command_and_control=command_and_control -1</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Exfiltration</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="exfiltration")) AS exfiltration
+| eval exfiltration=exfiltration -1</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Impact</title>
+        <search base="basesearch">
+          <query>| stats count(eval(annotatedTactic=="impact")) AS impact
+| eval impact=impact -1</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <input type="checkbox" token="initial_access" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Initial Access</choice>
+        <delimiter> </delimiter>
+        <initialValue>1</initialValue>
+      </input>
+      <input type="checkbox" token="execution" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Execution</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="persistence" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Persistence</choice>
+        <delimiter> </delimiter>
+        <initialValue>1</initialValue>
+      </input>
+      <input type="checkbox" token="privilege_escalation" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Priviledge Escalation</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="defense_evasion" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Defense Evasion</choice>
+        <delimiter> </delimiter>
+        <initialValue>1</initialValue>
+      </input>
+      <input type="checkbox" token="credential_access" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Credential Access</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="discovery" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Discovery</choice>
+        <delimiter> </delimiter>
+        <initialValue>1</initialValue>
+      </input>
+      <input type="checkbox" token="lateral_movement" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Lateral Movement</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="collection" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Collection</choice>
+        <delimiter> </delimiter>
+        <initialValue>1</initialValue>
+      </input>
+      <input type="checkbox" token="c2" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Command and Control</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="exfiltration" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Exfiltration</choice>
+        <delimiter> </delimiter>
+        <initialValue>1</initialValue>
+      </input>
+      <input type="checkbox" token="impact" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Impact</choice>
+        <delimiter> </delimiter>
+      </input>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$initial_access$">
+      <title>Initial Access</title>
+      <table>
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color, comments</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$initial_access$">
+      <title>Initial Access Diagram</title>
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color
+| append [
+| makeresults
+|  eval raw="from=\"server\", x=\"-426\", y=\"38\" ### from=\"desktop\", x=\"-83\", y=\"36\""
+|  makemv delim="###" raw 
+|  mvexpand raw 
+|  rename raw  as  _raw 
+|  extract 
+|  table from, x, y]</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.canZoom">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+        <option name="network-diagram-viz.network-diagram-viz.draggableNodes">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$execution$">
+      <title>Execution</title>
+      <table>
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color, comments</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$execution$">
+      <title>Execution Diagram</title>
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color
+| append [
+| makeresults
+|  eval raw="from=\"server\", x=\"-426\", y=\"38\" ### from=\"desktop\", x=\"-83\", y=\"36\""
+|  makemv delim="###" raw 
+|  mvexpand raw 
+|  rename raw  as  _raw 
+|  extract 
+|  table from, x, y]</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.canZoom">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+        <option name="network-diagram-viz.network-diagram-viz.draggableNodes">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$persistence$">
+      <title>Persistence</title>
+      <table>
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color, comments</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$persistence$">
+      <title>Persistence Diagram</title>
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color
+| append [
+| makeresults
+|  eval raw="from=\"server\", x=\"-426\", y=\"38\" ### from=\"desktop\", x=\"-83\", y=\"36\""
+|  makemv delim="###" raw 
+|  mvexpand raw 
+|  rename raw  as  _raw 
+|  extract 
+|  table from, x, y]</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.canZoom">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+        <option name="network-diagram-viz.network-diagram-viz.draggableNodes">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$privilege_escalation$">
+      <title>Privilege Escalation</title>
+      <table>
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color, comments</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$privilege_escalation$">
+      <title>Privilege Escalation Diagram</title>
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color
+| append [
+| makeresults
+|  eval raw="from=\"server\", x=\"-426\", y=\"38\" ### from=\"desktop\", x=\"-83\", y=\"36\""
+|  makemv delim="###" raw 
+|  mvexpand raw 
+|  rename raw  as  _raw 
+|  extract 
+|  table from, x, y]</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.canZoom">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+        <option name="network-diagram-viz.network-diagram-viz.draggableNodes">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$defense_evasion$">
+      <title>Defense Evasion</title>
+      <table>
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color, comments</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$defense_evasion$">
+      <title>Defense Evasion Diagram</title>
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color
+| append [
+| makeresults
+|  eval raw="from=\"server\", x=\"-426\", y=\"38\" ### from=\"desktop\", x=\"-83\", y=\"36\""
+|  makemv delim="###" raw 
+|  mvexpand raw 
+|  rename raw  as  _raw 
+|  extract 
+|  table from, x, y]</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.canZoom">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+        <option name="network-diagram-viz.network-diagram-viz.draggableNodes">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$credential_access$">
+      <title>Credential Access</title>
+      <table>
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color, comments</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$credential_access$">
+      <title>Credential Access Diagram</title>
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color
+| append [
+| makeresults
+|  eval raw="from=\"server\", x=\"-426\", y=\"38\" ### from=\"desktop\", x=\"-83\", y=\"36\""
+|  makemv delim="###" raw 
+|  mvexpand raw 
+|  rename raw  as  _raw 
+|  extract 
+|  table from, x, y]</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.canZoom">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+        <option name="network-diagram-viz.network-diagram-viz.draggableNodes">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$discovery$">
+      <title>Discovery</title>
+      <table>
+        <search>
+          <query>|inputlookup example.csv | table annotatedIndicator annotatedRating annotatedEventEnd annotatedEventStart annotatedAffectedAsset annotatedIndicator annotatedComment</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$discovery$">
+      <title>Discovery Diagram</title>
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color
+| append [
+| makeresults
+|  eval raw="from=\"server\", x=\"-426\", y=\"38\" ### from=\"desktop\", x=\"-83\", y=\"36\""
+|  makemv delim="###" raw 
+|  mvexpand raw 
+|  rename raw  as  _raw 
+|  extract 
+|  table from, x, y]</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.canZoom">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+        <option name="network-diagram-viz.network-diagram-viz.draggableNodes">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$lateral_movement$">
+      <title>Lateral Movement</title>
+      <table>
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color, comments</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$lateral_movement$">
+      <title>Lateral Movement Diagram</title>
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color
+| append [
+| makeresults
+|  eval raw="from=\"server\", x=\"-426\", y=\"38\" ### from=\"desktop\", x=\"-83\", y=\"36\""
+|  makemv delim="###" raw 
+|  mvexpand raw 
+|  rename raw  as  _raw 
+|  extract 
+|  table from, x, y]</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.canZoom">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+        <option name="network-diagram-viz.network-diagram-viz.draggableNodes">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$collection$">
+      <title>Collection</title>
+      <table>
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color, comments</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$collection$">
+      <title>Collection Diagram</title>
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color
+| append [
+| makeresults
+|  eval raw="from=\"server\", x=\"-426\", y=\"38\" ### from=\"desktop\", x=\"-83\", y=\"36\""
+|  makemv delim="###" raw 
+|  mvexpand raw 
+|  rename raw  as  _raw 
+|  extract 
+|  table from, x, y]</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.canZoom">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+        <option name="network-diagram-viz.network-diagram-viz.draggableNodes">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$c2$">
+      <title>Command and Control</title>
+      <table>
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color, comments</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$c2$">
+      <title>Command and Control Diagram</title>
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color
+| append [
+| makeresults
+|  eval raw="from=\"server\", x=\"-426\", y=\"38\" ### from=\"desktop\", x=\"-83\", y=\"36\""
+|  makemv delim="###" raw 
+|  mvexpand raw 
+|  rename raw  as  _raw 
+|  extract 
+|  table from, x, y]</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.canZoom">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+        <option name="network-diagram-viz.network-diagram-viz.draggableNodes">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$exfiltration$">
+      <title>Exfiltration</title>
+      <table>
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color, comments</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$exfiltration$">
+      <title>Exfiltration Diagram</title>
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color
+| append [
+| makeresults
+|  eval raw="from=\"server\", x=\"-426\", y=\"38\" ### from=\"desktop\", x=\"-83\", y=\"36\""
+|  makemv delim="###" raw 
+|  mvexpand raw 
+|  rename raw  as  _raw 
+|  extract 
+|  table from, x, y]</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.canZoom">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+        <option name="network-diagram-viz.network-diagram-viz.draggableNodes">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$impact$">
+      <title>Impact</title>
+      <table>
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color, comments</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$impact$">
+      <title>Impact Diagram</title>
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <search>
+          <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color
+| append [
+| makeresults
+|  eval raw="from=\"server\", x=\"-426\", y=\"38\" ### from=\"desktop\", x=\"-83\", y=\"36\""
+|  makemv delim="###" raw 
+|  mvexpand raw 
+|  rename raw  as  _raw 
+|  extract 
+|  table from, x, y]</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.canZoom">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+        <option name="network-diagram-viz.network-diagram-viz.draggableNodes">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+</form>

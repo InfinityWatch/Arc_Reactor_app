@@ -1,0 +1,351 @@
+<form theme="dark">
+  <label>Tstats Windows Events Summary</label>
+  <description>Click on the event to check it on www.eventid.net</description>
+  <fieldset autoRun="false" submitButton="true">
+    <input type="time" searchWhenChanged="false" token="interval">
+      <label>Select time range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="checkbox" searchWhenChanged="false" token="Type">
+      <label>Event types</label>
+      <default>windows_events.Error,windows_events.Warning</default>
+      <choice value="windows_events.Error">Error</choice>
+      <choice value="windows_events.Warning">Warning</choice>
+      <choice value="windows_events.Information">Information</choice>
+      <delimiter>, </delimiter>
+      <fieldForLabel>Windows_events_source.Type</fieldForLabel>
+      <fieldForValue>Windows_events_source.Type</fieldForValue>
+    </input>
+    <input type="checkbox" searchWhenChanged="false" token="Audit_Type">
+      <label>Security Events</label>
+      <default>*</default>
+      <choice value="failure">Audit Failure</choice>
+      <choice value="success">Audit Success</choice>
+      <delimiter>, </delimiter>
+      <fieldForLabel>Windows_events_sources.action</fieldForLabel>
+      <fieldForValue>Windows_events_sources.action</fieldForValue>
+    </input>
+    <input type="multiselect" searchWhenChanged="false" token="Computer">
+      <label>Computer</label>
+      <choice value="*">All</choice>
+      <default>*</default>
+      <delimiter>, </delimiter>
+      <search>
+        <query>| tstats count from datamodel=windows_events.Windows_events_sources by Windows_events_sources.ComputerName</query>
+        <earliest>$interval.earliest$</earliest>
+        <latest>$interval.latest$</latest>
+      </search>
+      <fieldForLabel>Windows_events_sources.ComputerName</fieldForLabel>
+      <fieldForValue>Windows_events_sources.ComputerName</fieldForValue>
+    </input>
+    <input type="text" searchWhenChanged="false" token="keyword">
+      <label>Keyword:</label>
+      <default>*</default>
+    </input>
+    <input type="multiselect" token="sourcetype_token" searchWhenChanged="false">
+      <label>Excluded event sources</label>
+      <default>none</default>
+      <prefix>(</prefix>
+      <suffix>)</suffix>
+      <valuePrefix>SourceName!="</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+      <delimiter> AND </delimiter>
+      <choice value="none">None</choice>
+      <search>
+        <query>| tstats count from datamodel=windows_events.Windows_events_sources where Windows_events_sources.type="$Type$" Windows_events_sources.action IN ($Audit_Type$) Windows_events_sources.ComputerName="$Computer$" by sourcetype</query>
+        <earliest>$interval.earliest$</earliest>
+        <latest>$interval.latest$</latest>
+      </search>
+      <fieldForLabel>SourceName</fieldForLabel>
+      <fieldForValue>SourceName</fieldForValue>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Errors</title>
+      <single>
+        <search>
+          <query>| tstats count from datamodel=windows_events.Windows_events_sources where Windows_events_sources.Type="Error" windows_events_sources.ComputerName IN ($Computer$) by Windows_events_sources.ComputerName 
+| stats sum(count)</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0xd93f3c","0xd93f3c"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Warnings</title>
+      <single>
+        <search>
+          <query>
+            | tstats count from datamodel=windows_events.Windows_events_sources where Windows_events_sources.Type="Warning" Windows_events_sources.ComputerName IN ($Computer$) TERM("$keyword$") by Windows_events_sources.ComputerName | stats sum(count)
+          </query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0xf7bc38","0xf7bc38"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Information</title>
+      <single>
+        <search>
+          <query>
+            | tstats count from datamodel=windows_events.Windows_events_sources where Windows_events_sources.Type="Information" Windows_events_sources.action IN ($Audit_Type$) Windows_events_sources.ComputerName IN ($Computer$) TERM("$keyword$") by Windows_events_sources.ComputerName | stats sum(count)
+          </query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x65a637","0x65a637"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=`event_sources` Type="Information" |  stats count&amp;earliest=$interval.earliest$&amp;latest=$interval.latest$</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Audit Failure</title>
+      <single>
+        <search>
+          <query>| tstats count from datamodel=windows_events.Windows_events_sources where Windows_events_sources.Type="Information" Windows_events_sources.action="failure" Windows_events_sources.ComputerName IN ($Computer$) TERM("$keyword$") by Windows_events_sources.ComputerName | stats sum(count)</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0xf58f39","0xf58f39"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">1</option>
+        <drilldown>
+          <link target="_blank">/app/eventid/audit_events</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Audit Success</title>
+      <single>
+        <search>
+          <query>| tstats count from datamodel=windows_events.Windows_events_sources where Windows_events_sources.Type="Information" Windows_events_sources.action="success" Windows_events_sources.ComputerName IN ($Computer$) TERM("$keyword$") by Windows_events_sources.ComputerName | stats sum(count)</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="rangeColors">["0x6db7c6","0x6db7c6"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Logon Audit Failure</title>
+      <single>
+        <search>
+          <query>| tstats count from datamodel=windows_events.Windows_events_sources where Windows_events_sources.Type="Information" Windows_events_sources.action="failure" Windows_events_sources.ComputerName IN ($Computer$) Windows_events_sources.Failure_Reason="An account failed to log on"  by Windows_events_sources.ComputerName | stats sum(count)</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0xcc0000","0xcc0000"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">1</option>
+        <drilldown>
+          <link target="_blank">/app/eventid/audit_events</link>
+        </drilldown>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Accounts with 3 or more failed logons</title>
+      <chart>
+        <search>
+          <!-- `event_sources` Failure_Reason=* * ("Audit Failure") AND $Computer$ AND $keyword$ | stats count by user | where count &gt; 2 -->
+          <query>
+            | tstats count from datamodel=windows_events.Windows_events_sources where Windows_events_sources.Failure_Reason="*"  Windows_events_sources.ComputerName IN ($Computer$) TERM("$keyword$")  by Windows_events_sources.user 
+          </query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Top computers generating events</title>
+      <chart>
+        <search>
+          <!-- `event_sources` AND $Computer$ AND $keyword$ AND ($Audit_Type$ OR $Type$) | eval SourceName = coalesce(SourceName,source) | fillnull | search $sourcetype_token$ | stats count by host -->
+          <query>| tstats count from datamodel=windows_events.Windows_events_sources where Windows_events_sources.ComputerName IN ($Computer$) Windows_events_sources.action IN ($Audit_Type$) TERM("$keyword$")  by Windows_events_sources.ComputerName</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <link target="_blank">/app/eventid/eventid?form.Computer=$row.host$</link>
+        </drilldown>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Windows events over time</title>
+      <chart>
+        <search>
+          <!-- `event_sources` AND $Computer$ AND $keyword$ AND ($Audit_Type$ OR $Type$) | timechart count -->
+          <query>| tstats count from datamodel=windows_events.Windows_events_sources where Windows_events_sources.ComputerName IN (*) TERM("*") Windows_events_sources.action IN (*) Windows_events_sources.user="*" by _time 
+| timechart count</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="charting.axisLabelsY.majorUnit">1</option>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleY.text">Events</option>
+        <option name="charting.axisY2.enabled">1</option>
+        <option name="charting.chart">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.overlayFields">"Audit Failure"</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Events Summary - Links to www.eventid.net</title>
+      <table id="link2">
+        <search>
+          <query>`event_sources` AND $Computer$ AND $keyword$ AND ($Audit_Type$ OR $Type$) 
+| eval SourceName = coalesce(SourceName,Provider)
+| eval Type = coalesce(Type,Keyword)
+| fillnull value="-"
+| stats earliest(_time) as First latest(_time) as Last count by host, EventCode, SourceName, Type 
+| sort -count host, EventCode, SourceName, Type 
+| rename EventCode as "EventId" 
+| fieldformat First=strftime(First,"%x %X") 
+| fieldformat Last=strftime(Last,"%x %X")</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="wrap">true</option>
+        <drilldown>
+          <link target="_blank">https://www.eventid.net/display.asp?eventid=$row.EventId$&amp;source=$row.SourceName$&amp;app=SplunkEvId</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Events List</title>
+      <table id="link">
+        <search>
+          <query>`event_sources` AND $Computer$ AND $keyword$ AND ($Audit_Type$ OR $Type$)
+| eval SourceName = coalesce(SourceName,Provider)
+| eval Type = coalesce(Type,Keyword)
+| fillnull 
+| table _time, host, EventCode, SourceName, Type, Message 
+| rename EventCode as "EventId"</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>

@@ -1,0 +1,45 @@
+<panel>
+  <viz type="network-diagram-viz.network-diagram-viz">
+    <search>
+      <query>|inputlookup test1.csv | rename src_ip AS IP | append [| inputlookup test1.csv | rename dest_ip AS IP ]
+| eval type=case (IP=="40.80.148.42", "server", IP=="192.168.250.70", "desktop")
+| eval to=case (IP=="40.80.148.42", "desktop" )
+| eval from=type
+| eval value=case (IP=="40.80.148.42", "The bad guy", IP=="192.168.250.70", "the victem")
+| eval color=case (IP=="40.80.148.42", "red", IP=="192.168.250.70", "blue")
+| eval linktext=category
+| fields IP from, to, value, type, linktext, color
+| table IP from to value type, linktext, color
+| append [
+| makeresults
+|  eval raw="from=\"server\", x=\"-426\", y=\"38\" ### from=\"desktop\", x=\"-83\", y=\"36\""
+|  makemv delim="###" raw 
+|  mvexpand raw 
+|  rename raw  as  _raw 
+|  extract 
+|  table from, x, y]</query>
+      <earliest>0</earliest>
+      <latest></latest>
+    </search>
+    <option name="drilldown">none</option>
+    <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+    <option name="network-diagram-viz.network-diagram-viz.canZoom">true</option>
+    <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+    <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+    <option name="network-diagram-viz.network-diagram-viz.draggableNodes">true</option>
+    <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+    <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+    <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+    <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+    <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+    <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+    <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+    <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+    <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+    <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+    <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+    <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+    <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+    <option name="refresh.display">progressbar</option>
+  </viz>
+</panel>

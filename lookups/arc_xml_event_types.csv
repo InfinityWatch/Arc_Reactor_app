@@ -1,0 +1,6 @@
+xml_type,event_type
+0,Audit Success
+1,Audit Failure
+2,Error
+3,Warning
+4,Information

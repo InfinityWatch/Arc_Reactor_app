@@ -1,0 +1,72 @@
+process,Category,Process_Details
+arp.exe,Target Discovery,Obtains information about hosts on the local broadcast domain
+at.exe,Command Execution,Executes a task at the specified time and it may be used to secretly place an application or script without being recognized by the user in advance and then execute it at the desired time.
+bcdedit.exe,Privilege Escalation,Tool for editing the boot configuration and it may be used to escalate privileges
+bcp.exe,Data extraction,Bulk copy of data from database. It may be used to exfiltrate data.
+chcp.exe,Malware,"Displays the number of the active console code page, or changes the console's active console code page."
+cmd.exe,Command Execution,Can be used to execute a large number of commands
+cscript.exe,Command Execution,Can be used to execute a large number of scripts
+csvde.exe,Acquisition of Account Information,Outputs account information on the Active Directory in the CSV format and it can be used to extract information on an existing account and select users and clients available as attack targets.
+dsquery.exe,Acquisition of Account Information,"Obtains information,  such as users and groups,  from a directory service and it can be used to extract information on an existing account and select users and clients available as attack targets."
+Find-GPOPasswords.ps1,Password Hash Acquisition,Acquires any password descriptions in a group policy file and may attempt to infiltrate other hosts using acquired passwords (by executing the tool on Active Directory).
+GSECDUMP.EXE,Password Hash Acquisition,Extracts hash from SAM/AD or logon sessions and use it to log on to other hosts using acquired hash information.
+icacls.exe,File Sharing,Changes the file access rights and it can be used to change the rights to read a file that cannot be read by the used account. It is also used to capture rights so that the content of a file created by the attacker will not be viewable
+ipconfig.exe,Target Discovery,Displays or changes IP stack information
+ldifde.exe,Acquisition of Account Information,Outputs account information on the Active Directory in the LDIF format and it can be used to extract information on an existing account and select users and clients available as attack targets.
+mailpv.exe,Password Hash Acquisition,Extracts account information saved in the mail client settings on the machine
+mimikatz.exe,Password Hash Acquisition,Steals recorded authentication information and it can be used to escalate the privileges to the domain Administrator privileges.
+ms14-068.exe,Escalation to SYSTEM Privileges,Changes the privileges of the domain user to those of another user
+nbtstat.exe,Target Discovery,Allows a refresh of the NetBIOS name cache and the names registered with Windows Internet Name Service (WINS).
+nc.exe,Target Discovery,"Multpurpose tool, can be used for probing ports"
+net.exe,Adding or Deleting a Local User/Group,Adds a user account in a client or the domain or creates a network share and it can be used to create accounts or additional sessions in the machine the attacker has infected or to communicate with other hosts.
+net1.exe,Adding or Deleting a Local User/Group,Adds a user account in a client or the domain or creates a network share and it can be used to create accounts or additional sessions in the machine the attacker has infected or to communicate with other hosts.
+netcat.exe,Target Discovery,"Multpurpose tool, can be used for probing ports"
+netsh,Command Execution,"Allows to, either locally or remotely, display or modify the network configuration of a computer that is currently running. "
+netstat.exe,Target Discovery,"Displays active TCP connections, ports on which the computer is listening, Ethernet statistics, the IP routing table, IPv4 statistics "
+nmap,Target Discovery,Port scanner
+nslookup.exe,Target Discovery,Performs a DNS lookup
+ntdsutil.exe,Capturing Active Directory Database,"A command to maintain Active Directory databases and it can be used to extract NTDS.DIT,  a database for NTDS,  and other tools are used to analyze passwords (executed in Active Directory)."
+OSQL.exe,Data extraction,"Allows execution of Transact-SQL statements, system procedures, and script files. Can be used to attack a database or exfiltrate information."
+powercat.ps1,Malware,Part of PSAttack hacking tools
+powershell.exe,Command Execution,Allows remote command execution and it may be used to change settings to enable the Domain Controller and other hosts on the network to perform operations requiring administrator rights
+procdump.exe,Command Execution,Utility whose primary purpose is monitoring an application for CPU spikes and generating crash dumps during a spike that an administrator or developer can use to determine the cause of the spike
+psexec.exe,Command Execution,Executes a process on a remote system and it may be used to remotely execute a command on client and servers in a domain.
+psexecsvc.exe,Command Execution,Tool used for remotely executing processes on other systems
+psLoggedOn.exe,Target Discovery,Displays both the locally logged on users and users logged on via resources for either the local computer
+PwDump7.exe,Password Hash Acquisition,Displays a list of password hashes in the system and it may be used to perform logon authentication on other hosts using the acquired hash information.
+PWDumpX.exe,Password Hash Acquisition,Acquires a password hash from a remote host and use it to perform attacks such as pass-the-hash.
+qprocess.exe,Privilege Escalation,Query Process Utility - It can be used to start an elevated subprocess
+QuarksPwDump.exe,Password Hash Acquisition,Acquires the NTLM hash of a local domain account and cached domain password and it may be used to perform logon authentication on other hosts using the acquired hash information.
+query.exe,Target Discovery,Query User Sessions in Windows
+rar.exe,Command Execution,"Used by many attackers to deploy tools, exfiltrate information"
+rdpv.exe,Password Hash Acquisition,Extracts account information saved in the RDP settings on the machine and use it to log in to other hosts with such passwords.
+reg.exe,Command Execution,"Adds, changes, and displays registry subkey information and values in registry entries."
+route.exe,Target Discovery,Display or changes routing information
+runas.exe,Command Execution,Runs command using a different account
+rundll32,Command Execution,Tool responsible for running DLLs and placing its libraries in the memory
+sc.exe,Command Execution,Retrieves and sets control information about services.
+schtasks.exe,Command Execution,"Enables an administrator to create, delete, query, change, run, and end scheduled tasks on a local or remote computer. Can be used by an attacker in many situations."
+sdbinst.exe,Privilege Escalation,SDB UAC Bypass - used to execute an application that is not normally executed by pretending to execute a typical application.
+sdelete.exe,Deleting Evidence,Deletes a file after overwriting it several times and it can be used to delete a file created in the course of an attack to make it impossible to be recovered.
+sethc.exe,Privilege Escalation,Sticky Keys utility
+sqlcmd.exe,Command Execution,Manage SQL server from command line
+ssh.exe,Command Execution,Opens a secure shell on a remote host
+sysprep.exe,Privilege Escalation,"Prepares an installation of Windows for duplication, auditing, and customer delivery."
+systeminfo.exe,Target Discovery,"Command-line utility that displays information about your Windows version, BIOS, processor, memory, network configuration"
+tasklist.exe,Target Discovery,Displays running processes
+timestomp.exe,Deleting Evidence,Changes the file timestamp and it can be used to conceal the access to the file by restoring the timestamp.
+tracert.exe,Target Discovery,Traceroute tool. It can be used to discover information about the network
+vssadmin.exe,Capturing Active Directory Database,"Creates Volume Shadow Copy and extracts NTDS.DIT and it can be used to extract NTDS.DIT,  a database for NTDS,  so that the password can be analysed using other tools."
+wce.exe,Password Hash Acquisition,Acquires password hash information in the memory of a logged in host
+wceaux.dll,Privilege Escalation,Executes a command with higher privileges using the hash of the acquired password
+WebBrowserPassView.exe,Password Hash Acquisition,Extracts user names and passwords saved in the web browser of a machine
+wevtutil.exe,Deleting Evidence,Deletes Windows event logs and it can be used to delete the evidence of an attack.
+whoami.exe,Target Discovery,Displays information about the current user
+winrar.exe,Command Execution,"Used by many attackers to deploy tools, exfiltrate information"
+winrs.exe,Command Execution,Executes a command on a remote hosts
+WMIC.exe,Command Execution,A tool used for Windows system management and it may be used to acquire information on the remote system or to execute a command with WMI.
+wmic.exe,Command Execution,Windows Management Instrumentation Command-line
+wmiexec.vbs,Command Execution,A tool used for Windows system management that may execute a script for other hosts.
+wscript.exe,Command Execution,Can be used to execute a large number of scripts
+wsmprovhost.exe,Privilege Escalation,WinRM Remote Powershell - Can be used to elevate privileges
+wusa.exe,Privilege Escalation,Windows Update Standalone Installer - Can be used to elevate privileges

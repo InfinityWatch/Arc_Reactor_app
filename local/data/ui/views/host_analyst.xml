@@ -1,0 +1,557 @@
+<form onunloadCancelJobs="true">
+	<label>Host Last Seen and Sensor Health</label>
+	<!-- v 0.2 25 June 2020 -->
+	<!-- COLORS - green = #adff22, mellow yellow = #f8de7e, orange = #ffd700, bright red = #ff0000 -->
+	<description>check if any hosts fell off the network, if new hosts appeared, and check for gaps in logs (USE SCHEDULED JOBS IN PRODUCTION)</description>
+
+	<fieldset submitButton="false">
+		<!-- flip the drillDown token back to init values as a "soft reset" of the token -->
+		<input type="checkbox" token="drillDown" searchWhenChanged="true">
+			<label>Reset Drilldowns</label>
+			<choice value=" | search * ">Check/Re-Check to Reset</choice>
+		</input>
+		<input type="radio" token="hideAllTestData" searchWhenChanged="false">
+			<label>Hide Test Data</label>
+			<default>Yes</default>
+			<choice value="Yes">Yes</choice>
+			<choice value="No">No</choice>
+			<change>
+				<condition value="Yes">
+					<unset token="hideAllTestData"></unset>
+				</condition>
+				<condition value="No">
+					<set token="hideAllTestData"></set>
+				</condition>
+			</change>
+		</input>
+		<input type="radio" token="hideToDoList" searchWhenChanged="false">
+			<label>Hide To-Do List</label>
+			<default>Yes</default>
+			<choice value="Yes">Yes</choice>
+			<choice value="No">No</choice>
+			<change>
+				<condition value="Yes">
+					<unset token="hideToDoList"></unset>
+				</condition>
+				<condition value="No">
+					<set token="hideToDoList"></set>
+				</condition>
+			</change>
+		</input>
+	</fieldset>
+
+	<init>
+		<set token="drillDown"> | search * </set>
+	</init>
+
+	<row depends="$hideToDoList$">
+		<html>
+			<h3><i>to-do list for anyone who needs to adapt this dashboard for their use</i></h3>
+			<h1>TODO - Zeek logs (conn, dhcp, etc)</h1>
+			<h1>TODO - drill into box-specific dashboards</h1>
+			<h1>TODO - gap detection</h1>
+			<h1>TODO - gap clustering</h1>
+			<h1>TODO - checkboxes to hide/show various sensor rows</h1>
+			<h1>TODO - only show non-green elements (input)</h1>
+			<h1>TODO - src_device rename to client_name, other field syncs</h1>
+			<h3><i>sorted by first_hit to see new items appearing on the network</i></h3>
+			<h1>DRILLDOWN TOKEN = $drillDown$</h1>
+		</html>
+	</row>
+
+	<row depends="$hideAllTestData$">
+		<panel depends="$hideTestDataFirstLastHitsChart$">
+			<title>TEST DATA - REMOVE IN PRODUCTION - EXAMPLE OF MAPPING COLOR RANGES</title>
+			<table>
+				<title>TEST DATA - REMOVE IN PRODUCTION - EXAMPLE OF MAPPING COLOR RANGES</title>
+				<search>
+					<query>| makeresults | eval Computer="box01 box02", trend="test", first_hit="test", latest_hit="test", hours_since_first_hit="0.00 0.50 1.00 2 4 6 8 10 12 16 20 24", hours_since_latest_hit="0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1 2 20", count=99 | makemv Computer | makemv hours_since_first_hit | makemv hours_since_latest_hit | mvexpand Computer | mvexpand hours_since_first_hit | mvexpand hours_since_latest_hit | table Computer trend first_hit latest_hit hours_since_first_hit hours_since_latest_hit count | eval hide="&#8856;" $drillDown$</query>
+					<progress>
+						<condition match="'job.resultCount' > 0">
+							<set token="hideTestDataFirstLastHitsChart">true</set>
+						</condition>
+						<condition>
+							<unset token="hideTestDataFirstLastHitsChart"/>
+						</condition>
+					</progress>
+				</search>
+				<option name="count">40</option>
+				<!-- hours_since_first_hit -->
+				<!-- check if any new boxes recently appeared on the network (flip the color palette, highest value is green) -->
+				<format type="color" field="hours_since_first_hit">
+					<colorPalette type="minMidMax" minColor="#ff0000" midColor="#f8de7e" maxColor="#adff22"></colorPalette>
+					<scale type="threshold">0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 12, 23.5, 24</scale>
+				</format>
+				<!-- hours_since_latest_hit -->
+				<!-- check if any new boxes have fallen off the network or stopped reporting -->
+				<format type="color" field="hours_since_latest_hit">
+					<colorPalette type="minMidMax" minColor="#adff22" midColor="#ffd700" maxColor="#ff0000"></colorPalette>
+					<scale type="threshold">0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2</scale>
+				</format>
+				<format type="number" field="hours_since_first_hit">
+					<option name="precision">2</option>
+					<option name="unit">hours</option>
+				</format>
+				<format type="number" field="hours_since_latest_hit">
+					<option name="precision">2</option>
+					<option name="unit">hours</option>
+				</format>
+				<drilldown>
+					<condition field="Computer">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="trend">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="first_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="latest_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="hours_since_first_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="hours_since_latest_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="hide">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="count">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+				</drilldown>
+			</table>
+		</panel>
+	</row>
+
+	<row>
+		<panel depends="$hideSysmonFirstLastHitsChart$">
+			<title>Sysmon Computer First Hits / Last Seen</title>
+			<table>
+				<title></title>
+				<search>
+					<!-- <query>| loadjob savedsearch="username:search:internal_host_last_seen_sysmon" | eval hide="&#8856;" $drillDown$</query>-->
+					<query>sourcetype=sysmon | stats sparkline(count) AS trend, earliest(_time) AS first_hit, latest(_time) AS latest_hit, count BY Computer | eval hours_since_first_hit=(now()-first_hit)/60/60, hours_since_latest_hit=(now()-latest_hit)/60/60, first_hit=strftime(first_hit, "%x %X"), latest_hit=strftime(latest_hit, "%x %X") | table Computer trend first_hit latest_hit hours_since_first_hit hours_since_latest_hit count | sort -first_hit | eval hide="&#8856;" $drillDown$</query>
+					<!-- */5 * * * * -->
+					<progress>
+						<condition match="'job.resultCount' > 0">
+							<set token="hideSysmonFirstLastHitsChart">true</set>
+						</condition>
+						<condition>
+							<unset token="hideSysmonFirstLastHitsChart"/>
+						</condition>
+					</progress>
+				</search>
+				<option name="count">40</option>
+				<!-- hours_since_first_hit -->
+				<!-- check if any new boxes recently appeared on the network (flip the color palette, highest value is green) -->
+				<format type="color" field="hours_since_first_hit">
+					<colorPalette type="minMidMax" minColor="#ff0000" midColor="#f8de7e" maxColor="#adff22"></colorPalette>
+					<scale type="threshold">0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 12, 23.5, 24</scale>
+				</format>
+				<!-- hours_since_latest_hit -->
+				<!-- check if any new boxes have fallen off the network or stopped reporting -->
+				<format type="color" field="hours_since_latest_hit">
+					<colorPalette type="minMidMax" minColor="#adff22" midColor="#ffd700" maxColor="#ff0000"></colorPalette>
+					<scale type="threshold">0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2</scale>
+				</format>
+				<format type="number" field="hours_since_first_hit">
+					<option name="precision">2</option>
+					<option name="unit">hours</option>
+				</format>
+				<format type="number" field="hours_since_latest_hit">
+					<option name="precision">2</option>
+					<option name="unit">hours</option>
+				</format>
+				<drilldown>
+					<condition field="Computer">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="trend">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="first_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="latest_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="hours_since_first_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="hours_since_latest_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="hide">
+						<set token="drillDown">$drillDown$ AND NOT (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="count">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+				</drilldown>
+			</table>
+		</panel>
+	</row>
+
+	<row>
+		<panel depends="$hideWinsecFirstLastHitsChart$">
+			<title>Windows Security client_name First Hits / Last Seen</title>
+			<table>
+				<title></title>
+				<search>
+					<!-- <query>| loadjob savedsearch="username:search:internal_host_last_seen_winsec" | eval hide="&#8856;" $drillDown$</query> -->
+					<query>sourcetype=winsec | stats sparkline(count) AS trend, earliest(_time) AS first_hit, latest(_time) AS latest_hit, count BY client_name | eval hours_since_first_hit=(now()-first_hit)/60/60, hours_since_latest_hit=(now()-latest_hit)/60/60, first_hit=strftime(first_hit, "%x %X"), latest_hit=strftime(latest_hit, "%x %X") | table client_name trend first_hit latest_hit hours_since_first_hit hours_since_latest_hit count | sort -first_hit | eval hide="&#8856;" $drillDown$</query>
+					<!-- */5 * * * * -->
+					<progress>
+						<condition match="'job.resultCount' > 0">
+							<set token="hideWinsecFirstLastHitsChart">true</set>
+						</condition>
+						<condition>
+							<unset token="hideWinsecFirstLastHitsChart"/>
+						</condition>
+					</progress>
+				</search>
+				<option name="count">40</option>
+				<!-- hours_since_first_hit -->
+				<!-- check if any new boxes recently appeared on the network (flip the color palette, highest value is green) -->
+				<format type="color" field="hours_since_first_hit">
+					<colorPalette type="minMidMax" minColor="#ff0000" midColor="#f8de7e" maxColor="#adff22"></colorPalette>
+					<scale type="threshold">0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 12, 23.5, 24</scale>
+				</format>
+				<!-- hours_since_latest_hit -->
+				<!-- check if any new boxes have fallen off the network or stopped reporting -->
+				<format type="color" field="hours_since_latest_hit">
+					<colorPalette type="minMidMax" minColor="#adff22" midColor="#ffd700" maxColor="#ff0000"></colorPalette>
+					<scale type="threshold">0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2</scale>
+				</format>
+				<format type="number" field="hours_since_first_hit">
+					<option name="precision">2</option>
+					<option name="unit">hours</option>
+				</format>
+				<format type="number" field="hours_since_latest_hit">
+					<option name="precision">2</option>
+					<option name="unit">hours</option>
+				</format>
+				<drilldown>
+					<condition field="Computer">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+					<condition field="trend">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+					<condition field="first_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+					<condition field="latest_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+					<condition field="hours_since_first_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+					<condition field="hours_since_latest_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+					<condition field="hide">
+						<set token="drillDown">$drillDown$ AND NOT (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+					<condition field="count">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+				</drilldown>
+			</table>
+		</panel>
+	</row>
+
+	<row>
+		<panel depends="$hideZeekFirstLastHitsSrcChart$">
+			<title>Zeek Connections src_ip and src_device (renamed to client_name) First Hits / Last Seen</title>
+			<!-- relies on a lookup table for mapping IP-to-host -->
+			<table>
+				<title></title>
+				<search>
+					<!-- <query>| loadjob savedsearch="username:search:internal_host_last_seen_sysmon_src" | eval hide="&#8856;" $drillDown$</query> -->
+					<query>sourcetype=zeek_conn src_ip="192.168.*" | stats sparkline(count) AS trend, earliest(_time) AS first_hit, latest(_time) AS latest_hit, count BY src_ip src_device | eval hours_since_first_hit=(now()-first_hit)/60/60, hours_since_latest_hit=(now()-latest_hit)/60/60, first_hit=strftime(first_hit, "%x %X"), latest_hit=strftime(latest_hit, "%x %X") | rename src_device AS client_name | table src_ip client_name trend first_hit latest_hit hours_since_first_hit hours_since_latest_hit count | sort -first_hit | eval hide="&#8856;" $drillDown$</query>
+					<!-- */5 * * * * -->
+					<progress>
+						<condition match="'job.resultCount' > 0">
+							<set token="hideZeekFirstLastHitsSrcChart">true</set>
+						</condition>
+						<condition>
+							<unset token="hideZeekFirstLastHitsSrcChart"/>
+						</condition>
+					</progress>
+				</search>
+				<option name="count">40</option>
+				<!-- hours_since_first_hit -->
+				<!-- check if any new boxes recently appeared on the network (flip the color palette, highest value is green) -->
+				<format type="color" field="hours_since_first_hit">
+					<colorPalette type="minMidMax" minColor="#ff0000" midColor="#f8de7e" maxColor="#adff22"></colorPalette>
+					<scale type="threshold">0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 12, 23.5, 24</scale>
+				</format>
+				<!-- hours_since_latest_hit -->
+				<!-- check if any new boxes have fallen off the network or stopped reporting -->
+				<format type="color" field="hours_since_latest_hit">
+					<colorPalette type="minMidMax" minColor="#adff22" midColor="#ffd700" maxColor="#ff0000"></colorPalette>
+					<scale type="threshold">0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2</scale>
+				</format>
+				<format type="number" field="hours_since_first_hit">
+					<option name="precision">2</option>
+					<option name="unit">hours</option>
+				</format>
+				<format type="number" field="hours_since_latest_hit">
+					<option name="precision">2</option>
+					<option name="unit">hours</option>
+				</format>
+				<drilldown>
+					<condition field="src_ip">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+					<condition field="client_name">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+					<condition field="trend">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+					<condition field="first_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+					<condition field="latest_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+					<condition field="hours_since_first_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+					<condition field="hours_since_latest_hit">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+					<condition field="hide">
+						<set token="drillDown">$drillDown$ AND NOT (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+					<condition field="count">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.client_name$" OR client_name="$row.client_name$")</set>
+					</condition>
+				</drilldown>
+			</table>
+		</panel>
+	</row>
+
+	<row>
+		<panel depends="$hideZeekSourcetypeHealth$">
+			<title>Zeek Sourcetype Health</title>
+			<!-- relies on a lookup table for mapping IP-to-host -->
+			<table>
+				<title></title>
+				<search>
+					<!-- <query>| loadjob savedsearch="username:search:zeek_sourcetype_health" | eval hide="&#8856;" $drillDown$</query> -->
+					<query>index=zeek | stats sparkline(count) AS trend, earliest(_time) AS first_hit, latest(_time) AS latest_hit, count BY sourcetype | eval hours_since_first_hit=(now()-first_hit)/60/60, hours_since_latest_hit=(now()-latest_hit)/60/60, first_hit=strftime(first_hit, "%x %X"), latest_hit=strftime(latest_hit, "%x %X") | table sourcetype trend first_hit latest_hit hours_since_first_hit hours_since_latest_hit count | sort -first_hit | eval hide="&#8856;" $drillDown$</query>
+					<!-- */5 * * * * -->
+					<progress>
+						<condition match="'job.resultCount' > 0">
+							<set token="hidezeeksourcetypehealth">true</set>
+						</condition>
+						<condition>
+							<unset token="hidezeeksourcetypehealth"/>
+						</condition>
+					</progress>
+				</search>
+				<option name="count">40</option>
+				<!-- hours_since_first_hit -->
+				<!-- check if any new boxes recently appeared on the network (flip the color palette, highest value is green) -->
+				<format type="color" field="hours_since_first_hit">
+					<colorPalette type="minMidMax" minColor="#ff0000" midColor="#f8de7e" maxColor="#adff22"></colorPalette>
+					<scale type="threshold">0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 12, 23.5, 24</scale>
+				</format>
+				<!-- hours_since_latest_hit -->
+				<!-- check if any new boxes have fallen off the network or stopped reporting -->
+				<format type="color" field="hours_since_latest_hit">
+					<colorPalette type="minMidMax" minColor="#adff22" midColor="#ffd700" maxColor="#ff0000"></colorPalette>
+					<scale type="threshold">0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2</scale>
+				</format>
+				<format type="number" field="hours_since_first_hit">
+					<option name="precision">2</option>
+					<option name="unit">hours</option>
+				</format>
+				<format type="number" field="hours_since_latest_hit">
+					<option name="precision">2</option>
+					<option name="unit">hours</option>
+				</format>
+				<drilldown>
+					<condition field="sourcetype">
+						<set token="drillDown">$drillDown$ AND (sourcetype="$row.sourcetype$")</set>
+					</condition>
+					<condition field="trend">
+						<set token="drillDown">$drillDown$ AND (sourcetype="$row.sourcetype$")</set>
+					</condition>
+					<condition field="first_hit">
+						<set token="drillDown">$drillDown$ AND (sourcetype="$row.sourcetype$")</set>
+					</condition>
+					<condition field="latest_hit">
+						<set token="drillDown">$drillDown$ AND (sourcetype="$row.sourcetype$")</set>
+					</condition>
+					<condition field="hours_since_first_hit">
+						<set token="drillDown">$drillDown$ AND (sourcetype="$row.sourcetype$")</set>
+					</condition>
+					<condition field="hours_since_latest_hit">
+						<set token="drillDown">$drillDown$ AND (sourcetype="$row.sourcetype$")</set>
+					</condition>
+					<condition field="hide">
+						<set token="drillDown">$drillDown$ AND NOT (sourcetype="$row.sourcetype$")</set>
+					</condition>
+					<condition field="count">
+						<set token="drillDown">$drillDown$ AND (sourcetype="$row.sourcetype$")</set>
+					</condition>
+				</drilldown>
+			</table>
+		</panel>
+	</row>
+
+	<row>
+		<panel depends="$hideZeekGapDetection$">
+			<title>Zeek Gap Detection by Sourcetype</title>
+			<!-- relies on a lookup table for mapping IP-to-host -->
+			<table>
+				<title></title>
+				<search>
+					<!-- <query>| loadjob savedsearch="username:search:zeek_gap_detection" | eval hide="&#8856;" $drillDown$</query> -->
+					<query>index=zeek | streamstats current=f last(_time) as gap_end by sourcetype | eval gap = gap_end - _time | where gap > 900 | convert ctime(gap_end) as gap_end | rename _time AS gap_start | convert ctime(gap_start) as gap_start | eval gap_length_hours = gap/60/60, gap_length_minutes = gap/60 | rename gap AS gap_length_seconds | table sourcetype gap_start gap_end gap_length_hours gap_length_minutes gap_length_seconds | sort -gap_start | eval hide="&#8856;" $drillDown$</query>
+					<!-- */5 * * * * -->
+					<progress>
+						<condition match="'job.resultCount' > 0">
+							<set token="hideZeekGapDetection">true</set>
+						</condition>
+						<condition>
+							<unset token="hideZeekGapDetection"/>
+						</condition>
+					</progress>
+				</search>
+				<option name="count">40</option>
+				<!-- hours_since_first_hit -->
+				<!-- check if any new boxes recently appeared on the network (flip the color palette, highest value is green) -->
+				<format type="color" field="hours_since_first_hit">
+					<colorPalette type="minMidMax" minColor="#ff0000" midColor="#f8de7e" maxColor="#adff22"></colorPalette>
+					<scale type="threshold">0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 12, 23.5, 24</scale>
+				</format>
+				<!-- hours_since_latest_hit -->
+				<!-- check if any new boxes have fallen off the network or stopped reporting -->
+				<format type="color" field="gap_length_hours">
+					<colorPalette type="minMidMax" minColor="#adff22" midColor="#ffd700" maxColor="#ff0000"></colorPalette>
+					<scale type="threshold">0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2</scale>
+				</format>
+				<format type="number" field="gap_length_hours">
+					<option name="precision">2</option>
+					<option name="unit">hours</option>
+				</format>
+				<format type="number" field="gap_length_minutes">
+					<option name="precision">2</option>
+					<option name="unit">minutes</option>
+				</format>
+				<format type="number" field="gap_length_seconds">
+					<option name="precision">2</option>
+					<option name="unit">seconds</option>
+				</format>
+				<drilldown>
+					<condition field="sourcetype">
+						<set token="drillDown">$drillDown$ AND (sourcetype="$row.sourcetype$")</set>
+					</condition>
+					<condition field="gap_start">
+						<set token="drillDown">$drillDown$ AND (sourcetype="$row.sourcetype$")</set>
+					</condition>
+					<condition field="gap_end">
+						<set token="drillDown">$drillDown$ AND (sourcetype="$row.sourcetype$")</set>
+					</condition>
+					<condition field="gap_length_hours">
+						<set token="drillDown">$drillDown$ AND (sourcetype="$row.sourcetype$")</set>
+					</condition>
+					<condition field="gap_length_minutes">
+						<set token="drillDown">$drillDown$ AND (sourcetype="$row.sourcetype$")</set>
+					</condition>
+					<condition field="gap_length_seconds">
+						<set token="drillDown">$drillDown$ AND (sourcetype="$row.sourcetype$")</set>
+					</condition>
+					<condition field="hide">
+						<set token="drillDown">$drillDown$ AND NOT (sourcetype="$row.sourcetype$")</set>
+					</condition>
+					<condition field="count">
+						<set token="drillDown">$drillDown$ AND (sourcetype="$row.sourcetype$")</set>
+					</condition>
+				</drilldown>
+			</table>
+		</panel>
+	</row>
+
+	<row>
+		<panel depends="$hideSysmonGapDetection$">
+			<title>Sysmon Gap Detection by Computer</title>
+			<!-- relies on a lookup table for mapping IP-to-host -->
+			<table>
+				<title></title>
+				<search>
+					<!-- <query>| loadjob savedsearch="username:search:sysmon_gap_detection" | eval hide="&#8856;" $drillDown$</query> -->
+					<query>sourcetype=sysmon | streamstats current=f last(_time) as gap_end by Computer | eval gap = gap_end - _time | where gap > 900 | convert ctime(gap_end) as gap_end | rename _time AS gap_start | convert ctime(gap_start) as gap_start | eval gap_length_hours = gap/60/60, gap_length_minutes = gap/60 | rename gap AS gap_length_seconds | table Computer gap_start gap_end gap_length_hours gap_length_minutes gap_length_seconds | sort -gap_start | eval hide="&#8856;" $drillDown$</query>
+					<!-- */5 * * * * -->
+					<progress>
+						<condition match="'job.resultCount' > 0">
+							<set token="hideSysmonGapDetection">true</set>
+						</condition>
+						<condition>
+							<unset token="hideSysmonGapDetection"/>
+						</condition>
+					</progress>
+				</search>
+				<option name="count">40</option>
+				<!-- hours_since_first_hit -->
+				<!-- check if any new boxes recently appeared on the network (flip the color palette, highest value is green) -->
+				<format type="color" field="hours_since_first_hit">
+					<colorPalette type="minMidMax" minColor="#ff0000" midColor="#f8de7e" maxColor="#adff22"></colorPalette>
+					<scale type="threshold">0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 12, 23.5, 24</scale>
+				</format>
+				<!-- hours_since_latest_hit -->
+				<!-- check if any new boxes have fallen off the network or stopped reporting -->
+				<format type="color" field="gap_length_hours">
+					<colorPalette type="minMidMax" minColor="#adff22" midColor="#ffd700" maxColor="#ff0000"></colorPalette>
+					<scale type="threshold">0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2</scale>
+				</format>
+				<format type="number" field="gap_length_hours">
+					<option name="precision">2</option>
+					<option name="unit">hours</option>
+				</format>
+				<format type="number" field="gap_length_minutes">
+					<option name="precision">2</option>
+					<option name="unit">minutes</option>
+				</format>
+				<format type="number" field="gap_length_seconds">
+					<option name="precision">2</option>
+					<option name="unit">seconds</option>
+				</format>
+				<drilldown>
+					<condition field="Computer">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="gap_start">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="gap_end">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="gap_length_hours">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="gap_length_minutes">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="gap_length_seconds">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="hide">
+						<set token="drillDown">$drillDown$ AND NOT (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+					<condition field="count">
+						<set token="drillDown">$drillDown$ AND (Computer="$row.Computer$" OR client_name="$row.Computer$")</set>
+					</condition>
+				</drilldown>
+			</table>
+		</panel>
+	</row>
+</form>

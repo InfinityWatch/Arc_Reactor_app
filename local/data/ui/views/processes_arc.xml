@@ -1,0 +1,203 @@
+<form theme="dark">
+  <label>Processes</label>
+  <description>List of processes identified through event id 4688 and listed in the www.eventid.net list of processes that may indicate suspicious activity. To generate event id 4688, a system requires the audit of process creation. See the documentation for more details.</description>
+  <fieldset autoRun="true" submitButton="false">
+    <input type="time" searchWhenChanged="true" token="interval">
+      <label>Select time range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="multiselect" token="Computer" searchWhenChanged="true">
+      <label>Computer</label>
+      <choice value="*">All</choice>
+      <default>*</default>
+      <prefix>(</prefix>
+      <suffix>)</suffix>
+      <valuePrefix>ComputerName="</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+      <delimiter> OR </delimiter>
+      <search>
+        <query>`event_sources`  (EventCode=4688) | stats count by ComputerName</query>
+        <earliest>$interval.earliest$</earliest>
+        <latest>$interval.latest$</latest>
+      </search>
+      <fieldForLabel>ComputerName</fieldForLabel>
+      <fieldForValue>ComputerName</fieldForValue>
+    </input>
+    <input type="multiselect" token="process_id" searchWhenChanged="true">
+      <label>Process Id</label>
+      <choice value="*">All</choice>
+      <default>*</default>
+      <prefix>(</prefix>
+      <suffix>)</suffix>
+      <valuePrefix>New_Process_ID="</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+      <delimiter> OR </delimiter>
+      <search>
+        <query>`event_sources`  (EventCode=4688) | stats count by New_Process_ID</query>
+        <earliest>$interval.earliest$</earliest>
+        <latest>$interval.latest$</latest>
+      </search>
+      <fieldForLabel>New_Process_ID</fieldForLabel>
+      <fieldForValue>New_Process_ID</fieldForValue>
+    </input>
+    <input type="multiselect" token="creator" searchWhenChanged="true">
+      <label>Creator Process Id</label>
+      <choice value="*">All</choice>
+      <default>*</default>
+      <prefix>(</prefix>
+      <suffix>)</suffix>
+      <valuePrefix>Creator_Process_ID="</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+      <delimiter> OR </delimiter>
+      <search>
+        <query>`event_sources`  (EventCode=4688) | stats count by Creator_Process_ID</query>
+        <earliest>$interval.earliest$</earliest>
+        <latest>$interval.latest$</latest>
+      </search>
+      <fieldForLabel>Creator_Process_ID</fieldForLabel>
+      <fieldForValue>Creator_Process_ID</fieldForValue>
+    </input>
+    <input type="text" token="keyword" searchWhenChanged="true">
+      <label>Keyword:</label>
+      <default>*</default>
+    </input>
+    <input type="radio" token="nocomputer" searchWhenChanged="true">
+      <label>Hide computer accounts related events</label>
+      <choice value="Account_Name != &quot;*$*&quot;">Yes</choice>
+      <choice value="">No</choice>
+      <default>Account_Name != "*$*"</default>
+      <initialValue>Account_Name != "*$*"</initialValue>
+    </input>
+    <input type="radio" token="nocmdpowershell" searchWhenChanged="true">
+      <label>Filter out cmd.exe and powershell.exe</label>
+      <choice value="AND NOT (New_Process_Name = &quot;*cmd.exe*&quot; OR New_Process_Name = &quot;*powershell.exe*&quot;)">Yes</choice>
+      <choice value="New_Process_Name = &quot;*&quot;">No</choice>
+      <default>New_Process_Name = "*"</default>
+      <initialValue>New_Process_Name = "*"</initialValue>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Interesting Processes</title>
+      <table>
+        <title>Computer Clickable</title>
+        <search>
+          <query>`event_sources` AND $Computer$ AND $keyword$ $nocomputer$ $creator$ $process_id$ $nocmdpowershell$ (EventCode=4688) | lookup processlookup full_path_process as New_Process_Name OUTPUT process | lookup arc_windows_interesting_processes_lookup process OUTPUT Category,Process_Details | search Category="*" | table _time, ComputerName, Account_Name, Process_Command_Line, process,Category,Process_Details, New_Process_ID,
+Creator_Process_ID | rename ComputerName as Server,process as Process,Process_Details as "Interesting Process Details"</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <drilldown>
+          <link target="_blank">/app/Arc_reactor_app/computer_overview?ComputerName=$click.value2$</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Last 100 Processes</title>
+      <table>
+        <title>Computer Clickable</title>
+        <search>
+          <query>`event_sources` (EventCode=4688) AND $Computer$ AND $keyword$ $nocomputer$ $creator$ $process_id$ $nocmdpowershell$ 
+| head 100
+| table _time, ComputerName,Account_Name, New_Process_Name,Process_Command_Line, New_Process_ID,
+Creator_Process_ID</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <drilldown>
+          <link target="_blank">/app/Arc_reactor_app/computer_overview?ComputerName=$click.value2$</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Top Processes</title>
+      <table>
+        <title>Computer Clickable</title>
+        <search>
+          <query>`event_sources` (EventCode=4688) AND $Computer$ AND $keyword$ $nocomputer$ $creator$ $process_id$ $nocmdpowershell$ | stats count by ComputerName, New_Process_Name  | table ComputerName, New_Process_Name,count | sort -count | rename count as Count</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <drilldown>
+          <link target="_blank">/app/Arc_reactor_app/computer_overview?ComputerName=$click.value2$</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Least Common Processes</title>
+      <table>
+        <title>Computer Clickable</title>
+        <search>
+          <query>`event_sources` (EventCode=4688) AND $Computer$ AND $keyword$ $nocomputer$ $creator$ $process_id$ $nocmdpowershell$ | stats count by ComputerName, New_Process_Name  | table ComputerName, New_Process_Name,count | sort count| rename count as Count</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <drilldown>
+          <link target="_blank">/app/Arc_reactor_app/computer_overview?ComputerName=$click.value2$</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Unusually Long CLI Commands</title>
+      <table>
+        <search>
+          <query>`event_sources` (EventCode=4688) AND (ComputerName="*") AND * Account_Name != "*$$*" (Creator_Process_ID="*") (New_Process_ID="*") New_Process_Name = "*" | head 100 | table _time, ComputerName,Account_Name, New_Process_Name,Process_Command_Line, New_Process_ID,
+Creator_Process_ID</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>

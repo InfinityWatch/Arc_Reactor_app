@@ -1,0 +1,4 @@
+<dashboard theme="dark">
+  <label>pDNS</label>
+  <description>Passive DNS (pDNS) collection based off of  Zeek DNS logs or Mission Partner DNS Servers</description>
+</dashboard>

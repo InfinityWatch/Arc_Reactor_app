@@ -1,0 +1,208 @@
+<form theme="dark">
+  <label>XML</label>
+  <description>Dashboard for events collected using the renderXML option</description>
+  <fieldset autoRun="true" submitButton="false">
+    <input type="time" searchWhenChanged="true" token="interval">
+      <label>Select time range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="checkbox" searchWhenChanged="true" token="Type">
+      <label>Event types</label>
+      <choice value="2">Error</choice>
+      <choice value="3">Warning</choice>
+      <choice value="4">Information</choice>
+      <choice value="0">Audit</choice>
+      <prefix>(</prefix>
+      <suffix>)</suffix>
+      <valuePrefix>Level="</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+      <delimiter> OR </delimiter>
+      <fieldForLabel>Level</fieldForLabel>
+      <fieldForValue>Level</fieldForValue>
+      <default>3,2</default>
+      <initialValue>2,3</initialValue>
+    </input>
+    <input type="multiselect" searchWhenChanged="true" token="Computer">
+      <label>Computer</label>
+      <choice value="*">All</choice>
+      <default>*</default>
+      <prefix>(</prefix>
+      <suffix>)</suffix>
+      <valuePrefix>Computer="</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+      <delimiter> OR </delimiter>
+      <search>
+        <query>`OPORD` | stats count by Computer</query>
+        <earliest>$interval.earliest$</earliest>
+        <latest>$interval.latest$</latest>
+      </search>
+      <fieldForLabel>Computer</fieldForLabel>
+      <fieldForValue>Computer</fieldForValue>
+    </input>
+    <input type="text" searchWhenChanged="true" token="keyword">
+      <label>Keyword:</label>
+      <default>*</default>
+    </input>
+    <input type="multiselect" token="sourcetype_token" searchWhenChanged="true">
+      <label>Excluded event sources</label>
+      <default>none</default>
+      <!-- The final value will be surrounded by prefix and suffix -->
+      <prefix>(</prefix>
+      <suffix>)</suffix>
+      <!-- Each value will be surrounded by the valuePrefix and valueSuffix -->
+      <valuePrefix>Name!="</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+      <!-- All the values and their valuePrefix and valueSuffix will be concatenated together with the delimiter between them -->
+      <delimiter> AND </delimiter>
+      <choice value="none">None</choice>
+      <search>
+        <query>`OPORD` $Type$ AND $Computer$ AND $keyword$ | rex field=Name mode=sed "s/\'//g" | stats count by Name</query>
+        <earliest>$interval.earliest$</earliest>
+        <latest>$interval.latest$</latest>
+      </search>
+      <fieldForLabel>Name</fieldForLabel>
+      <fieldForValue>Name</fieldForValue>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Windows events over time</title>
+      <chart>
+        <search>
+          <query>`OPORD` 
+| search $Type$ $Computer$ AND $keyword$ 
+| lookup arc_xml_event_types_lookup xml_type AS Level OUTPUT event_type 
+| timechart count by event_type</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="charting.axisLabelsY.majorUnit">1</option>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleY.text">Events</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.legend.placement">bottom</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Top computers generating events</title>
+      <chart>
+        <search>
+          <query>`OPORD` | fillnull value="-" | search $Computer$ AND $keyword$ | stats count by Computer</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Accounts with 3 or more failed logons</title>
+      <chart>
+        <search>
+          <query>`OPORD` eventtype=windows_logon_failure  | stats count by user | where count &gt; 2</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Logon Audit Failure events</title>
+      <single>
+        <search>
+          <query>`OPORD` eventtype=windows_logon_failure | eval user=mvindex(Account_Name,1) | stats count</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="rangeValues">[0,2,5,10]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">1</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Events Summary</title>
+      <table id="link2">
+        <search>
+          <query>`OPORD` | search $Type$ $Computer$ | lookup arc_xml_event_types_lookup xml_type AS Level OUTPUT event_type | rex field=Name mode=sed "s/\'//g" | stats earliest(_time) as First latest(_time) as Last count by Computer,EventID,Name,Channel, event_type,eventtype  | sort -count Computer,EventID,Name,Channel, event_type,eventtype |  fieldformat First=strftime(First,"%x %X") | fieldformat Last=strftime(Last,"%x %X") | rename Channel as Log, Name as Source,event_type as Level,eventtype as Category</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="wrap">true</option>
+        <drilldown>
+          <link target="_blank">https://www.eventid.net/display.asp?eventid=$row.EventId$&amp;source=$row.SourceName$&amp;app=SplunkEvId</link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <title>Logon Audit Failure events</title>
+      <table>
+        <search>
+          <query>`OPORD` eventtype=windows_logon_failure | table  _time,Computer,EventID,user,WorkstationName,LogonType,name | rename name as Details</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Events List</title>
+      <table id="link">
+        <search>
+          <query>`OPORD`  | search ($Type$) AND $Computer$ AND $keyword$ $sourcetype_token$ | rex field=Name mode=sed "s/\'//g" | lookup arc_xml_event_types_lookup xml_type AS Level OUTPUT event_type | lookup xml_raw_data_lookup raw_xml_data as EventData_Xml OUTPUT extracted_xml_data | eval extracted_xml_data = split(extracted_xml_data,"@")  | table _time,EventID,Name,Channel, event_type,eventtype, extracted_xml_data | rename Channel as Log, event_type as Level, eventtype as Category, Name as Source</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>

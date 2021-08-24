@@ -1,0 +1,244 @@
+<form theme="dark">
+  <label>Computer Overview Pivot</label>
+  <search id="searchbase">
+    <query>`sysmon` Computer=$Computer$ | fields Computer EventID _time CurrentDirectory CommandLine ParentCommandLine Hashes CreationUtcTime Image TargetFilename DestinationHostname DestinationIp DestinationPort SourceIp SourcePort State Name ImageLoaded Signature SignatureStatus SourceImage TargetImage TargetObject
+      </query>
+  </search>
+  <fieldset submitButton="true">
+    <input type="time" token="time">
+      <label></label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" searchWhenChanged="true">
+      <label>Computer Name</label>
+      <default>$Computer$</default>
+      <initialValue>$Computer$</initialValue>
+      <prefix>*</prefix>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Computer I.P</title>
+      <table>
+        <search base="searchbase">
+          <query> | table Computer | dedup Computer</query>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Process Creation</title>
+      <table>
+        <search base="searchbase">
+          <query> | stats count by EventID</query>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <input type="checkbox" token="ID=1" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">ID=1 Process creation</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="ID=2" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">ID=2 A process changed a file creation time</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="ID=3" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">ID=3 Network connection</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="ID=4" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">ID=4 Sysmon service state changed</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="ID=5" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">ID=5 Process terminated</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="ID=6" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">ID=6 Driver loaded</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="ID=8" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">ID=8 CreateRemoteThread</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="ID=9" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">ID=9 RawAccessRead</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="ID=10" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">ID=10 ProcessAccess</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="ID=11" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">ID=11 FileCreate</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="ID=12" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">ID=12 RegistryEvent</choice>
+        <delimiter> </delimiter>
+      </input>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$ID=1$">
+      <table>
+        <title>Event ID 1: Process creation</title>
+        <search base="searchbase">
+          <query>| search EventID=1 NOT CommandLine IN ("\"C:\\Program Files\\SplunkUniversalForwarder\\bin\\splunk*" , "\\??\\C:\\Windows\\system32\\conhost.exe"  ) | table  _time CurrentDirectory ParentCommandLine CommandLine  Hashes</query>
+        </search>
+        <option name="count">15</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$ID=2$">
+      <table>
+        <title>Event ID 2: A process changed a file creation time</title>
+        <search base="searchbase">
+          <query>| search EventID=2 | table _time CreationUtcTime Image TargetFilename </query>
+        </search>
+        <option name="count">15</option>
+        <option name="drilldown">none</option>
+        <option name="rowNumbers">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$ID=3$">
+      <table>
+        <title>Event ID 3: Network connection</title>
+        <search base="searchbase">
+          <query>| search EventID=3 | table _time DestinationHostname DestinationIp DestinationPort SourceIp SourcePort</query>
+        </search>
+        <option name="count">15</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$ID=4$">
+      <table>
+        <title>Event ID 4: Sysmon service state changed</title>
+        <search base="searchbase">
+          <query>| search EventID=4 | table _time State Name
+          </query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$ID=5$">
+      <table>
+        <title>Event ID 5: Process terminated</title>
+        <search base="searchbase">
+          <query>| search EventID=5 NOT Image IN ("C:\\Program Files\\SplunkUniversalForwarder\\bin\\splunk*" , "C:\\Windows\\System32\\conhost.exe" , "C:\\Windows\\System32\\cscript.exe" , "C:\\Windows\\SysWOW64\\dllhost.exe" , "C:\\Windows\\System32\\slui.exe") | table _time Image</query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$ID=6$">
+      <table>
+        <title>Event ID 6: Driver loaded</title>
+        <search base="searchbase">
+          <query>| search EventID=6 | table _time ImageLoaded Hashes Signature SignatureStatus </query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$ID=8$">
+      <table>
+        <title>Event ID 8: CreateRemoteThread</title>
+        <search base="searchbase">
+          <query>| search EventID=8 | table _time SourceImage TargetImage </query>
+        </search>
+        <option name="count">15</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$ID=9$">
+      <table>
+        <title>Event ID 9: RawAccessRead</title>
+        <search base="searchbase">
+          <query>| search EventID=9 | table _time Image</query>
+        </search>
+        <option name="count">15</option>
+        <option name="drilldown">none</option>
+        <option name="rowNumbers">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$ID=10$">
+      <table>
+        <title>Event ID 10: ProcessAccess</title>
+        <search base="searchbase">
+          <query>| search EventID=10 | table _time Image</query>
+        </search>
+        <option name="count">15</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$ID=11$">
+      <table>
+        <title>Event ID 11: FileCreate</title>
+        <search base="searchbase">
+          <query>| search EventID=11 | table _time Image TargetFileName </query>
+        </search>
+        <option name="count">15</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$ID=12$">
+      <table>
+        <title>Event ID 12: RegistryEvent</title>
+        <search base="searchbase">
+          <query>| search EventID=12 | table _time severity_id Image TargetObject </query>
+        </search>
+        <option name="count">15</option>
+        <option name="drilldown">none</option>
+        <option name="rowNumbers">false</option>
+      </table>
+    </panel>
+  </row>
+</form>

@@ -1,0 +1,22 @@
+event_id,source,description
+104,Microsoft-Windows-Eventlog,Attackers tend to clear logs in order to hide previous activity.
+104,Eventlog,Attackers tend to clear logs in order to hide previous activity.
+517,Security,Attackers tend to clear logs in order to hide previous activity.
+1000,Application Error,Critical application error
+1001,Microsoft-Windows-WER-SystemErrorReporting,Blue Screen of Death
+1002,Application Hang,Application hang
+1076,USER32,An admin provided a reason for an unexpected restart
+1102,Eventlog,Attackers tend to clear logs in order to hide previous activity.
+2004,Microsoft-Windows-Windows Firewall with Advanced Security,Firewall rule added
+2006,Microsoft-Windows-Windows Firewall with Advanced Security,Firewall rule deleted
+2033,Microsoft-Windows-Windows Firewall with Advanced Security,Firewall rule deleted
+4608,Microsoft Windows security auditing,The computer has been restarted - not an usual event.
+4625,Microsoft Windows security auditing,A user failed to logon
+4663,Microsoft-Windows-Security-Auditing,An audited object has been accessed.
+4719,Microsoft-Windows-Security-Auditing,System audit policy was changed
+4728,Microsoft-Windows-Security-Auditing,User Added to Privileged Group
+4732,Microsoft-Windows-Security-Auditing,User Added to Privileged Group
+4735,Microsoft-Windows-Security-Auditing,Security-Enabled Group Modification
+4740,Microsoft-Windows-Security-Auditing,Account lockout
+4756,Microsoft-Windows-Security-Auditing,User Added to Privileged Group
+7045,Service Control Manager,Installation of new services are not typical events.

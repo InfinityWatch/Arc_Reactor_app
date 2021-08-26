@@ -1,0 +1,1532 @@
+[app/ui]
+version = 7.3.5
+modtime = 1590110528.279224000
+
+[app/launcher]
+version = 7.3.5
+modtime = 1590110528.280963000
+
+[nav/default]
+version = 8.2.2
+modtime = 1630014999.135101000
+
+[views/zeek_dcerpc]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = sadmin
+version = 7.3.5
+modtime = 1599322170.417700000
+
+[views/zeek_dhcp]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = sadmin
+version = 7.3.5
+modtime = 1596926844.561608000
+
+[views/zeek_dnp3]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = sadmin
+version = 7.3.5
+modtime = 1590114529.453630000
+
+[views/zeek_dns]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = sadmin
+version = 7.3.5
+modtime = 1599768107.811299000
+
+[views/zeek_files]
+owner = sadmin
+version = 7.3.5
+modtime = 1598366720.329878000
+
+[views/zeek_ftp]
+owner = sadmin
+version = 7.3.5
+modtime = 1603133465.033465000
+
+[views/zeek_http]
+owner = sadmin
+version = 7.3.5
+modtime = 1599769263.375715000
+
+[views/zeek_intel]
+owner = sadmin
+version = 7.3.5
+modtime = 1590111996.650536000
+
+[views/zeek_irc]
+owner = sadmin
+version = 7.3.5
+modtime = 1590112010.978027000
+
+[views/zeek_kerberos]
+owner = sadmin
+version = 7.3.5
+modtime = 1593383262.174459000
+
+[views/zeek_modbus]
+owner = sadmin
+version = 7.3.5
+modtime = 1590112048.132000000
+
+[views/zeek_mysql]
+owner = sadmin
+version = 7.3.5
+modtime = 1590112081.327059000
+
+[views/zeek_ntlm]
+owner = sadmin
+version = 7.3.5
+modtime = 1590112099.422006000
+
+[views/zeek_pe]
+owner = sadmin
+version = 7.3.5
+modtime = 1593382484.436584000
+
+[views/zeek_radius]
+owner = sadmin
+version = 7.3.5
+modtime = 1590112132.657816000
+
+[views/zeek_rdp]
+owner = sadmin
+version = 7.3.5
+modtime = 1593190634.251685000
+
+[views/zeek_rfb]
+owner = sadmin
+version = 7.3.5
+modtime = 1590112167.867172000
+
+[views/zeek_sip]
+owner = sadmin
+version = 7.3.5
+modtime = 1590112178.617100000
+
+[views/zeek_smb]
+owner = sadmin
+version = 7.3.5
+modtime = 1599250249.450362000
+
+[views/zeek_smtp]
+owner = sadmin
+version = 7.3.5
+modtime = 1599310857.101648000
+
+[views/zeek_snmp]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = sadmin
+version = 7.3.5
+modtime = 1590112274.727139000
+
+[views/zeek_software]
+owner = sadmin
+version = 7.3.5
+modtime = 1593111067.002564000
+
+[views/zeek_ssh]
+owner = sadmin
+version = 7.3.5
+modtime = 1593360183.651935000
+
+[views/zeek_ssl]
+owner = sadmin
+version = 7.3.5
+modtime = 1599836407.717123000
+
+[views/zeek_tunnels]
+owner = sadmin
+version = 7.3.5
+modtime = 1590112330.507250000
+
+[views/zeek_weird]
+owner = sadmin
+version = 7.3.5
+modtime = 1599770885.913448000
+
+[views/zeek_x509]
+owner = sadmin
+version = 7.3.5
+modtime = 1598368207.392445000
+
+[views/windows_sysmon]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = sadmin
+version = 7.3.5
+modtime = 1590427544.717975000
+
+[views/windows_powershell]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = sadmin
+version = 7.3.5
+modtime = 1590419761.754756000
+
+[views/friday_splunk_stats]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = kjstogn
+version = 7.3.5
+modtime = 1603291913.300282000
+
+[views/zeek_connections]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = sadmin
+version = 7.3.5
+modtime = 1599321799.576823000
+
+[views/friday_disk_usage]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = kjstogn
+version = 7.3.5
+modtime = 1590419344.981284000
+
+[views/friday_license_usage]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = kjstogn
+version = 7.3.5
+modtime = 1590419327.547098000
+
+[views/friday_user_metrics]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = kjstogn
+version = 7.3.5
+modtime = 1590453753.846497000
+
+[macros/sysmon]
+access = read : [ * ], write : [ * ]
+export = system
+owner = sadmin
+version = 7.3.5
+modtime = 1599510545.443445000
+
+[savedsearches/Crtitcal%20Process]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.774317000
+
+[views/passive_dns]
+owner = sadmin
+version = 7.3.5
+modtime = 1590454781.953393000
+
+[views/easy_ip_search]
+owner = sadmin
+version = 7.3.5
+modtime = 1596995802.775530000
+
+[views/friday_metadata]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = sadmin
+version = 7.3.5
+modtime = 1603288001.558520000
+
+[views/about]
+owner = kjstogn
+version = 8.2.2
+modtime = 1629944828.274803000
+
+[views/home]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = kjstogn
+version = 7.3.5
+modtime = 1590446973.009876000
+
+[]
+access = read : [ * ], write : [ admin, power ]
+export = system
+version = 7.3.5
+modtime = 1590450446.174744000
+
+[app/install/install_source_checksum]
+version = 8.2.2
+modtime = 1629857768.469946000
+
+[views/surricata_alerts]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1602787131.130914000
+
+[views/zeek_status]
+access = write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599413448.911629000
+
+[macros/suricata]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1595891791.580997000
+
+[macros/wineventlog-application]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1595891844.169847000
+
+[macros/wineventlog-security]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1595891854.688541000
+
+[macros/wineventlog-system]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1595891865.581078000
+
+[views/recon]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594217121.928412000
+
+[inputs/monitor%3A%2F%2F%2Fhome%2Fxadmin%2FDownloads%2Fmitre_attack.csv]
+owner = admin
+version = 7.3.5
+modtime = 1593875636.398164000
+
+[views/windows_events_security]
+access = write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1594086656.269802000
+
+[views/windows_events_application]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1594217195.987583000
+
+[views/analyst_annotation_maker]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1602950636.389677000
+
+[views/analyst_annotation_viewer]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1602868355.089863000
+
+[views/4672_account_login_superuser_by_account_name]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594340086.351704000
+
+[views/file_creation_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1603218586.956796000
+
+[views/grrreat]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594216980.789811000
+
+[views/host_analyst]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594216987.851031000
+
+[views/network_connections]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594217056.780489000
+
+[views/network_map]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599162719.563475000
+
+[views/process_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1603217947.473867000
+
+[views/process_watch]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1603218320.231037000
+
+[views/recon2]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594217091.001865000
+
+[views/registry_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596942682.781638000
+
+[views/remote_access]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594217108.629898000
+
+[views/sysmon_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1603216046.507457000
+
+[views/users_and_groups]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594217161.931529000
+
+[views/windows_events_security_clone]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1594217208.046448000
+
+[views/windows_events_system]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1594217219.136304000
+
+[views/windows_processes]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1594217229.023325000
+
+[views/zeek_status_clone]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1594217236.687197000
+
+[views/cyber_key_terrain]
+owner = admin
+version = 7.3.5
+modtime = 1594260888.286487000
+
+[views/network_anomalies]
+owner = admin
+version = 7.3.5
+modtime = 1599500981.374311000
+
+[datamodels/Network_Data]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629577595.116567000
+
+[models/Network_Data]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 7.3.5
+modtime = 1599931904.337286000
+
+[macros/network]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599419988.337287000
+
+[macros/annotatations1]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594662835.033933000
+
+[macros/event_sources]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596814301.760743000
+
+[macros/mitre_attack_framework]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594662860.604144000
+
+[macros/requirements]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 8.2.2
+modtime = 1630012928.519887000
+
+[macros/OPORD]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599841922.965141000
+
+[savedsearches/Logon%20type%204%20Batch%20Logon]
+access = write : [ * ]
+export = none
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.906435000
+
+[savedsearches/Logon%20type%205%20windows%20service%20logon]
+access = write : [ * ]
+export = none
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.914148000
+
+[macros/mitre_attack_framework_rules]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594760617.147139000
+
+[macros/mitre_attack_framework_rules_from_alerts]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594760622.681967000
+
+[transforms/analyst_annotations1_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594762676.254006000
+
+[transforms/mitre_attack_framework_all_rule_compliance_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594762709.133149000
+
+[transforms/mitre_attack_framework_all_rule_technique_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594762719.864572000
+
+[transforms/mitre_attack_framework_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594762728.892919000
+
+[transforms/mitre_attack_framework_tt_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594762743.510329000
+
+[lookups/mitre_attack_framework.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594763069.813330000
+
+[savedsearches/Event_ID_4624_saved_search]
+access = read : [ * ], write : [ * ]
+export = none
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.808425000
+
+[savedsearches/Event_ID_4663_saved_search]
+access = read : [ * ], write : [ * ]
+export = none
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.811717000
+
+[savedsearches/Event_ID_4688_exe_saved_search]
+access = read : [ * ], write : [ * ]
+export = none
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.805100000
+
+[savedsearches/Event_ID_4688_saved_search]
+access = read : [ * ], write : [ * ]
+export = none
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.810066000
+
+[savedsearches/Event_ID_5140_saved_search]
+access = read : [ * ], write : [ * ]
+export = none
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.868915000
+
+[savedsearches/Event_ID_5156_saved_search]
+access = read : [ * ], write : [ * ]
+export = none
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.912556000
+
+[savedsearches/Event_ID_7045_saved_search]
+access = read : [ * ], write : [ * ]
+export = none
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.910875000
+
+[panels/Show_Hide_panels]
+owner = admin
+version = 7.3.5
+modtime = 1595094727.572290000
+
+[views/six_ioc_event_ids]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596051272.553920000
+
+[views/mitre_attack_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599671477.213666000
+
+[lookups/requirements.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 8.2.2
+modtime = 1629913681.683376000
+
+[macros/powershell]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596814890.737670000
+
+[views/about_clone]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596030310.045087000
+
+[views/access_anomalies]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599500967.488295000
+
+[views/example1]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596030334.507990000
+
+[views/old_executive_summary]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596030344.084651000
+
+[views/sysmon_network_connections]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599325270.579673000
+
+[views/sysmon_network_overview]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596940638.834432000
+
+[views/windows_events_security__success_failed_logons]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596030366.047503000
+
+[views/windows_events_security_logon_types]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596030375.400203000
+
+[panels/incident_viz]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596030595.932582000
+
+[views/jarvis]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = admin
+version = 8.2.2
+modtime = 1630010669.136747000
+
+[lookups/analyst_annotations.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596478223.861010000
+
+[datamodels/alertsignature]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597082773.229396000
+
+[models/alertsignature]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597082773.238078000
+
+[datamodels/Arc_Event_Signatures]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 7.3.5
+modtime = 1596581257.733749000
+
+[models/Arc_Event_Signatures]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 7.3.5
+modtime = 1596581257.748455000
+
+[datamodels/Sysmon]
+access = write : [ * ]
+export = none
+owner = admin
+version = 8.2.2
+modtime = 1629577601.892352000
+
+[models/Sysmon]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599427508.567636000
+
+[datamodels/Powershell]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596651483.109138000
+
+[models/Powershell]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596651483.132029000
+
+[views/windows_events_summary_arc]
+owner = admin
+version = 7.3.5
+modtime = 1603219341.358549000
+
+[views/audit_events_arc]
+owner = admin
+version = 7.3.5
+modtime = 1603219549.843688000
+
+[views/users_and_groups_arc]
+owner = admin
+version = 7.3.5
+modtime = 1597171313.741741000
+
+[views/interesting_events_arc]
+owner = admin
+version = 7.3.5
+modtime = 1603220056.607173000
+
+[views/processes_arc]
+owner = admin
+version = 7.3.5
+modtime = 1603220432.984986000
+
+[views/event_sources_arc]
+owner = admin
+version = 7.3.5
+modtime = 1597171449.848499000
+
+[views/xml_arc]
+owner = admin
+version = 7.3.5
+modtime = 1597174089.349998000
+
+[lookups/arc_windows_interesting_events.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597173389.133701000
+
+[lookups/arc_windows_interesting_processes.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597173395.889771000
+
+[lookups/arc_xml_event_types.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597173404.712464000
+
+[lookups/jarvis_results.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597173411.269929000
+
+[transforms/arc_windows_interesting_events_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597173869.746440000
+
+[transforms/arc_windows_interesting_processes_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597173880.360349000
+
+[transforms/arc_xml_event_types_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597173889.930804000
+
+[transforms/processlookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597176185.161582000
+
+[transforms/xml_raw_data_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597176195.385765000
+
+[eventtypes/arc_bro_conn]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1598370223.205418000
+
+[tags/eventtype%3Darc_bro_conn]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1598370223.281446000
+
+[eventtypes/arc_bro_dns]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599243789.237073000
+
+[tags/eventtype%3Darc_bro_dns]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599243789.393429000
+
+[lookups/network_map.csv]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1598908784.832574000
+
+[views/arc_network_map]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1602714683.164341000
+
+[lookups/network_map2.csv]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1598918519.529903000
+
+[eventtypes/arc_bro_dhcp]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599259809.542473000
+
+[tags/eventtype%3Darc_bro_dhcp]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599259809.566997000
+
+[eventtypes/arc_bro_files]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599259817.314668000
+
+[eventtypes/arc_bro_ftp]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599259824.600815000
+
+[eventtypes/arc_bro_http]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599259831.049071000
+
+[tags/eventtype%3Darc_bro_http]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599259831.080213000
+
+[eventtypes/arc_bro_notice]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599259837.596736000
+
+[tags/eventtype%3Darc_bro_notice]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599259837.625913000
+
+[eventtypes/arc_bro_smb]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599259844.945975000
+
+[eventtypes/arc_bro_smtp]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599260012.883164000
+
+[tags/eventtype%3Darc_bro_smtp]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599260012.967910000
+
+[eventtypes/arc_bro_software]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599259859.145590000
+
+[eventtypes/arc_bro_ssh]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599259873.285263000
+
+[eventtypes/arc_bro_ssl]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599259879.669972000
+
+[eventtypes/arc_bro_x509]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599259887.680020000
+
+[props/Powershell%3AScriptExecutionSummary/EXTRACT-Identity%2CInvocationLine%2CTerminatingError%2CErrorCount]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599326404.973935000
+
+[views/tstats_sysmon_network_overview]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599342204.949126000
+
+[views/tstats_sysmon_network_connections]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599410433.477742000
+
+[views/tstats_process_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599406342.966847000
+
+[views/tstats_sysmon_overview]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599499560.523908000
+
+[views/tstats_sysmon_process_watch]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599412002.458610000
+
+[views/tstats_sysmon_registry_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599412406.837682000
+
+[views/tstats_sysmon_file_creation_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599413072.769008000
+
+[views/tstats_zeek_conn]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599423794.444919000
+
+[views/tstats_zeek_dns]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599678916.182727000
+
+[views/tstats_zeek_http]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599932418.490726000
+
+[views/tstats_windows_events_summary]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599677142.841185000
+
+[datamodels/windows_events]
+access = write : [ * ]
+export = system
+owner = admin
+version = 8.2.2
+modtime = 1629577608.405357000
+
+[models/windows_events]
+access = write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599672697.401370000
+
+[macros/win_event_sources]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599510558.565481000
+
+[views/tstats_overview]
+owner = admin
+version = 7.3.5
+modtime = 1599517842.366067000
+
+[views/tstats_intel_string_search]
+owner = admin
+version = 7.3.5
+modtime = 1603384583.906814000
+
+[lookups/ja3-hashes.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599750842.617334000
+
+[lookups/ja3-user_agents.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599750850.799682000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fimport%2Fbro%2Fbro-KTrl0T0s]
+owner = admin
+version = 7.3.5
+modtime = 1599751562.037546000
+
+[props/_json/FIELDALIAS-_json]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599753265.297590000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fimport%2Fbro%2Fbro2]
+owner = admin
+version = 7.3.5
+modtime = 1599754650.599394000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fimport%2Fbro%2Fbro3]
+owner = admin
+version = 7.3.5
+modtime = 1599760204.841430000
+
+[views/zeek_notice]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599836917.815300000
+
+[props/bro%3Assl%3Ajson/LOOKUP-ja3-user-agent]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1600116183.228963000
+
+[props/%28%3F%3A%3A%29%7B0%7Dbro%28_%7C%3A%29%2A/FIELDALIAS-bro%20extraction]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599839238.518202000
+
+[props/stream%28_%7C%3A%29%2A/FIELDALIAS-Stream]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599839247.083351000
+
+[views/computer_overview]
+owner = admin
+version = 7.3.5
+modtime = 1603217052.823282000
+
+[views/tstats_ssl_and_x509]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599921052.192614000
+
+[views/tstats_zeek_conn_stats]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = admin
+version = 8.2.2
+modtime = 1629583522.362440000
+
+[savedsearches/tstats%20zeek%20conn%20stats%20dest_ip]
+access = write : [ * ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911951.032820000
+
+[savedsearches/tstats%20zeek%20conn%20stats%20dest_port]
+access = write : [ * ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911951.035378000
+
+[savedsearches/tstats%20zeek%20conn%20stats%20src_ip]
+access = write : [ * ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911951.129624000
+
+[savedsearches/tstats%20zeek%20conn%20stats%20src_port]
+access = write : [ * ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911951.127951000
+
+[views/tstats_zeek_conn_stats_by_ip]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1600036136.371963000
+
+[views/tstats_zeek_conn_stats_by_destination_ip]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1600013854.927379000
+
+[savedsearches/tstats%20zeek%20conn%20stats%20query]
+access = write : [ * ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911951.094449000
+
+[macros/network_traffic]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1600035087.283694000
+
+[savedsearches/tstats%20zeek%20conn%20stats%20ja3]
+access = write : [ * ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911951.039536000
+
+[views/computer_drilldown]
+owner = admin
+version = 7.3.5
+modtime = 1600094651.855546000
+
+[views/user_drilldown]
+owner = admin
+version = 7.3.5
+modtime = 1600094726.115745000
+
+[views/file_create_drilldown]
+owner = admin
+version = 7.3.5
+modtime = 1600094777.143944000
+
+[views/network_conection_drilldown]
+owner = admin
+version = 7.3.5
+modtime = 1600094842.300877000
+
+[views/pipe_name_drilldown]
+owner = admin
+version = 7.3.5
+modtime = 1600094917.065891000
+
+[views/parentprocess_guid_drilldown]
+owner = admin
+version = 7.3.5
+modtime = 1600094998.281906000
+
+[views/process_guid_drilldown]
+owner = admin
+version = 7.3.5
+modtime = 1600095039.702430000
+
+[lookups/Frothly.csv]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1603115091.577025000
+
+[savedsearches/Crtitcal%20Process%20Clone]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.802083000
+
+[savedsearches/%5BT0000%5D%20Connections%20from%20Uncommon%20Locations]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.908729000
+
+[savedsearches/%5BT0000%5D%20Console%20History]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.947385000
+
+[savedsearches/%5BT0000%5D%20Suspicious%20filename%20used]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.983856000
+
+[savedsearches/%5BT0000%5D%20Remotely%20Query%20Login%20Sessions%20-%20Network]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.985556000
+
+[savedsearches/%5BT0000%5D%20Named%20Pipes%20-%20CobaltStrike]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.988263000
+
+[savedsearches/%5BT0000%5D%20Named%20Pipes]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.989945000
+
+[savedsearches/%5BT0000%5D%20Remotely%20Query%20Login%20Sessions%20-%20Process]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911975.991579000
+
+[savedsearches/%5BT1002%5D%20Data%20Compressed]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911976.037000000
+
+[savedsearches/%5BT1003%5D%20Credential%20Dumping%20-%20Process]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911976.072511000
+
+[savedsearches/%5BT1002%5D%20Data%20Compressed%20-%20Files]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911976.075133000
+
+[savedsearches/%5BT1003%5D%20Credential%20Dumping%20-%20Registry]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911976.079027000
+
+[savedsearches/%5BT1003%5D%20Credential%20Dumping%20-%20Process%20Access]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911976.081922000
+
+[savedsearches/%5BT1003%5D%20Credential%20Dumping%20-%20Registry%20Save]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911976.084777000
+
+[savedsearches/%5BT1003%5D%20Credential%20Dumping%20ImageLoad]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911976.139352000
+
+[views/jarvis2]
+owner = splunk
+version = 8.2.2
+modtime = 1630006412.842610000
+
+[macros/jarvis_index]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1630005749.973346000
+
+[views/mitre_attack_coverage]
+owner = splunk
+version = 8.2.2
+modtime = 1629939514.362015000
+
+[views/mitre_attack_overview_th]
+owner = splunk
+version = 8.2.2
+modtime = 1630010995.235627000
+
+[views/dns_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007166.188115000
+
+[views/file_access_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007266.220523000
+
+[views/file_created_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007302.265886000
+
+[views/process_access_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007347.852588000
+
+[views/remote_thread_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007382.543985000
+
+[views/registry_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007412.567534000
+
+[views/image_load_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007444.348832000
+
+[views/pipe_created_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007524.104177000
+
+[views/wmi_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007555.265715000
+
+[indexes/network]
+owner = splunk
+version = 8.2.2
+modtime = 1630013860.975151000
+
+[inputs/monitor%3A%2F%2F%2Fhome%2Fso%2FDesktop%2Fbro-572]
+owner = splunk
+version = 8.2.2
+modtime = 1630013875.554696000

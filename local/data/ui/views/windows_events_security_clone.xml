@@ -1,0 +1,180 @@
+<form theme="dark">
+  <label>Windows Events Security Logon Types</label>
+  <fieldset submitButton="false">
+    <input type="time" token="field1">
+      <label></label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Login type 2 Logon via console by Account name</title>
+      <table>
+        <search>
+          <query>|tstats count from datamodel=event_id.wineventlog_security where wineventlog_security.Logon_Type=2 by wineventlog_security.Account_Name | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Login type 3 Network Logon by Account name</title>
+      <table>
+        <search>
+          <query>|tstats count from datamodel=event_id.wineventlog_security where wineventlog_security.Logon_Type=3 by wineventlog_security.Account_Name | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Login type 4 Logon via console by Batch Logon</title>
+      <table>
+        <search>
+          <query>|tstats count from datamodel=event_id.wineventlog_security where wineventlog_security.Logon_Type=4 by wineventlog_security.Account_Name | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Login type 5 Logon via console by Windows Service Logon</title>
+      <table>
+        <search>
+          <query>|tstats count from datamodel=event_id.wineventlog_security where wineventlog_security.Logon_Type=5 by wineventlog_security.Account_Name | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Logon type 7</title>
+      <table>
+        <search>
+          <query>|tstats count from datamodel=event_id.wineventlog_security where wineventlog_security.Logon_Type=7 by wineventlog_security.Account_Name | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Login type 8  Network Logon sending creds by Account name</title>
+      <table>
+        <search>
+          <query>|tstats count from datamodel=event_id.wineventlog_security where wineventlog_security.Logon_Type=8 by wineventlog_security.Account_Name | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Login type 9 Different Creds used than logged on user by Account name</title>
+      <table>
+        <search>
+          <query>|tstats count from datamodel=event_id.wineventlog_security where wineventlog_security.Logon_Type=9 by wineventlog_security.Account_Name | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Login type 10 Remote Interactive logon by Account name</title>
+      <table>
+        <search>
+          <query>|tstats count from datamodel=event_id.wineventlog_security where wineventlog_security.Logon_Type=10 by wineventlog_security.Account_Name | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Logon 11 cached credentials used to login</title>
+      <table>
+        <search>
+          <query>|tstats count from datamodel=event_id.wineventlog_security where wineventlog_security.Logon_Type=11 by wineventlog_security.Account_Name | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Login type 12 Cached remote interactive sim to 10 by Account name</title>
+      <table>
+        <search>
+          <query>|tstats count from datamodel=event_id.wineventlog_security where wineventlog_security.Logon_Type=12 by wineventlog_security.Account_Name | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Login type13 Cached unlocked sim to 7 by Account name</title>
+      <table>
+        <search>
+          <query>|tstats count from datamodel=event_id.wineventlog_security where wineventlog_security.Logon_Type=13 by wineventlog_security.Account_Name | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>

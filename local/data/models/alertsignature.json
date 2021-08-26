@@ -1,0 +1,279 @@
+{
+    "modelName": "alertsignature",
+    "displayName": "suricata",
+    "description": "",
+    "objectSummary": {
+        "Event-Based": 0,
+        "Transaction-Based": 0,
+        "Search-Based": 1
+    },
+    "objects": [
+        {
+            "objectName": "alertsignature",
+            "displayName": "alert.signature",
+            "parentName": "BaseSearch",
+            "comment": "",
+            "fields": [
+                {
+                    "fieldName": "_time",
+                    "owner": "alertsignature",
+                    "type": "timestamp",
+                    "fieldSearch": "_time=*",
+                    "required": true,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "_time",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "action",
+                    "owner": "alertsignature",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "action",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "alert.action",
+                    "owner": "alertsignature",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "alert.action",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "alert.category",
+                    "owner": "alertsignature",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "alert.category",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "alert.gid",
+                    "owner": "alertsignature",
+                    "type": "number",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "alert.gid",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "alert.rev",
+                    "owner": "alertsignature",
+                    "type": "number",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "alert.rev",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "alert.severity",
+                    "owner": "alertsignature",
+                    "type": "number",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "alert.severity",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "alert.signature",
+                    "owner": "alertsignature",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "alert.signature",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "alert.signature_id",
+                    "owner": "alertsignature",
+                    "type": "number",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "alert.signature_id",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "category",
+                    "owner": "alertsignature",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "category",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "command",
+                    "owner": "alertsignature",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "command",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "dest_ip",
+                    "owner": "alertsignature",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "dest_ip",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "dest_port",
+                    "owner": "alertsignature",
+                    "type": "number",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "dest_port",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "detect_alert",
+                    "owner": "alertsignature",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "detect_alert",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "event_type",
+                    "owner": "alertsignature",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "event_type",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "file_size",
+                    "owner": "alertsignature",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "file_size",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "file_state",
+                    "owner": "alertsignature",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "file_state",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "file_stored",
+                    "owner": "alertsignature",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "file_stored",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "fileinfo.filename",
+                    "owner": "alertsignature",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "fileinfo.filename",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "filename",
+                    "owner": "alertsignature",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "filename",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "src_ip",
+                    "owner": "alertsignature",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "src_ip",
+                    "comment": ""
+                }
+            ],
+            "calculations": [],
+            "constraints": [],
+            "lineage": "alertsignature",
+            "baseSearch": "index=\"botsv1\" sourcetype=\"suricata\""
+        }
+    ],
+    "objectNameList": [
+        "alertsignature"
+    ]
+}

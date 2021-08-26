@@ -1,0 +1,2 @@
+"_time",category,"alert.signature","src_ip","dest_ip"
+"1470865073.842411","Detection of a Network Scan","ET WEB_SERVER IIS 8.3 Filename With Wildcard (Possible File/Dir Bruteforce)","40.80.148.42","192.168.250.70"

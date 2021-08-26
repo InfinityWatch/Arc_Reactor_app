@@ -1,0 +1,236 @@
+<form theme="dark">
+  <label>Network Map</label>
+  <fieldset submitButton="false"></fieldset>
+  <row>
+    <panel>
+      <input type="checkbox" token="network-diagram-viz.network-diagram-viz1" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Network Diagram Site 1</choice>
+        <delimiter> </delimiter>
+        <initialValue>1</initialValue>
+      </input>
+      <input type="checkbox" token="network-diagram-viz.network-diagram-viz2" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Network Diagram Site 2</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="network-diagram-viz.network-diagram-viz3" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Network Diagram Frothly</choice>
+        <delimiter> </delimiter>
+      </input>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$network-diagram-viz.network-diagram-viz1$">
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <title>Network map site 1</title>
+        <search>
+          <query>| inputlookup network_map.csv
+                  | eval type=if(like(value,"laptop%"), "laptop", type)
+                  | eval type=if(like(value,"printer%"), "printer", type)
+                  | eval type=if(like(value,"host%"), "desktop", type)
+                  | eval type=if(like(value,"aws%"), "aws", type)
+                  | eval from=id
+                  | eval color=case(type == "laptop" , "blue" , type == "desktop", "blue", type == "printer", "yellow", type == "server", "red")
+                  | table id to from type value color
+      
+                   |  append [ 
+                  |  makeresults 
+                  |  eval raw="from=\"192.168.7.234\", x=\"315\", y=\"-216\" ### from=\"192.168.7.3\", x=\"317\", y=\"29\" ### from=\"192.168.7.231\", x=\"-677\", y=\"-200\" ### from=\"192.168.7.106\", x=\"40\", y=\"-210\" ### from=\"192.168.7.86\", x=\"-807\", y=\"-169\" ### from=\"192.168.7.85\", x=\"-220\", y=\"-194\" ### from=\"192.168.7.84\", x=\"186\", y=\"-216\" ### from=\"192.168.7.80\", x=\"-378\", y=\"-197\" ### from=\"192.168.7.79\", x=\"-508\", y=\"-200\" ### from=\"192.168.7.71\", x=\"-100\", y=\"-208\" ### from=\"Zach\", x=\"-933\", y=\"21\" ### from=\"192.168.7.68\", x=\"348\", y=\"188\" ### from=\"192.168.7.54\", x=\"471\", y=\"188\" ### from=\"192.168.7.51\", x=\"668\", y=\"-141\" ### from=\"192.168.7.50\", x=\"507\", y=\"-131\" ### from=\"192.168.7.49\", x=\"76\", y=\"187\" ### from=\"192.168.7.37\", x=\"-795\", y=\"80\" ### from=\"192.168.7.36\", x=\"-160\", y=\"196\" ### from=\"192.168.7.33\", x=\"-683\", y=\"117\" ### from=\"192.168.7.29\", x=\"-781\", y=\"209\" ### from=\"192.168.7.28\", x=\"-27\", y=\"191\" ### from=\"192.168.7.24\", x=\"-810\", y=\"-72\" ### from=\"192.168.7.23\", x=\"191\", y=\"183\" ### from=\"192.168.7.20\", x=\"-571\", y=\"208\" ### from=\"192.168.7.16\", x=\"-275\", y=\"200\" ### from=\"192.168.7.15\", x=\"-418\", y=\"196\" ### from=\"192.168.7.10\", x=\"610\", y=\"183\" ### from=\"192.168.7.2\", x=\"495\", y=\"12\" ### from=\"192.168.7.1\", x=\"727\", y=\"0\""
+                    |  makemv delim="###" raw 
+                    |  mvexpand raw 
+                     |  rename raw  as  _raw 
+                     |  extract 
+                     |  table from, x, y]</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="height">660</option>
+        <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.canZoom">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+        <option name="network-diagram-viz.network-diagram-viz.draggableNodes">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$network-diagram-viz.network-diagram-viz2$">
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <title>Network map site 2</title>
+        <search>
+          <query>| inputlookup network_map2.csv
+                  | eval type=if(like(value,"laptop%"), "laptop", type)
+                  | eval type=if(like(value,"printer%"), "printer", type)
+                  | eval type=if(like(value,"host%"), "desktop", type)
+                  | eval type=if(like(value,"aws%"), "aws", type)
+                  | eval from=id
+                  | eval color=case(type == "laptop" , "blue" , type == "desktop", "blue", type == "printer", "yellow", type == "server", "red")
+      
+                  |  append [ 
+                  |  makeresults 
+                  |  eval raw="from=\"192.168.7.85\", x=\"-433\", y=\"-94\" ### from=\"192.168.7.3\", x=\"-62\", y=\"-44\" ### from=\"192.168.7.71\", x=\"-446\", y=\"-190\" ### from=\"Zach\", x=\"-546\", y=\"123\" ### from=\"192.168.7.68\", x=\"-241\", y=\"123\" ### from=\"192.168.7.54\", x=\"-113\", y=\"109\" ### from=\"192.168.7.51\", x=\"44\", y=\"-208\" ### from=\"192.168.7.50\", x=\"-71\", y=\"-204\" ### from=\"192.168.7.20\", x=\"-577\", y=\"-33\" ### from=\"192.168.7.16\", x=\"-405\", y=\"16\" ### from=\"192.168.7.15\", x=\"-409\", y=\"136\" ### from=\"192.168.7.10\", x=\"-227\", y=\"-214\" ### from=\"192.168.7.2\", x=\"107\", y=\"-46\" ### from=\"192.168.7.1\", x=\"296\", y=\"-41\""
+                  |  makemv delim="###" raw 
+                  |  mvexpand raw 
+                  |  rename raw  as  _raw 
+                  |  extract 
+                  |  table from, x, y]</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="height">660</option>
+        <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.canZoom">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+        <option name="network-diagram-viz.network-diagram-viz.draggableNodes">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$network-diagram-viz.network-diagram-viz3$">
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <title>Frothly Network Map</title>
+        <search>
+          <query>| inputlookup Frothly.csv
+                  | eval type=if(like(value,"laptop%"), "laptop", type)
+                  | eval type=if(like(value,"printer%"), "printer", type)
+                  | eval type=if(like(value,"host%"), "desktop", type)
+                  | eval type=if(like(value,"aws%"), "aws", type)
+                  | eval from=id
+                  | eval color=case(type == "laptop" , "blue" , type == "desktop", "blue", type == "linux", "red", type == "server", "yellow")
+                  | table id to from type value color
+      
+ |  append [ 
+ |  makeresults 
+ |  eval raw="from=\"Azure MS Cloud\", x=\"-653\", y=\"-59\" ### from=\"Internet\", x=\"-476\", y=\"-170\" ### from=\"Amazon Web Services\", x=\"-665\", y=\"-200\" ### from=\"71.39.18.125\", x=\"-293\", y=\"-166\" ### from=\"10.0.1.1\", x=\"-188\", y=\"-206\" ### from=\"10.0.2.1\", x=\"-189\", y=\"-128\" ### from=\"34.212.75.178\", x=\"-904\", y=\"-116\" ### from=\"52.42.208.228\", x=\"-1073\", y=\"-189\" ### from=\"54.71.236.238\", x=\"-1192\", y=\"-314\" ### from=\"35.166.192.148\", x=\"-833\", y=\"-332\" ### from=\"52.34.175.192\", x=\"-666\", y=\"-333\" ### from=\"52.10.218.54\", x=\"-999\", y=\"-323\" ### from=\"Office 365\", x=\"-839\", y=\"-4\" ### from=\"Server Network\", x=\"29\", y=\"-329\" ### from=\"10.0.1.200\", x=\"-137\", y=\"-391\" ### from=\"10.0.1.220\", x=\"-60\", y=\"-472\" ### from=\"10.0.1.222\", x=\"206\", y=\"-348\" ### from=\"10.0.1.101\", x=\"161\", y=\"-231\" ### from=\"10.0.1.100\", x=\"79\", y=\"-430\" ### from=\"Client Network\", x=\"42\", y=\"-56\" ### from=\"10.0.2.107\", x=\"179\", y=\"35\" ### from=\"10.0.2.109\", x=\"234\", y=\"-80\""
+ |  makemv delim="###" raw 
+ |  mvexpand raw 
+ |  rename raw  as  _raw 
+ |  extract 
+ |  table from, x, y]</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="height">660</option>
+        <option name="network-diagram-viz.network-diagram-viz.arrowLocation">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.canZoom">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.clusterBy">none</option>
+        <option name="network-diagram-viz.network-diagram-viz.defaultNodeType">circle</option>
+        <option name="network-diagram-viz.network-diagram-viz.draggableNodes">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.enablePhysics">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchy">false</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchyDirection">Top-Down</option>
+        <option name="network-diagram-viz.network-diagram-viz.hierarchySortMethod">directed</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextLocation">bottom</option>
+        <option name="network-diagram-viz.network-diagram-viz.linkTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.nodeTextSize">medium</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdgeType">dynamic</option>
+        <option name="network-diagram-viz.network-diagram-viz.smoothEdges">true</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenNode">nd_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToNode">nd_to_node_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenToolTip">nd_tooltip_token</option>
+        <option name="network-diagram-viz.network-diagram-viz.tokenValue">nd_value_token</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$network-diagram-viz.network-diagram-viz1$">
+      <table>
+        <title>Network map site 1</title>
+        <search>
+          <query>| inputlookup network_map.csv
+                  | eval type=if(like(value,"laptop%"), "laptop", type)
+                  | eval type=if(like(value,"printer%"), "printer", type)
+                  | eval type=if(like(value,"host%"), "desktop", type)
+                  | eval type=if(like(value,"aws%"), "aws", type)
+                  | eval from=id
+                  | eval color=case(type == "laptop" , "blue" , type == "desktop", "blue", type == "printer", "yellow", type == "server", "red")
+                  | table id to from type value color</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="count">100</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$network-diagram-viz.network-diagram-viz2$">
+      <table>
+        <title>Network map site 2</title>
+        <search>
+          <query>| inputlookup network_map2.csv
+                  | eval type=if(like(value,"laptop%"), "laptop", type)
+                  | eval type=if(like(value,"printer%"), "printer", type)
+                  | eval type=if(like(value,"host%"), "desktop", type)
+                  | eval type=if(like(value,"aws%"), "aws", type)
+                  | eval from=id
+                  | eval color=case(type == "laptop" , "blue" , type == "desktop", "blue", type == "printer", "yellow", type == "server", "red")
+                  | table id to from type value color</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="count">100</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$network-diagram-viz.network-diagram-viz3$">
+      <table>
+        <title>Network map site 2</title>
+        <search>
+          <query>| inputlookup Frothly.csv
+                  | eval type=if(like(value,"laptop%"), "laptop", type)
+                  | eval type=if(like(value,"printer%"), "printer", type)
+                  | eval type=if(like(value,"host%"), "desktop", type)
+                  | eval type=if(like(value,"aws%"), "aws", type)
+                  | eval from=id
+                  | eval color=case(type == "laptop" , "blue" , type == "desktop", "blue", type == "linux", "red", type == "server", "yellow")
+                  | table id to from type value color</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="count">100</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>

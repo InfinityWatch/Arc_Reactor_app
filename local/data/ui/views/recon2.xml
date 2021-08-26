@@ -1,0 +1,38 @@
+<form theme="dark">
+  <label>Recon2</label>
+  <fieldset submitButton="false">
+    <input type="time" token="field1">
+      <label></label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>passwds</title>
+      <table>
+        <title>index=botsv1 sourcetype=stream:http form_data=*username*passwd* | rex field=form_data "passwd=(?&lt;userpassword&gt;\w+)" | eval lenpword=len(userpassword) | head 10 | table userpassword lenpword</title>
+        <search>
+          <query>index=botsv1 sourcetype=stream:http form_data=*username*passwd* | rex field=form_data "passwd=(?&lt;userpassword&gt;\w+)" | eval lenpword=len(userpassword) | head 10 | table userpassword lenpword</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <title>passwords with leng of 6 characters</title>
+      <table>
+        <title>index=botsv1 sourcetype=stream:http form_data=*username*passwd* | rex field=form_data "passwd=(?&lt;userpassword&gt;\w+)" | eval lenpword=len(userpassword) | search lenpword=6 | table userpassword lenpword</title>
+        <search>
+          <query>index=botsv1 sourcetype=stream:http form_data=*username*passwd* | rex field=form_data "passwd=(?&lt;userpassword&gt;\w+)" | eval lenpword=len(userpassword) | search lenpword=6 | table userpassword lenpword</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>

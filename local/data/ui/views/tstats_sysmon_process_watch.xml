@@ -1,0 +1,52 @@
+<form theme="dark">
+  <label>Tstats Sysmon Process Watch</label>
+  <fieldset submitButton="true">
+    <input type="time" token="time">
+      <label></label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Powershell Commands</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Sysmon.sysmon where sysmon.EventID=1 sysmon.Image="C:\\Windows\\SysWOW64\\WindowsPowerShell\\v1.0\\powershell.exe" OR sysmon.Image="C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" by sysmon.CommandLine | sort - count</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>CMD Commands</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Sysmon.sysmon where sysmon.EventID=1 sysmon.Image="C:\\Windows\\System32\\cmd.exe" by sysmon.CommandLine | sort - count</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>

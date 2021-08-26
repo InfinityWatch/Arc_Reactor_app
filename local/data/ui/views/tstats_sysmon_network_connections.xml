@@ -1,0 +1,50 @@
+<form theme="dark">
+  <label>Tstats Sysmon Network Connections</label>
+  <fieldset submitButton="true">
+    <input type="time" token="timsel">
+      <label></label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" token="imgsel">
+      <label>Image</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="destinations">
+      <label>Destinations</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="portsel">
+      <label>Ports</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="protosel">
+      <label>Protocols</label>
+      <default>*</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title></title>
+      <table>
+        <title>Couldn't get eval Destination to work</title>
+        <search>
+          <query>| tstats count from datamodel=Sysmon.sysmon where sysmon.EventID=3 sysmon.Image="$imgsel$"  sysmon.Protocol="$protosel$" sysmon.DestinationPort="$portsel$" by sysmon.Image  sysmon.Protocol sysmon.DestinationPort | eval Destination=coalesce(sysmon.DestinationHostname, sysmon.DestinationIp) | table sysmon.Image Destination sysmon.Protocol sysmon.DestinationPort count</query>
+          <earliest>$timsel.earliest$</earliest>
+          <latest>$timsel.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>

@@ -1,0 +1,42 @@
+
+/* Cell Highlighting */
+
+/* 
+#highlight td {
+    background-color: #c1ffc3 !important;
+}
+*/
+
+#highlight td.range-low {
+    color: #C0D9D9;
+}
+
+#highlight td.range-elevated {
+    background-color: #ffc57a !important;
+    font-weight: bold;
+}
+
+#highlight td.range-severe {
+    background-color: #d59392 !important;
+    font-weight: bold;
+}
+
+/* Dark Theme */
+
+#highlight td.dark {
+    color: #F2F4F5;
+}
+
+#highlight td.range-low.dark {
+    color: #006D9C;
+}
+
+#highlight td.range-elevated.dark {
+    background-color: #EC9960 !important;
+    font-weight: bold;
+}
+
+#highlight td.range-severe.dark {
+    background-color: #AF575A !important;
+    font-weight: bold;
+}

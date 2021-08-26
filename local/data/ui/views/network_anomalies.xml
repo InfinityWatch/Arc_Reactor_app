@@ -1,0 +1,276 @@
+<form theme="dark">
+  <label>Network Anomalies</label>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="time" token="field1">
+      <label>Time</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Spike in # of Destinations (Last Day)</title>
+      <single>
+        <search>
+          <query>| tstats summariesonly=t allow_old_summaries=t dc(All_Traffic.dest_ip) as count from datamodel=Network_Data by All_Traffic.src_ip _time span=1d 
+| eval maxtime=now() 
+| stats count as num_data_samples max(eval(if(_time &gt;= relative_time(maxtime, "-1d@d"), 'count', null))) as "count" avg(eval(if(_time&lt;relative_time(maxtime,"-1d@d"),'count',null))) as avg stdev(eval(if(_time&lt;relative_time(maxtime,"-1d@d"),'count',null))) as stdev by "All_Traffic.src_ip" 
+| eval lowerBound=(avg-stdev*2), upperBound=(avg+stdev*2) 
+| eval isOutlier=if(('count' &gt; upperBound) AND num_data_samples &gt;=7, 1, 0) 
+| where isOutlier=1 
+| stats count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">100</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Suspected Network Scanning</title>
+      <single>
+        <search>
+          <query>
+            | tstats summariesonly=t allow_old_summaries=t dc(All_Traffic.dest_port) as num_dest_port dc(All_Traffic.dest_ip) as num_dest_ip from datamodel=Network_Data by All_Traffic.src_ip | rename "All_Traffic.*" as "*" | where num_dest_port &gt; 100 OR num_dest_ip &gt; 100 | stats count
+          </query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">100</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0xf8be34","0xdc4e41"]</option>
+        <option name="rangeValues">[5]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Suspected Host Communication to C2</title>
+      <single>
+        <search>
+          <query>
+            `network`| streamstats current=f last(_time) as next_time by dest | eval gap = next_time - _time | stats count, avg(gap) as avg_gap, var(gap) as var_gap by dest src | search avg_gap&lt;50 count&gt;500 | stats dc(src)
+          </query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">100</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0xf8be34","0xdc4e41"]</option>
+        <option name="rangeValues">[0,5]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| tstats dc(All_Traffic.dest_ip) as count from datamodel=Network_Data by All_Traffic.src_ip _time span=1d | rename "All_Traffic.*" as "*" | eval maxtime=now() | stats count as num_data_samples max(eval(if(_time &gt;= relative_time(maxtime, "-1d@d"), 'count', null))) as "count" avg(eval(if(_time&lt;relative_time(maxtime,"-1d@d"),'count',null))) as avg stdev(eval(if(_time&lt;relative_time(maxtime,"-1d@d"),'count',null))) as stdev by "src_ip" | eval lowerBound=(avg-stdev*2), upper_bound=(avg+stdev*2) | eval isOutlier=if(('count' &gt; upper_bound) AND num_data_samples &gt;=7, 1, 0) | where isOutlier=1 | table src_ip, count, avg, upper_bound</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">7</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">false</option>
+        <format type="number" field="upper_bound">
+          <option name="precision">1</option>
+        </format>
+        <format type="number" field="avg">
+          <option name="precision">1</option>
+        </format>
+        <format type="number" field="count">
+          <option name="precision">0</option>
+        </format>
+        <drilldown>
+          <link target="_blank">/app/InfoSec_App_for_Splunk/asset_investigation?drilldown_host=$click.value$</link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <search>
+          <query>| tstats dc(All_Traffic.dest_port) as num_dest_port dc(All_Traffic.dest_ip) as num_dest_ip from datamodel=Network_Data by All_Traffic.src_ip | rename "All_Traffic.*" as "*" | where num_dest_port &gt; 100 OR num_dest_ip &gt; 100 |  sort - num_dest_ip</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">7</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">false</option>
+        <format type="color" field="num_dest_port">
+          <colorPalette type="minMidMax" maxColor="#DC4E41" minColor="#FFFFFF"></colorPalette>
+          <scale type="minMidMax"></scale>
+        </format>
+        <format type="color" field="num_dest_ip">
+          <colorPalette type="minMidMax" maxColor="#DC4E41" minColor="#FFFFFF"></colorPalette>
+          <scale type="minMidMax"></scale>
+        </format>
+        <drilldown>
+          <link target="_blank">/app/InfoSec_App_for_Splunk/asset_investigation?drilldown_host=$click.value$</link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <search>
+          <query>
+            `network` | streamstats current=f last(_time) as next_time by dest | eval gap = next_time - _time | stats count, avg(gap) as avg_gap, var(gap) as var_gap by dest src | search avg_gap&lt;50 count&gt;500 | sort avg_gap
+          </query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">7</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">false</option>
+        <format type="color" field="dest">
+          <colorPalette type="sharedList"></colorPalette>
+          <scale type="sharedCategory"></scale>
+        </format>
+        <format type="number" field="avg_gap"></format>
+        <format type="number" field="var_gap"></format>
+        <drilldown>
+          <link target="_blank">/app/InfoSec_App_for_Splunk/asset_investigation?drilldown_host=$click.value2$</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Hosts Communicating With the Greatest # of Destinations Over SMB</title>
+      <table>
+        <search>
+          <query>
+            | tstats summariesonly=t allow_old_summaries=t dc(All_Traffic.dest_ip) as count from datamodel=Network_Data where `network` All_Traffic.dest_port=445 OR All_Traffic.dest_port=139 by All_Traffic.src_ip | rename All_Traffic.src_ip as src | sort - count
+          </query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">5</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <format type="color" field="count">
+          <colorPalette type="minMidMax" maxColor="#DC4E41" minColor="#FFFFFF"></colorPalette>
+          <scale type="minMidMax"></scale>
+        </format>
+        <drilldown>
+          <link target="_blank">/app/InfoSec_App_for_Splunk/asset_investigation?drilldown_host=$click.value$</link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <title>Spike in DNS Traffic (Last Day)</title>
+      <table>
+        <search>
+          <query>
+            | tstats summariesonly=t allow_old_summaries=t sum(All_Traffic.bytes_out) as bytes_out from datamodel=Network_Data where `network` All_Traffic.dest_port=53 by All_Traffic.src_ip _time span=1d | rename All_Traffic."*" as "*" | eventstats max(_time) as maxtime avg(bytes_out) as avg_bytes_out stdev(bytes_out) as stdev_bytes_out | eventstats count as events avg(eval(if(_time &lt; relative_time(maxtime, "@d"),bytes_out,null))) as per_source_avg_bytes_out stdev(eval(if(_time &lt; relative_time(maxtime, "@d"),bytes_out,null))) as per_source_stdev_bytes_out by src_ip | where events &gt;=4 AND bytes_out &gt; avg_bytes_out + 3 * stdev_bytes_out AND bytes_out &gt; per_source_avg_bytes_out + 3 * per_source_stdev_bytes_out AND _time &gt;= relative_time(maxtime, "@d") | eval stdev_from_org_avg = round(abs(bytes_out - avg_bytes_out) / stdev_bytes_out,2), stdev_from_host_avg = round(abs(bytes_out - per_source_avg_bytes_out) / per_source_stdev_bytes_out,2) | table src_ip, bytes_out, avg_bytes_out, stdev_from_host_avg, events
+          </query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">5</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">false</option>
+        <format type="number" field="bytes_out">
+          <option name="precision">0</option>
+        </format>
+        <format type="number" field="bytes_out">
+          <option name="precision">0</option>
+        </format>
+        <format type="number" field="avg_bytes_out">
+          <option name="precision">0</option>
+        </format>
+        <format type="number" field="bytes_out">
+          <option name="precision">0</option>
+        </format>
+        <format type="number" field="bytes_out">
+          <option name="precision">0</option>
+        </format>
+        <format type="number" field="avg_bytes_out">
+          <option name="precision">0</option>
+        </format>
+        <format type="number" field="stdev_from_host_avg">
+          <option name="precision">0</option>
+        </format>
+        <drilldown>
+          <link target="_blank">/app/InfoSec_App_for_Splunk/asset_investigation?drilldown_host=$click.value$</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+</form>

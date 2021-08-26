@@ -1,0 +1,21 @@
+<dashboard>
+  <label>4672 Account Login Superuser By Account Name</label>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>|tstats count from datamodel=event_id.wineventlog_security where wineventlog_security.EventCode=4672 by wineventlog_security.Account_Name | sort + count</query>
+          <earliest>0</earliest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">100</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>

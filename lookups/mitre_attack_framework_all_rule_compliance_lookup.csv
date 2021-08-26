@@ -1,0 +1,45 @@
+"technique_name","enabled_percentage","enabled_count",count
+"Accessibility Features",0,0,3
+"Account Discovery",0,0,2
+"AppInit DLLs",0,0,1
+"Application Shimming",0,0,3
+"Authentication Package",0,0,1
+"Change Default File Association",0,0,3
+"Command-Line Interface",0,0,9
+"Commonly Used Port",0,0,14
+"Create Account",0,0,3
+"Credential Dumping",0,0,15
+"Data Staged",0,0,2
+"Disabling Security Tools",0,0,7
+"Email Collection",0,0,2
+"Exfiltration Over Alternative Protocol",0,0,3
+"Exfiltration Over Command and Control Channel",0,0,1
+"Exploitation for Privilege Escalation",0,0,1
+"Indicator Removal on Host",0,0,3
+Masquerading,0,0,2
+"Modify Existing Service",0,0,2
+"Modify Registry",0,0,2
+"New Service",0,0,3
+"Pass the Hash",0,0,1
+"Permission Groups Discovery",0,0,1
+PowerShell,0,0,6
+"Process Discovery",0,0,1
+"Remote Desktop Protocol",0,0,3
+"Remote File Copy",0,0,1
+"Remote Services",0,0,1
+Rundll32,0,0,1
+"Scheduled Task",0,0,5
+Scripting,0,0,7
+"Signed Binary Proxy Execution",0,0,3
+"Spearphishing Attachment",0,0,2
+"Spearphishing Link",0,0,1
+"Standard Non-Application Layer Protocol",0,0,1
+"System Information Discovery",0,0,3
+"System Network Configuration Discovery",0,0,1
+"System Owner/User Discovery",0,0,1
+"System Service Discovery",0,0,1
+"Third-party Software",0,0,1
+"Valid Accounts",0,0,9
+"Web Service",0,0,1
+"Windows Management Instrumentation",0,0,8
+"Windows Management Instrumentation Event Subscription",0,0,3

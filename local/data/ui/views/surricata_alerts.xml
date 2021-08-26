@@ -1,0 +1,226 @@
+<form theme="dark">
+  <label>Suricata</label>
+  <search id="basesearch">
+    <query>`suricata` dest_ip="$dest_ip_t$" src_ip="$src_ip_t$" alert.signature="$alert.signature_t$" category="$category_t$" | fields category alert.signature src_ip dest_ip</query>
+    <earliest>$field1.earliest$</earliest>
+    <latest>$field1.latest$</latest>
+    <sampleRatio>1</sampleRatio>
+  </search>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="time" token="field1">
+      <label>Time</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="multiselect" token="category_t" searchWhenChanged="true">
+      <label>Category</label>
+      <delimiter> </delimiter>
+      <fieldForLabel>category</fieldForLabel>
+      <fieldForValue>category</fieldForValue>
+      <default>*</default>
+      <initialValue>*</initialValue>
+      <choice value="*">All</choice>
+      <search id="basesearch1">
+        <query>`suricata` | stats count by category</query>
+      </search>
+    </input>
+    <input type="multiselect" token="alert.signature_t" searchWhenChanged="true">
+      <label>Alert</label>
+      <delimiter> </delimiter>
+      <fieldForLabel>alert.signature</fieldForLabel>
+      <fieldForValue>alert.signature</fieldForValue>
+      <default>*</default>
+      <initialValue>*</initialValue>
+      <choice value="*">All</choice>
+      <search id="basesearch2">
+        <query>`suricata` | stats count by alert.signature</query>
+      </search>
+    </input>
+    <input type="multiselect" token="src_ip_t" searchWhenChanged="true">
+      <label>Source IP</label>
+      <delimiter> </delimiter>
+      <fieldForLabel>src_ip</fieldForLabel>
+      <fieldForValue>src_ip</fieldForValue>
+      <default>*</default>
+      <initialValue>*</initialValue>
+      <choice value="*">All</choice>
+      <search id="basesearch3">
+        <query>`suricata` | stats count by src_ip</query>
+      </search>
+    </input>
+    <input type="multiselect" token="dest_ip_t" searchWhenChanged="true">
+      <label>Destination IP</label>
+      <delimiter> </delimiter>
+      <fieldForLabel>dest_ip</fieldForLabel>
+      <fieldForValue>dest_ip</fieldForValue>
+      <default>*</default>
+      <initialValue>*</initialValue>
+      <choice value="*">All</choice>
+      <search id="basesearch4">
+        <query>`suricata` | stats count by dest_ip</query>
+      </search>
+    </input>
+  </fieldset>
+  <row>
+    <panel depends="$alwaysHideCSS$">
+      <html>
+        <style>
+          #panel_1{
+            width:30% !important;
+          }
+          #panel_2{
+            width:40% !important;
+          }
+          #panel_3{
+            width:15% !important;
+          }
+          #panel_4{
+            width:15% !important;
+          }
+        </style>
+      </html>
+    </panel>
+    <panel id="panel_1">
+      <title>Count by Event Category</title>
+      <table>
+        <search base="basesearch">
+          <query>| stats count by category | sort - count</query>
+        </search>
+        <option name="count">100</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel id="panel_2">
+      <title>Count by Alert</title>
+      <table>
+        <search base="basesearch">
+          <query>| stats count by alert.signature | sort - count</query>
+        </search>
+        <option name="count">15</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel id="panel_3">
+      <title>Top Alert from Source I.P.</title>
+      <table>
+        <search base="basesearch">
+          <query>| stats count by src_ip | sort -count</query>
+        </search>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel id="panel_4">
+      <title>Top Alerts to Destination I.P</title>
+      <table>
+        <search base="basesearch">
+          <query>| stats count by dest_ip | sort -count</query>
+        </search>
+        <option name="count">15</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Count by Alert</title>
+      <chart>
+        <search base="basesearch">
+          <query>| stats count by alert.signature | sort - count</query>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.abbreviation">none</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.abbreviation">none</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.abbreviation">none</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.mode">standard</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.lineWidth">2</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Count by Event Category</title>
+      <chart>
+        <search base="basesearch">
+          <query>| stats count by category | sort - count</query>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.abbreviation">none</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.abbreviation">none</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.abbreviation">none</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.mode">standard</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.lineWidth">2</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+      </chart>
+    </panel>
+  </row>
+</form>

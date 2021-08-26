@@ -1,0 +1,217 @@
+<form theme="dark">
+  <label>Recon</label>
+  <fieldset submitButton="false">
+    <input type="time" token="field1">
+      <label></label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>stats count by sourcetype</title>
+      <table>
+        <title>index=botsv1 imreallynotbatman.com | stats count by sourcetype | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc |sort - count</title>
+        <search>
+          <query>index=botsv1 imreallynotbatman.com | stats count by sourcetype | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc |sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <title>stats count by src ip</title>
+      <table>
+        <title>index=botsv1 imreallynotbatman.com | stats count by src | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc |sort - count</title>
+        <search>
+          <query>index=botsv1 imreallynotbatman.com | stats count by src | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc |sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <title>count by src with http data</title>
+      <table>
+        <title>index=botsv1 imreallynotbatman.com sourcetype=stream:http | stats count by src | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc |sort - count</title>
+        <search>
+          <query>index=botsv1 imreallynotbatman.com sourcetype=stream:http | stats count by src | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc |sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Surricata events related to 40.80.148.42</title>
+      <table>
+        <title>index=botsv1 imreallynotbatman.com src=40.80.148.42 sourcetype=suricata | stats count by signature | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc | sort - count</title>
+        <search>
+          <query>index=botsv1 imreallynotbatman.com sourcetype=suricata src=40.80.148.42 | stats count by signature | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Surricata events related to 23.22.63.114</title>
+      <table>
+        <title>index=botsv1 imreallynotbatman.com sourcetype=suricata src=23.22.63.114 | stats count by signature | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc | sort - count</title>
+        <search>
+          <query>index=botsv1 imreallynotbatman.com sourcetype=suricata src=23.22.63.114 | stats count by signature | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc | sort - count</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Surricata leads to looking at SRC IP of 40.80.148.42. now look at src_headers</title>
+      <table>
+        <title>index=botsv1 src=40.80.148.42 sourcetype=stream:http | stats count by src_headers</title>
+        <search>
+          <query>index=botsv1 src=40.80.148.42 sourcetype=stream:http | stats count by src_headers | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc |sort - count | head 2</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Also looking at http_user_agents</title>
+      <table>
+        <title>index=botsv1 src=40.80.148.42 sourcetype=stream:http | stats count by http_user_agent</title>
+        <search>
+          <query>index=botsv1 src=40.80.148.42 sourcetype=stream:http | stats count by http_user_agent | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc |sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>src=40.80.148.42 is probly acunetix web server. looking at traffic with a src of 40.80.148.42</title>
+      <table>
+        <title>index=botsv1 src=40.80.148.42 sourcetype=stream:http | stats count by dest | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc | sort - count</title>
+        <search>
+          <query>index=botsv1 src=40.80.148.42 sourcetype=stream:http | stats count by dest | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>look at uri's with a dest of the web server (192.168.250.70)</title>
+      <table>
+        <title>index=botsv1 dest=192.168.250.70 sourcetype=stream:http | stats count by uri</title>
+        <search>
+          <query>index=botsv1 dest=192.168.250.70 sourcetype=stream:http | stats count by uri | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc |sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>look at uri's with a dest of the web server (192.168.250.70) with status=200</title>
+      <table>
+        <title>status=200</title>
+        <search>
+          <query>index=botsv1 dest=192.168.250.70 sourcetype=stream:http status=200 | stats count by uri |sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Destination web server by method</title>
+      <table>
+        <title>index=botsv1 sourcetype=stream:http dest="192.168.250.70" | stats count by http_method | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc |sort - count</title>
+        <search>
+          <query>index=botsv1 sourcetype=stream:http dest="192.168.250.70" | stats count by http_method | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc |sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Finding Top src Values with a POST Method to the Web Server Destination</title>
+      <table>
+        <search>
+          <query>index=botsv1 sourcetype=stream:http dest="192.168.250.70" http_method=POST | stats count by src | eventstats sum(count) as perc | eval percentage=round(count*100/perc,2) | fields - perc |sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Looking for Passwords in the form_data in POST DATA from Web server IP</title>
+      <table>
+        <title>index=botsv1 sourcetype=stream:http dest="192.168.250.70" http_method=POST form_data=*username*passwd*  |table form_data</title>
+        <search>
+          <query>index=botsv1 sourcetype=stream:http dest="192.168.250.70" http_method=POST form_data=*username*passwd* 
+|table form_data</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>index=botsv1 sourcetype=stream:http dest="192.168.250.70" http_method=POST form_data=*username*passwd*  | stats count by src</title>
+        <search>
+          <query>index=botsv1 sourcetype=stream:http dest="192.168.250.70" http_method=POST form_data=*username*passwd* 
+| stats count by src</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>index=botsv1 sourcetype=stream:http http_method=POST  | rex field=form_data "passwd=(?&lt;userpassword&gt;\w+)"  |search userpassword=*  | reverse  | head 1  | table userpassword</title>
+        <search>
+          <query>index=botsv1 sourcetype=stream:http http_method=POST 
+| rex field=form_data "passwd=(?&lt;userpassword&gt;\w+)" 
+|search userpassword=* 
+| reverse 
+| head 1 
+| table userpassword</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>

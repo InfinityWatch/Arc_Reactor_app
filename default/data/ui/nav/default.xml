@@ -1,0 +1,59 @@
+<nav search_view="search" color="#00afc6">	
+  <view name="home" default='true' />
+  <collection label="Host">
+    <a href="windows_powershell">Windows PowerShell</a>
+    <a href="windows_sysmon">Windows Sysmon</a>
+  </collection>
+  <collection label="Network">
+    <collection label="Zeek">
+      <a href="zeek_connections">Zeek Conn</a>
+      <a href="zeek_dcerpc">Zeek DCE/RPC</a>
+      <a href="zeek_dhcp">Zeek DHCP</a>
+      <!--a href="zeek_dnp3">Zeek DNP3</a-->
+      <a href="zeek_dns">Zeek DNS</a>
+      <a href="zeek_files">Zeek Files</a>
+      <a href="zeek_ftp">Zeek FTP</a>
+      <a href="zeek_http">Zeek HTTP</a>
+      <a href="zeek_intel">Zeek Intel</a>
+      <a href="zeek_irc">Zeek IRC</a>
+      <a href="zeek_kerberos">Zeek Kerberos</a>
+      <!--a href="zeek_modbus">Zeek Modbus</a-->
+      <!--a href="zeek_mysql">Zeek MYSQL</a-->
+      <a href="zeek_ntlm">Zeek NTLM</a>
+      <a href="zeek_pe">Zeek PE</a>
+      <a href="zeek_radius">Zeek RADIUS</a>
+      <a href="zeek_rdp">Zeek RDP</a>
+      <!--a href="zeek_rfb">Zeek RFB</a-->
+      <!--a href="zeek_sip">Zeek SIP</a-->
+      <a href="zeek_smb">Zeek SMB</a>
+      <a href="zeek_smtp">Zeek SMTP</a>
+      <!--a href="zeek_snmp">Zeek SNMP</a-->
+      <a href="zeek_software">Zeek Software</a>
+      <a href="zeek_ssh">Zeek SSH</a>
+      <a href="zeek_ssl">Zeek SSL</a>
+      <a href="zeek_tunnels">Zeek Tunnels</a>
+      <a href="zeek_weird">Zeek Weird</a>
+      <a href="zeek_x509">Zeek X.509</a>
+    </collection>
+    <collection label="Suricata">
+    </collection>
+    <a href="easy_ip_search">Easy IP Search</a>
+    <a href="passive_dns">Passive DNS</a>
+  </collection>
+  <collection label="F.R.I.D.A.Y.">
+    <a href="friday_disk_usage">Disk Usage</a>
+    <a href="friday_license_usage">License Usage</a>
+    <a href="friday_metadata">Metadata</a>
+    <a href="friday_splunk_stats">Splunk Stats</a>
+    <a href="friday_user_metrics">User Metrics</a>
+  </collection>
+ <collection label="Splunk">
+  <view name="search"  label="Search"/>
+  <view name="analysis_workspace" />
+  <view name="datasets" />
+  <view name="reports" />
+  <view name="alerts" />
+  <view name="dashboards" />
+  </collection>
+ <view name="about" />
+</nav>

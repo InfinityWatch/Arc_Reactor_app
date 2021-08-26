@@ -1,0 +1,237 @@
+<dashboard theme="dark">
+  <label>Knowledge Object Inventory</label>
+  <search id="baseSearch_apps">
+    <query>| rest services/apps/local</query>
+  </search>
+  <search id="baseSearch_searches">
+    <query>| rest services/saved/searches</query>
+  </search>
+  <search id="baseSearch_lookups">
+    <query>| rest services/data/lookup-table-files</query>
+  </search>
+  <search id="baseSearch_macros">
+    <query>| rest /servicesNS/-/-/admin/macros</query>
+  </search>
+  <search id="baseSearch_eventtypes">
+    <query>| rest services/saved/eventtypes</query>
+  </search>
+  <search id="baseSearch_datamodels">
+    <query>| rest servicesNS/admin/-/data/models</query>
+  </search>
+  <row>
+    <panel>
+      <single>
+        <search base="baseSearch_apps">
+          <query>stats count</query>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="numberPrecision">0</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="linkView">search</option>
+        <option name="drilldown">none</option>
+        <option name="rangeColors">["0x6db7c6","0x6db7c6","0xd93f3c"]</option>
+        <option name="rangeValues">[0,30000]</option>
+        <option name="trendInterval">auto</option>
+        <option name="underLabel">Apps</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <search base="baseSearch_searches">
+          <query>stats count</query>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="numberPrecision">0</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="linkView">search</option>
+        <option name="drilldown">none</option>
+        <option name="rangeColors">["0x6db7c6","0x6db7c6","0xd93f3c"]</option>
+        <option name="rangeValues">[0,30000]</option>
+        <option name="trendInterval">auto</option>
+        <option name="underLabel">Saved Searches</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <search base="baseSearch_lookups">
+          <query>stats count</query>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x6db7c6","0x6db7c6","0xd93f3c"]</option>
+        <option name="rangeValues">[0,30000]</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="trendInterval">auto</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="linkView">search</option>
+        <option name="underLabel">Lookups</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <search base="baseSearch_macros">
+          <query>stats count</query>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="numberPrecision">0</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="linkView">search</option>
+        <option name="drilldown">none</option>
+        <option name="rangeColors">["0x6db7c6","0x6db7c6","0xd93f3c"]</option>
+        <option name="rangeValues">[0,30000]</option>
+        <option name="trendInterval">auto</option>
+        <option name="underLabel">Macros</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <search base="baseSearch_eventtypes">
+          <query>stats count</query>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x6db7c6","0x6db7c6","0xd93f3c"]</option>
+        <option name="rangeValues">[0,30000]</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="trendInterval">auto</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="linkView">search</option>
+        <option name="underLabel">Event Types</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <search base="baseSearch_datamodels">
+          <query>stats count</query>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="numberPrecision">0</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="linkView">search</option>
+        <option name="drilldown">none</option>
+        <option name="rangeColors">["0x6db7c6","0x6db7c6","0xd93f3c"]</option>
+        <option name="rangeValues">[0,30000]</option>
+        <option name="trendInterval">auto</option>
+        <option name="underLabel">Data Models</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Apps</title>
+        <search base="baseSearch_apps">
+          <query>table title disabled eai:acl.perms.read eai:acl.perms.write eai:acl.sharing | rename title as Title disabled AS Disabled eai:acl.perms.read AS Read eai:acl.perms.write AS Write eai:acl.sharing AS Sharing</query>
+          <earliest>-24h</earliest>
+          <latest>now</latest>
+        </search>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Saved Searches</title>
+        <search base="baseSearch_searches">
+          <query>table title eai:acl.app eai:acl.owner disabled is_scheduled cron_schedule next_scheduled_time dispatch.earliest_time eai:acl.perms.read eai:acl.perms.write eai:acl.sharing | rename title as Title eai:acl.app AS App eai:acl.owner AS Owner disabled AS Disabled is_scheduled AS Scheduled cron_schedule AS "Cron Schedule" next_scheduled_time AS "Next Scheduled Time" dispatch.earliest_time AS "Dispatch Earliest Time" eai:acl.perms.read AS Read eai:acl.perms.write AS Write eai:acl.sharing AS Sharing search AS Search tags AS Tags</query>
+          <earliest>-24h</earliest>
+          <latest>now</latest>
+        </search>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Lookups</title>
+        <search base="baseSearch_lookups">
+          <query>table title eai:acl.app eai:acl.owner disabled updated eai:acl.perms.read eai:acl.perms.write eai:acl.sharing | rename title as Title eai:acl.app AS App eai:acl.owner AS Owner disabled AS Disabled updated AS "Last Updated" eai:acl.perms.read AS Read eai:acl.perms.write AS Write  eai:acl.sharing AS Sharing</query>
+          <earliest>-24h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Macros</title>
+        <search base="baseSearch_macros">
+          <query>table title eai:acl.app eai:acl.owner disabled definition eai:acl.perms.read eai:acl.perms.write eai:acl.sharing | rename title as Title eai:acl.app AS App eai:acl.owner AS Owner disabled AS Disabled definition AS Definition eai:acl.perms.read AS Read eai:acl.perms.write AS Write eai:acl.sharing AS Sharing</query>
+          <earliest>-24h</earliest>
+          <latest>now</latest>
+        </search>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Eventtypes</title>
+        <search base="baseSearch_eventtypes">
+          <query>table title eai:acl.app eai:al.owner disabled search tags eai:acl.perms.read eai:acl.perms.write eai:acl.sharing | rename title as Title eai:acl.app AS App eai:acl.owner AS Owner disabled AS Disabled search AS Search tags AS Tags eai:acl.perms.read AS Read eai:acl.perms.write AS Write eai:acl.sharing AS Sharing</query>
+          <earliest>-24h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Data Models</title>
+        <search base="baseSearch_datamodels">
+          <query>table title eai:acl.app eai:acl.owner disabled acceleration eai:acl.perms.read eai:acl.perms.write eai:acl.sharing | replace 1 with "Enabled" 0 with "Disabled" in acceleration | rename title as Title eai:acl.app AS App eai:acl.owner AS Owner disabled AS Disabled acceleration AS Acceleration eai:acl.perms.read AS Read eai:acl.perms.write AS Write eai:acl.sharing AS Sharing</query>
+          <earliest>-24h</earliest>
+          <latest>now</latest>
+        </search>
+      </table>
+    </panel>
+  </row>
+</dashboard>

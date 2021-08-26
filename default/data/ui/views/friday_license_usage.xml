@@ -1,0 +1,229 @@
+<form theme="dark">
+  <label>License Usage</label>
+  <fieldset submitButton="false" autoRun="true">
+    <input type="time" searchWhenChanged="true" token="time1">
+      <label></label>
+      <default>
+        <earliest>-7d@d</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <chart>
+        <title>Daily License Usage by Index</title>
+        <search>
+          <query>index=_internal source=*license_usage.log type=Usage  | rename idx AS index  | timechart span=1d eval(round(sum(b)/1024/1024/1024,2)) AS "Total GB Used" by index</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.text">Date</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.text">License Usage</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisStart</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.axisLabelsY.majorUnit">10</option>
+        <option name="charting.axisY.maximumNumber">60</option>
+        <option name="charting.axisY.minimumNumber">0</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>Total Daily License  Usage</title>
+        <search>
+          <query>index=_internal source=*license_usage.log type=Usage  | timechart span=1d eval(round(sum(b)/1024/1024/1024,2)) AS "Total GB Used"</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.text">Date</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.text">GB</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisStart</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="charting.axisLabelsY.majorUnit">25</option>
+        <option name="charting.chart.showDataLabels">all</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+      </chart>
+    </panel>
+    <panel>
+      <table>
+        <title>Daily License Usage by Index Stats</title>
+        <search>
+          <query>index=_internal source=*license_usage.log type=Usage earliest=-7d@d  | rename idx AS index  | timechart span=1d eval(round(sum(b)/1024/1024/1024,2)) AS "Total GB Used" by index</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>License Usage by Host</title>
+        <search>
+          <query>index=_internal source=*license_usage.log type=Usage | stats sum(b) AS bytes by h | eval GB= round(bytes/1024/1024/1024,2) | fields h GB | rename h as host | sort -GB</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisStart</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>License Usage by Sourcetype</title>
+        <search>
+          <query>index=_internal source=*license_usage.log type=Usage | stats sum(b) AS bytes by st | eval GB= round(bytes/1024/1024/1024,2) | fields st GB | rename st as Sourcetype | sort -GB</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisStart</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>License Usage by Source</title>
+        <search>
+          <query>index=_internal source=*license_usage.log type=Usage | stats sum(b) AS bytes by s | eval GB= round(bytes/1024/1024/1024,2) | fields s GB | rename s as Source | sort -GB</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.axisY2.enabled">undefined</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>License Usage by Host Stats</title>
+        <search>
+          <query>index=_internal source=*license_usage.log type=Usage | stats sum(b) AS bytes by h | eval GB= round(bytes/1024/1024/1024,2) | fields h GB | rename h as host | sort -GB</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>License Usage by Sourcetype Stats</title>
+        <search>
+          <query>index=_internal source=*license_usage.log type=Usage | stats sum(b) AS bytes by st | eval GB= round(bytes/1024/1024/1024,2) | fields st GB | rename st as Sourcetype | sort -GB</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>License Usage by Source Stats</title>
+        <search>
+          <query>index=_internal source=*license_usage.log type=Usage | stats sum(b) AS bytes by s | eval GB= round(bytes/1024/1024/1024,2) | fields s GB | rename s as Sourcetype | sort -GB</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+</form>

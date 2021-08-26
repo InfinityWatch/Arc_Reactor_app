@@ -1,0 +1,12 @@
+label,required
+Microsoft Sysmon Add-on,yes
+Splunk Add-on for Microsoft Windows,yes
+Palo Alto Networks Add-on,yes
+Splunk Stream,yes
+TA-Suricata,yes
+Splunk Add-on for Zeek aka Bro,yes
+Tenable Add-On for Splunk,yes
+Tenable App for Splunk,yes
+Splunk Common Information Model,yes
+Splunk Datasets Add-On,yes
+Lookup Editor,yes

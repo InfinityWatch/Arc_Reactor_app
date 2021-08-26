@@ -1,0 +1,154 @@
+<form theme="dark">
+  <label>Splunk Stats</label>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="time">
+      <label>Time Range Selector</label>
+      <default>
+        <earliest>-7d@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <single>
+        <title>Distinct Events</title>
+        <search>
+          <query>| tstats count where index=*</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Events Per Second (EPS)</title>
+        <search>
+          <query>| tstats count where index=* | addinfo | eval diff = info_max_time - info_min_time | eval EPS = count / diff | table EPS</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Distinct Hosts</title>
+        <search>
+          <query>| tstats dc(host) where index=*</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Distinct Indexes with Data</title>
+        <search>
+          <query>| dbinspect index=* cached=t
+| where NOT match(index, "^_")
+| stats max(rawSize) AS raw_size max(eventCount) AS event_count BY bucketId, index
+| stats sum(raw_size) AS raw_size sum(event_count) AS event_count dc(bucketId) AS buckets BY index
+| eval raw_size_gb = round(raw_size / 1024 / 1024 / 1024 , 2) | fields index raw_size_gb event_count buckets
+| join type=outer index [| rest /services/data/indexes-extended 
+| table title maxTime minTime frozenTimePeriodInSecs
+| eval minTime = case(minTime &gt;= "0", minTime)
+| stats max(maxTime) AS maxTime min(minTime) AS minTime max(frozenTimePeriodInSecs) AS retention BY title
+| eval maxTime = replace(maxTime, "T", " "), maxTime = replace(maxTime, "\+0000", ""), minTime = replace(minTime, "T", " "), minTime = replace(minTime, "\+0000", ""), retention = round(retention / 86400, 0)." Days" 
+| rename title AS index] | fields index raw_size_gb event_count buckets  minTime maxTime retention
+            | rename raw_size_gb AS "Index Size (GB)" event_count AS "Total Event Count" buckets AS "Total Bucket Count" minTime AS "Earliest Event"  maxTime AS "Latest Event"   retention AS Retention | stats count</query>
+          <earliest>0</earliest>
+          <latest></latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Distinct Sourcetypes</title>
+        <search>
+          <query>| tstats dc(sourcetype) where index=*</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Distinct Sources</title>
+        <search>
+          <query>| tstats dc(source) where index=*</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>Total Event Count Over Time</title>
+        <search>
+          <query>| tstats prestats=t count where index=* by _time | timechart  count</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="charting.chart">area</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>Event Count by Index Over Time</title>
+        <search>
+          <query>| tstats prestats=t count where index=* by index, _time | timechart count by index</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="charting.chart">area</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Indexes with Data</title>
+        <search>
+          <query>| dbinspect index=* cached=t
+| where NOT match(index, "^_")
+| stats max(rawSize) AS raw_size max(eventCount) AS event_count BY bucketId, index
+| stats sum(raw_size) AS raw_size sum(event_count) AS event_count dc(bucketId) AS buckets BY index
+| eval raw_size_gb = round(raw_size / 1024 / 1024 / 1024 , 2) | fields index raw_size_gb event_count buckets
+| join type=outer index [| rest /services/data/indexes-extended 
+| table title maxTime minTime frozenTimePeriodInSecs
+| eval minTime = case(minTime &gt;= "0", minTime)
+| stats max(maxTime) AS maxTime min(minTime) AS minTime max(frozenTimePeriodInSecs) AS retention BY title
+| eval maxTime = replace(maxTime, "T", " "), maxTime = replace(maxTime, "\+0000", ""), minTime = replace(minTime, "T", " "), minTime = replace(minTime, "\+0000", ""), retention = round(retention / 86400, 0)." Days" 
+| rename title AS index] | fields index raw_size_gb event_count buckets  minTime maxTime retention
+            | rename raw_size_gb AS "Index Size (GB)" event_count AS "Total Event Count" buckets AS "Total Bucket Count" minTime AS "Earliest Event"  maxTime AS "Latest Event"   retention AS Retention</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>

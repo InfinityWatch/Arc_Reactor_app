@@ -1,0 +1,23 @@
+color,from,id,to,type,value
+,,Azure MS Cloud,Internet,cloud,Cloud Services
+,,Amazon Web Services,Internet,cloud,AWS
+,,Internet,,cloud,Internet
+,,71.39.18.125,Internet,firewall,External FW I.P
+,,10.0.1.1,71.39.18.125,firewall,Internal FW I.P
+,,10.0.2.1,71.39.18.125,firewall,Internal FW I.P
+,,34.212.75.178,Amazon Web Services,server,Postfix SMTP Analysis matar
+,,52.42.208.228,Amazon Web Services,server,Brewertalk.com Forum and DB gacrux
+,,54.71.236.238,Amazon Web Services,server,Corporate Web Site eridanus
+,,35.166.192.148,Amazon Web Services,server,Magento MySQL altair
+,,52.34.175.192,Amazon Web Services,server,Magento jabbah
+,,52.10.218.54,Amazon Web Services,server,Splunk IDX/SH/ES cassiopeia
+,,Office 365,Azure MS Cloud,mail-bulk,
+,,Server Network,10.0.1.1,ring,10.0.1.0/24
+,,10.0.1.200,Server Network,linux,jupitor
+,,10.0.1.220,Server Network,linux,mars
+,,10.0.1.222,Server Network,linux,neptune
+,,10.0.1.101,Server Network,server,venus
+,,10.0.1.100,Server Network,file,mercury
+,,Client Network,10.0.2.1,ring,10.0.2.0/24
+,,10.0.2.107,Client Network,laptop,wrk-btun
+,,10.0.2.109,Client Network,laptop,wrk-klagerf

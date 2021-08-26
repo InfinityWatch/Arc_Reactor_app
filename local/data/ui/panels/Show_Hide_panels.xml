@@ -1,0 +1,27 @@
+<panel>
+  <input type="checkbox" token="required_apps" searchWhenChanged="true">
+    <label></label>
+    <choice value="1">Required Apps</choice>
+    <delimiter> </delimiter>
+  </input>
+  <input type="checkbox" token="data_required" searchWhenChanged="true">
+    <label></label>
+    <choice value="">Data Required</choice>
+    <delimiter> </delimiter>
+  </input>
+  <input type="checkbox" token="host_tab" searchWhenChanged="true">
+    <label></label>
+    <choice value="1">Host Tab</choice>
+    <delimiter> </delimiter>
+  </input>
+  <input type="checkbox" token="network_tab" searchWhenChanged="true">
+    <label></label>
+    <choice value="1">Network Tab</choice>
+    <delimiter> </delimiter>
+  </input>
+  <input type="checkbox" token="friday_tab" searchWhenChanged="true">
+    <label></label>
+    <choice value="1">F.R.I.D.A.Y</choice>
+    <delimiter> </delimiter>
+  </input>
+</panel>

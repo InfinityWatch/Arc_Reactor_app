@@ -1,0 +1,18 @@
+label,required
+Microsoft Sysmon Add-on,yes
+Splunk Add-on for Microsoft Windows,yes
+Palo Alto Networks Add-on,no
+Splunk Stream,no
+TA-Suricata,yes
+Splunk Add-on for Zeek aka Bro,yes
+Tenable Add-On for Splunk,no
+Tenable App for Splunk,no
+Splunk Common Information Model,yes
+Splunk Datasets Add-On,yes
+Lookup Editor,yes
+Arc Reactor,yes
+MITRE ATT&CK Framework,no
+Splunk Add-on for Zeek,yes
+Splunk Dashboard Examples,no
+Zeek App for Splunk,no
+ThreatHunting,no

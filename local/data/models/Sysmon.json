@@ -1,0 +1,303 @@
+{
+    "modelName": "Sysmon",
+    "displayName": "Sysmon",
+    "description": "",
+    "objectSummary": {
+        "Event-Based": 0,
+        "Transaction-Based": 0,
+        "Search-Based": 1
+    },
+    "objects": [
+        {
+            "objectName": "sysmon",
+            "displayName": "sysmon",
+            "parentName": "BaseSearch",
+            "comment": "",
+            "fields": [
+                {
+                    "fieldName": "CommandLine",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "CommandLine",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "Computer",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "Computer",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "CurrentDirectory",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "CurrentDirectory",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "EventID",
+                    "owner": "sysmon",
+                    "type": "number",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "EventID",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "Guid",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "Guid",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "Hashes",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "Hashes",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "Image",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "Image",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "IntegrityLevel",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "IntegrityLevel",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "LogonGuid",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "LogonGuid",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "LogonId",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "LogonId",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "ParentProcessId",
+                    "owner": "sysmon",
+                    "type": "number",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "ParentProcessId",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "ProcessId",
+                    "owner": "sysmon",
+                    "type": "number",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "ProcessId",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "User",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "User",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "signature_id",
+                    "owner": "sysmon",
+                    "type": "number",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "signature_id",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "ParentCommandLine",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "ParentCommandLine",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "SourceIp",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "SourceIp",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "DestinationIp",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "DestinationIp",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "SourcePort",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "SourcePort",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "DestinationPort",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "DestinationPort",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "Protocol",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "Protocol",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "DestinationHostname",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "DestinationHostname",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "TargetObject",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "TargetObject",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "TargetFilename",
+                    "owner": "sysmon",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "TargetFilename",
+                    "comment": ""
+                }
+            ],
+            "calculations": [],
+            "constraints": [],
+            "lineage": "sysmon",
+            "baseSearch": "`sysmon`"
+        }
+    ],
+    "objectNameList": [
+        "sysmon"
+    ]
+}

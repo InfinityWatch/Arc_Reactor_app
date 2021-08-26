@@ -1,0 +1,167 @@
+<form theme="dark">
+  <label>About</label>
+  <fieldset submitButton="false"></fieldset>
+  <row>
+    <panel>
+      <html>
+      <h1>
+        <b>95 Cyber Protection Team</b>
+      </h1>
+        <p>Welcome to the Arc Reactor developed by 95 Cyber Protection Team.</p>
+        <p>This app was developed to to aid investigations to the operator by aggregating data sources organically employed with in the Marine Corps's Deployable Mission Support Suite (DMSS).</p>
+      <br/>
+      <p style="clear: both;"/>
+      <br/>
+      <p>
+          <b>
+            <i>Select additional content to view using the checkboxes below:</i>
+          </b>
+        </p>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <input type="checkbox" token="required_apps" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Required Apps</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="data_required" searchWhenChanged="true">
+        <label></label>
+        <choice value="">Data Required</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="host_tab" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Host Tab</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="network_tab" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Network Tab</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="friday_tab" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">F.R.I.D.A.Y</choice>
+        <delimiter> </delimiter>
+      </input>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$required_apps$">
+      <html tokens="true">
+      <h2>
+        <b>Required Splunk Apps</b>
+      </h2>
+      <p>There are a number of Splunk apps and TAs loaded on this system in order to support this hands-on experience. Here are the key ones we will use today :</p>
+        <ul>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/742/" target="_blank">Splunk Add-on For Microsoft Windows</a> to provide extractions for Windows event logs.</li>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/1914/" target="_blank">Add-on for Microsoft Sysmon</a> to provide extractions for Sysmon output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2757/" target="_blank">Palo Alto Networks Add-on for Splunk</a> to provide extractions for Palo Alto output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/1809/" target="_blank">Splunk Stream</a> to provide extractions for Splunk Stream output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2760/" target="_blank">Splunk TA for Suricata</a> to provide extractions for Suricata output.</li>
+        </ul>
+        <p>Thank you to the authors of each app which makes our collective lives easier each day!</p>
+    </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$data_required$">
+      <html tokens="true">
+      <h2>
+        <b>Data Required</b>
+      </h2>
+      <p>There are a number of Splunk apps and TAs loaded on this system in order to support this hands-on experience. Here are the key ones we will use today :</p>
+        <ul>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/742/" target="_blank">Splunk Add-on For Microsoft Windows</a> to provide extractions for Windows event logs.</li>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/1914/" target="_blank">Add-on for Microsoft Sysmon</a> to provide extractions for Sysmon output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2757/" target="_blank">Palo Alto Networks Add-on for Splunk</a> to provide extractions for Palo Alto output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/1809/" target="_blank">Splunk Stream</a> to provide extractions for Splunk Stream output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2760/" target="_blank">Splunk TA for Suricata</a> to provide extractions for Suricata output.</li>
+        </ul>
+        <p>Thank you to the authors of each app which makes our collective lives easier each day!</p>
+    </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$host_tab$">
+      <html tokens="true">
+      <h2>
+        <b>Host Tab</b>
+      </h2>
+      <p>There are a number of Splunk apps and TAs loaded on this system in order to support this hands-on experience. Here are the key ones we will use today :</p>
+        <ul>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/742/" target="_blank">Splunk Add-on For Microsoft Windows</a> to provide extractions for Windows event logs.</li>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/1914/" target="_blank">Add-on for Microsoft Sysmon</a> to provide extractions for Sysmon output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2757/" target="_blank">Palo Alto Networks Add-on for Splunk</a> to provide extractions for Palo Alto output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/1809/" target="_blank">Splunk Stream</a> to provide extractions for Splunk Stream output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2760/" target="_blank">Splunk TA for Suricata</a> to provide extractions for Suricata output.</li>
+        </ul>
+        <p>Thank you to the authors of each app which makes our collective lives easier each day!</p>
+    </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$network_tab$">
+      <html tokens="true">
+      <h2>
+        <b>Network Tab</b>
+      </h2>
+      <p>There are a number of Splunk apps and TAs loaded on this system in order to support this hands-on experience. Here are the key ones we will use today :</p>
+        <ul>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/742/" target="_blank">Splunk Add-on For Microsoft Windows</a> to provide extractions for Windows event logs.</li>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/1914/" target="_blank">Add-on for Microsoft Sysmon</a> to provide extractions for Sysmon output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2757/" target="_blank">Palo Alto Networks Add-on for Splunk</a> to provide extractions for Palo Alto output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/1809/" target="_blank">Splunk Stream</a> to provide extractions for Splunk Stream output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2760/" target="_blank">Splunk TA for Suricata</a> to provide extractions for Suricata output.</li>
+        </ul>
+        <p>Thank you to the authors of each app which makes our collective lives easier each day!</p>
+    </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$friday_tab$">
+      <html tokens="true">
+      <h2>
+        <b>F.R.I.D.A.Y.</b>
+      </h2>
+      <p>There are a number of Splunk apps and TAs loaded on this system in order to support this hands-on experience. Here are the key ones we will use today :</p>
+        <ul>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/742/" target="_blank">Splunk Add-on For Microsoft Windows</a> to provide extractions for Windows event logs.</li>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/1914/" target="_blank">Add-on for Microsoft Sysmon</a> to provide extractions for Sysmon output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2757/" target="_blank">Palo Alto Networks Add-on for Splunk</a> to provide extractions for Palo Alto output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/1809/" target="_blank">Splunk Stream</a> to provide extractions for Splunk Stream output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2760/" target="_blank">Splunk TA for Suricata</a> to provide extractions for Suricata output.</li>
+        </ul>
+        <p>Thank you to the authors of each app which makes our collective lives easier each day!</p>
+    </html>
+    </panel>
+  </row>
+</form>

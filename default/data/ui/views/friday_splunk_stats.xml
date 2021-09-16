@@ -128,6 +128,81 @@
   </row>
   <row>
     <panel>
+      <title> Data Models Used by the Arc Reactor App: Events in Past 24 Hours</title>
+      <table>
+        <search>
+          <query>| tstats summariesonly=true allow_old_summaries=true count from datamodel=Network_Data 
+| eval data_model="Network_Data" 
+| append 
+    [| tstats summariesonly=true allow_old_summaries=true count from datamodel=Powershell 
+    | eval data_model="Powershell"] 
+| append 
+    [| tstats summariesonly=true allow_old_summaries=true count from datamodel=alertsignature 
+    | eval data_model="Suricata"] 
+| append 
+    [| tstats summariesonly=true allow_old_summaries=true count from datamodel=Sysmon 
+    | eval data_model="Sysmon"] 
+| append 
+    [| tstats summariesonly=true allow_old_summaries=true count from datamodel=windows_events 
+    | eval data_model="Windows Events"] 
+| table data_model, count 
+| sort data_model
+          </query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <format type="color" field="count">
+          <colorPalette type="list">[#DC4E41,#F8BE34,#53A051]</colorPalette>
+          <scale type="threshold">1,100</scale>
+        </format>
+        <format type="number" field="count">
+          <option name="precision">0</option>
+          <option name="unit">events</option>
+        </format>
+      </table>
+    </panel>
+    <panel>
+      <title>All Data Models: Status</title>
+      <table>
+        <title>All accelerated data models in your environment and their status</title>
+        <search>
+          <query>| rest /servicesNS/-/-/data//models 
+| search eai:acl.app=Arc_reactor_app
+| table title acceleration acceleration.allow_old_summaries updated</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <format type="color" field="acceleration">
+          <colorPalette type="list">[#53A051,#DC4E41]</colorPalette>
+          <scale type="threshold">0,1</scale>
+        </format>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
       <table>
         <title>Indexes with Data</title>
         <search>

@@ -1,0 +1,113 @@
+<form theme="dark">
+  <label>Tstats Zeek Conn Stats by Destination I.P</label>
+  <fieldset submitButton="true">
+    <input type="text" token="All_Traffic.dest_ip1">
+      <label>Destination IP</label>
+      <default>$All_Traffic.dest_ip$</default>
+    </input>
+    <input type="time" token="timepicker" searchWhenChanged="false">
+      <label>Time span</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>All Connections</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.dest_ip="*" by All_Traffic.dest_ip All_Traffic.dest_port  
+| `drop_dm_object_name(All_Traffic)`</query>
+          <earliest>$timepicker.earliest$</earliest>
+          <latest>$timepicker.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel>
+      <chart>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.dest_ip=$All_Traffic.dest_ip1$ by _time All_Traffic.dest_ip | timechart count by All_Traffic.dest_ip</query>
+          <earliest>$timepicker.earliest$</earliest>
+          <latest>$timepicker.latest$</latest>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.drilldown">none</option>
+        <option name="height">402</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Top Services Last 24 Hours</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.dest_ip=$All_Traffic.dest_ip1$ by All_Traffic.service | sort - count | `drop_dm_object_name(All_Traffic)`</query>
+          <earliest>$timepicker.earliest$</earliest>
+          <latest>$timepicker.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top Ports Last 24 hours</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.dest_ip=$All_Traffic.dest_ip1$ by All_Traffic.dest_port | sort - count | `drop_dm_object_name(All_Traffic)`</query>
+          <earliest>$timepicker.earliest$</earliest>
+          <latest>$timepicker.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Query</title>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.dest_ip=$All_Traffic.dest_ip1$ by All_Traffic.query | sort - count | `drop_dm_object_name(All_Traffic)`</query>
+          <earliest>$timepicker.earliest$</earliest>
+          <latest>$timepicker.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>HTTP User Agent</title>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.dest_ip=$All_Traffic.dest_ip1$ by All_Traffic.http_user_agent | sort - count | `drop_dm_object_name(All_Traffic)`</query>
+          <earliest>$timepicker.earliest$</earliest>
+          <latest>$timepicker.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>HTTP Method</title>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.dest_ip=$All_Traffic.dest_ip1$ by All_Traffic.http_method | sort - count | `drop_dm_object_name(All_Traffic)`</query>
+          <earliest>$timepicker.earliest$</earliest>
+          <latest>$timepicker.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>

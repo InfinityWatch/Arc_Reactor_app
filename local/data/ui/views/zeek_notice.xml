@@ -1,0 +1,40 @@
+<form theme="dark">
+  <label>Notices</label>
+  <fieldset submitButton="false">
+    <input type="time" token="time1">
+      <label>Time Range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row id="row_top_1">
+    <panel>
+      <title>Notice Count by Destination I.P.</title>
+      <table>
+        <search>
+          <query>index=zeek_notices| stats dedup_splitvals=t count AS "Count" by src_ip, dest_ip, dest_port | sort limit=100 src_ip | fields - _span | fields src_ip, dest_ip, dest_port, "Count"</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Notice Count by Name</title>
+      <table>
+        <search>
+          <query>index=zeek_notices | fields name, earliest_time, src_ip src_port dest_ip dest_port , msg, note sub 
+| stats count by msg note src_ip</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>

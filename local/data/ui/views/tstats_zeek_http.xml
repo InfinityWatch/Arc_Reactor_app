@@ -1,0 +1,146 @@
+<form theme="dark">
+  <label>Tstats Zeek HTTP</label>
+  <search id="basesearch">
+    <query>index=zeek_http | fields flow_id dest_ip src_ip http_comment http_method http_user_agent method status status_code status_msg</query>
+    <earliest>$field1.earliest$</earliest>
+    <latest>$field1.latest$</latest>
+    <sampleRatio>1</sampleRatio>
+  </search>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="time" token="field1">
+      <label>Time Range</label>
+      <default>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row id="row_top_2">
+    <panel>
+      <title>Top Host Headers by Count</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic by All_Traffic.flow_id All_Traffic.dest_ip All_Traffic.src_ip | sort - count | rename All_Traffic.src_ip as Host, All_Traffic.dest_ip as Destination All_Traffic.flow_id as "Flow ID" count as Count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>HTTP Status Code Breakdown</title>
+      <chart>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic by All_Traffic.status | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Top Originators</title>
+      <table>
+        <search id="searchbase1">
+          <query>| tstats count from datamodel=Network_Data.All_Traffic by All_Traffic.src_ip | sort - count | rename All_Traffic.src_ip as Host, count as Count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <format field="Originator over time" type="sparkline">
+          <option name="type">bar</option>
+        </format>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Host Breakdown By HTTP Method</title>
+      <input type="dropdown" token="selected_method_host" searchWhenChanged="true">
+        <label>Host:</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search base="searchbase1">
+          <query/>
+        </search>
+        <fieldForLabel>Host</fieldForLabel>
+        <fieldForValue>Host</fieldForValue>
+      </input>
+      <input type="dropdown" token="data_selected_method" searchWhenChanged="true">
+        <label>HTTP Method:</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <choice value="GET">GET</choice>
+        <choice value="POST">POST</choice>
+        <choice value="HEAD">HEAD</choice>
+        <choice value="PROPFIND">PROPFIND</choice>
+        <choice value="&quot;HEAD OPTIONS&quot;">HEAD OPTIONS</choice>
+        <choice value="OPTIONS">OPTIONS</choice>
+      </input>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.src_ip="$selected_method_host$" All_Traffic.http_method="$data_selected_method$" by All_Traffic.src_ip All_Traffic.http_method  | sort - count | table All_Traffic.src_ip, All_Traffic.http_method, count | rename All_Traffic.src_ip as Host, All_Traffic.http_method as Method, count as Count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Host Breakdown By HTTP Status</title>
+      <input type="dropdown" token="selected_status_host" searchWhenChanged="true">
+        <label>Host:</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search base="searchbase1">
+          <query/>
+        </search>
+        <fieldForLabel>Host</fieldForLabel>
+        <fieldForValue>Host</fieldForValue>
+      </input>
+      <input type="dropdown" token="data_selected_status" searchWhenChanged="true">
+        <label>HTTP Status Comment:</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic by All_Traffic.http_comment</query>
+        </search>
+        <fieldForLabel>All_Traffic.http_comment</fieldForLabel>
+        <fieldForValue>All_Traffic.http_comment</fieldForValue>
+      </input>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.src_ip="*" All_Traffic.status_msg="*"  by All_Traffic.src_ip, All_Traffic.status_msg | sort - count | table All_Traffic.src_ip, All_Traffic.status_msg, count | rename All_Traffic.src_ip as Host, count as Count, All_Traffic.status_msg as "Status Message"</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Rare User Agents</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic by All_Traffic.http_user_agent | rare 40 All_Traffic.http_user_agent | rename All_Traffic.http_user_agent as "User Agent", count as Count, percent as Percent</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>

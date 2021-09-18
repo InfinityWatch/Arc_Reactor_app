@@ -1,0 +1,189 @@
+<!--
+
+IF ADDING OR REMOVING FIELDS FROM THE LOOKUP
+- delete the old lookup (back it up first!)
+	- use an inputlookup and eval statement to make the new field, push it to a temp file, then inputlookup/outputlookup back to the original name
+- in a new search window, run an inputlookup for the new file (MUST do this before trying any dashboard changes)
+- make changes to your dashboard to send the new annotation field
+	- make changes on the Annotation Maker dashboard
+	- make changes on the Annotation Viewer dashboard
+- proceed with work as usual
+
+--><form onunloadCancelJobs="true" theme="dark">
+  <label>Analyst Annotation Maker</label>
+  <!-- v 0.2 - 23 June 2020 -->
+  <!-- v 0.1 - 22 Feb 2019 -->
+  <!-- Use lookups (or autos if desired) in other queries/dashboards to marry the annotations table into your main analysis dashboard results (could save as a macro). -->
+  <!-- Utilize scheduled reports to back up your annotation lookup table! -->
+  <description>use makeresults to generate fields, then capture user input and push it to an annotations lookup</description>
+  <!-- could just put the time query inline with sendAnnotation (usage of eval strftime here is just an example of how to extract values)-->
+  <search id="getTime">
+    <query>| makeresults | eval annotatedSubmissionTime=strftime(_time,"%Y-%m-%d %H:%M:%S") | table annotatedSubmissionTime | head 1</query>
+    <done>
+      <set token="annotatedSubmissionTime">$result.annotatedSubmissionTime$</set>
+    </done>
+  </search>
+  <search id="sendAnnotation">
+    <query> | makeresults | eval annotatedSubmissionTime="$annotatedSubmissionTime$", annotatedUsername="$env:user_realname$", annotatedRating="$annotatedRating$", annotatedType="$annotatedType$", annotatedTactic="$annotatedTactic$", annotatedTechnique1="$annotatedTechnique1$", annotatedEventStart="$annotatedEventStart$", annotatedEventEnd="$annotatedEventEnd$", annotatedAffectedAsset="$annotatedAffectedAsset$", annotatedIndicator="$annotatedIndicator$", annotatedComment="$annotatedComment$", annotatedQuery="$annotatedQuery$" | table annotatedSubmissionTime annotatedUsername annotatedRating annotatedType annotatedTactic annotatedTechnique1 annotatedEventStart annotatedEventEnd annotatedAffectedAsset annotatedIndicator annotatedComment annotatedQuery | outputlookup append=True analyst_annotations.csv</query>
+  </search>
+  <!-- input-text is the button, input is the textbox, #value denotes the ID and is optional -->
+  <!-- empty drilldown conditions (no set/unset, link, etc tags) mean the fields are not clickable -->
+  <fieldset autoRun="true">
+    <input type="dropdown" token="annotatedRating" searchWhenChanged="false">
+      <label>Severity Rating</label>
+      <choice value="benign">Benign</choice>
+      <choice value="suspicious">Suspicious</choice>
+      <choice value="malicious">Malicious</choice>
+    </input>
+    <input type="dropdown" token="annotatedTactic" id="annotatedTactic" searchWhenChanged="false">
+      <label>Mitre Attack Tactic</label>
+      <choice value="collection">Collection</choice>
+      <choice value="command_and_control">Command and Control</choice>
+      <choice value="credential_access">Credential Access</choice>
+      <choice value="defense_evasion">Defense Evasion</choice>
+      <choice value="discovery">Discovery</choice>
+      <choice value="execution">Execution</choice>
+      <choice value="exfiltration">Exfiltration</choice>
+      <choice value="impact">Impact</choice>
+      <choice value="initial_access">Initial Access</choice>
+      <choice value="lateral_movement">Lateral Movement</choice>
+      <choice value="persistence">Persistence</choice>
+      <choice value="privilege_escalation">Privilege Escalation</choice>
+      <default>Collection</default>
+    </input>
+    <input type="dropdown" searchWhenChanged="true" token="annotatedTechnique1">
+      <label>Mitre Attack Technique</label>
+      <search>
+        <query>
+          |inputlookup mitre_attack_framework.csv | table $annotatedTactic$
+        </query>
+        <earliest>0</earliest>
+        <latest></latest>
+      </search>
+      <choice value="*">All</choice>
+      <fieldForLabel>$annotatedTactic$</fieldForLabel>
+      <fieldForValue>$annotatedTactic$</fieldForValue>
+    </input>
+    <input type="text" token="annotatedEventStart" id="annotatedEventStart" searchWhenChanged="false">
+      <label>Event Start (YYYY-MM-DD hh:mm:ss)</label>
+      <!--<default>2000-01-01 12:00:00</default-->
+      <default></default>
+    </input>
+    <input type="text" token="annotatedEventEnd" id="annotatedEventEnd" searchWhenChanged="false">
+      <label>Event End (date+time or ongoing)</label>
+      <default></default>
+    </input>
+    <input type="text" token="annotatedAffectedAsset" id="annotatedAffectedAsset" searchWhenChanged="false">
+      <label>Affected Asset</label>
+      <default>hostname or asset description</default>
+    </input>
+    <input type="dropdown" token="annotatedType" searchWhenChanged="false">
+      <label>Indicator Type</label>
+      <choice value="ip">IP</choice>
+      <choice value="domain">domain</choice>
+      <choice value="url">url</choice>
+      <choice value="filename">filename</choice>
+      <choice value="email">email address</choice>
+      <choice value="subject">subject</choice>
+      <choice value="hash">hash</choice>
+      <choice value="string">string</choice>
+      <choice value="host">host</choice>
+      <choice value="other">other</choice>
+    </input>
+    <input type="text" token="annotatedIndicator" id="annotatedIndicator" searchWhenChanged="false">
+      <label>Indicator Value</label>
+      <default></default>
+    </input>
+    <html/>
+    <input type="text" token="annotatedComment" id="annotatedComment" searchWhenChanged="false">
+      <label>Analyst Comment (can not use quotes in comments)</label>
+      <default>BE CONCISE YET DESCRIPTIVE AS POSSIBLE</default>
+    </input>
+    <input type="text" token="annotatedQuery" id="annotatedQuery" searchWhenChanged="false">
+      <label>Analyst query used for incident</label>
+      <default></default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <html>
+			<style>
+				.input-text {
+				width: 250px !important;}
+				#annotatedComment {
+				width: 1500px !important;}
+				#annotatedQuery {
+				width: 1500px !important;
+				}
+			</style>
+			<p>$annotatedSubmissionTime$</p>
+			<p>$env:user_realname$</p>
+			<p>$annotatedRating$</p>
+			<p>$annotatedType$</p>
+			<p>$annotatedTactic$</p>
+			<p>$annotatedTechnique1$</p>
+			<p>$annotatedEventStart$</p>
+			<p>$annotatedEventEnd$</p>
+			<p>$annotatedAffectedAsset$</p>
+			<p>$annotatedIndicator$</p>
+			<p>$annotatedComment$</p>
+			<p>$annotatedQuery$</p>
+		</html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Annotation Preview</title>
+      <table>
+        <search base="sendAnnotation"></search>
+        <option name="count">1</option>
+        <drilldown>
+          <condition field="annotatedSubmissionTime"></condition>
+          <condition field="annotatedUsername"></condition>
+          <condition field="annotatedRating"></condition>
+          <condition field="annotatedType"></condition>
+          <condition field="annotatedTactic"></condition>
+          <condition field="annotatedTechnique1"></condition>
+          <condition field="annotatedEventStart"></condition>
+          <condition field="annotatedEventEnd"></condition>
+          <condition field="annotatedAffectedAsset"></condition>
+          <condition field="annotatedIndicator"></condition>
+          <condition field="annotatedComment"></condition>
+          <condition field="annotatedQuery"></condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Diagram Preview</title>
+      <viz type="network-diagram-viz.network-diagram-viz">
+        <search base="sendAnnotation">
+          <query> | eval value="annotatedTactic" + "annotatedTechnique"
+                  | eval type=if(like(value,"laptop%"), "laptop", type)
+                  | eval type=if(like(value,"printer%"), "printer", type)
+                  | eval type=if(like(value,"host%"), "desktop", type)
+                  | eval type=if(like(value,"aws%"), "aws", type)
+                  | eval from=id
+                  | eval color=case(type == "laptop" , "blue" , type == "desktop", "blue", type == "printer", "yellow", type == "server", "red")
+                  | table id to from type value color</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <condition field="annotatedSubmissionTime"></condition>
+          <condition field="annotatedUsername"></condition>
+          <condition field="annotatedRating"></condition>
+          <condition field="annotatedType"></condition>
+          <condition field="annotatedTactic"></condition>
+          <condition field="annotatedTechnique1"></condition>
+          <condition field="annotatedEventStart"></condition>
+          <condition field="annotatedEventEnd"></condition>
+          <condition field="annotatedAffectedAsset"></condition>
+          <condition field="annotatedIndicator"></condition>
+          <condition field="annotatedComment"></condition>
+          <condition field="annotatedQuery"></condition>
+        </drilldown>
+      </viz>
+    </panel>
+  </row>
+</form>

@@ -1,0 +1,120 @@
+<form theme="dark">
+  <label>Event Sources</label>
+  <description>Click on the event source to check it on www.eventid.net</description>
+  <fieldset autoRun="true" submitButton="false">
+    <input type="time" searchWhenChanged="true">
+      <label>Select time range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="multiselect" token="Type" searchWhenChanged="true">
+      <label>Event types</label>
+      <default>Error</default>
+      <prefix>(</prefix>
+      <suffix>)</suffix>
+      <valuePrefix>Type="</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+      <delimiter> OR </delimiter>
+      <search>
+        <query>`event_sources`| stats count by Type</query>
+        <earliest>$earliest$</earliest>
+        <latest>$latest$</latest>
+      </search>
+      <fieldForLabel>Type</fieldForLabel>
+      <fieldForValue>Type</fieldForValue>
+    </input>
+    <input type="multiselect" token="Computer" searchWhenChanged="true">
+      <label>Computer</label>
+      <choice value="*">All</choice>
+      <default>*</default>
+      <prefix>(</prefix>
+      <suffix>)</suffix>
+      <valuePrefix>ComputerName="</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+      <delimiter> OR </delimiter>
+      <search>
+        <query>`event_sources` | stats count by ComputerName</query>
+        <earliest>$earliest$</earliest>
+        <latest>$latest$</latest>
+      </search>
+      <fieldForLabel>ComputerName</fieldForLabel>
+      <fieldForValue>ComputerName</fieldForValue>
+    </input>
+    <input type="text" token="keyword" searchWhenChanged="true">
+      <label>Keyword:</label>
+      <default>*</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Event sources</title>
+      <table id="link">
+        <title>Click on the source to look it up on www.eventid.net</title>
+        <search>
+          <query>`event_sources` $Type$ AND $Computer$ AND $keyword$ | stats count as TotalEvents by SourceName</query>
+        </search>
+        <drilldown>
+          <link target="_blank">https://www.eventid.net/source-name-$row.SourceName$.htm</link>
+        </drilldown>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+        <option name="drilldown">cell</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Event sources percentages</title>
+      <chart>
+        <search>
+          <query>`event_sources` $Type$ AND $Computer$ AND $keyword$ | stats count by SourceName</query>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Matching events - drill down option</title>
+      <event>
+        <search>
+          <query>`event_sources` $Type$ AND $Computer$ AND $keyword$| table _time, ComputerName, LogName, EventCode, SourceName, Type, Message, UserName</query>
+        </search>
+        <option name="type">table</option>
+        <option name="count">10</option>
+        <option name="list.drilldown">full</option>
+        <option name="list.wrap">1</option>
+        <option name="maxLines">5</option>
+        <option name="raw.drilldown">full</option>
+        <option name="rowNumbers">0</option>
+        <option name="table.drilldown">all</option>
+        <option name="table.wrap">1</option>
+        <fields>["ComputerName","LogName","EventCode","SourceName","Type","Message","UserName"]</fields>
+      </event>
+    </panel>
+  </row>
+</form>

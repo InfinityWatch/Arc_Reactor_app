@@ -1,0 +1,157 @@
+<form theme="dark">
+  <label>Process Overview</label>
+  <search id="searchbase">
+    <query>`sysmon` EventID=1 | fields CommandLine Hashes User Image Computer ParentCommandLine ParentProcessId ProcessId CurrentDirectory host
+      </query>
+  </search>
+  <fieldset submitButton="true">
+    <input type="time" token="time">
+      <label></label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Processes Over Time</title>
+      <chart>
+        <title></title>
+        <search base="searchbase">
+          <query>| timechart count</query>
+        </search>
+        <option name="charting.chart">area</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Top Command Line</title>
+      <table>
+        <title></title>
+        <search base="searchbase">
+          <query>| top CommandLine</query>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top Process Creators</title>
+      <chart>
+        <title>User Clickable</title>
+        <search base="searchbase">
+          <query>| top User</query>
+        </search>
+        <option name="charting.chart">bar</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <link target="_blank">/app/Arc_reactor_app/user_drilldown?User=$click.value2$</link>
+        </drilldown>
+      </chart>
+    </panel>
+    <panel>
+      <title>Top Images</title>
+      <table>
+        <title></title>
+        <search base="searchbase">
+          <query>| top Image</query>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Critical Processes</title>
+      <table>
+        <title>Computer Clickable</title>
+        <search base="searchbase">
+          <query>| search Image IN ("*\\powershell.exe" ,"*\\msbuild.exe" ,"*\\psexec.exe" ,"*\\at.exe" ,"*\\schtasks.exe" ,"*\\net.exe" ,"*\\vssadmin.exe" ,"*\\utilman.exe" ,"*\\wmic.exe" ,"*\\mshta.exe" ,"*\\wscript.exe" ,"*\\cscript.exe" ,"*\\cmd.exe" ,"*\\whoami.exe" ,"*\\mmc.exe" ,"*\\systeminfo.exe" ,"*\\csvde.exe") | stats count by Image User Computer |sort - count</query>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <drilldown>
+          <link target="_blank">/app/Arc_reactor_app/computer_overview?Computer=$click.value2$</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Hashes by Image</title>
+      <table>
+        <search base="searchbase">
+          <query>| rex field=Hashes ".*MD5=(?&lt;MD5&gt;[A-F0-9]*)" | stats dc(MD5) as numhashes, values(MD5) AS "MD5 Hash" by Image</query>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Interesting File Creation Processes</title>
+      <table>
+        <title>Looking for multiple EXE's and not Splunk Google Mozilla Officeclick and Symatec</title>
+        <search base="searchbase">
+          <query>| search  NOT *Splunk* NOT *Google* NOT *Mozilla* NOT *OfficeClick* NOT *Symantec* Image IN ("*\\powershell.exe", "*\\ftp.exe", "*\\msbuild.exe", "*\\psexec.exe", "*\\at.exe", "*\\schtasks.exe", "*\\net.exe", "*\\vssadmin.exe", "*\\utilman.exe", "*\\wmic.exe", "*\\mshta.exe", "*\\wscript.exe", "*\\cscript.exe", "*\\cmd.exe", "*\\whoami.exe", "*\\mmc.exe", "*\\systeminfo.exe", "*\\csvde.exe", "*\\certutil.exe") | stats values(CommandLine) by _time ParentCommandLine Image ParentProcessId ProcessId CurrentDirectory
+          </query>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Interesting File Creation Processes</title>
+      <table>
+        <title>(Computer Clickable) Looking for multiple EXE's and not Splunk Google Mozilla Officeclick and Symatec</title>
+        <search base="searchbase">
+          <query>| search  NOT *Splunk* NOT *Google* NOT *Mozilla* NOT *OfficeClick* NOT *Symantec* Image IN ("*\\powershell.exe", "*\\ftp.exe", "*\\msbuild.exe", "*\\psexec.exe", "*\\at.exe", "*\\schtasks.exe", "*\\net.exe", "*\\vssadmin.exe", "*\\utilman.exe", "*\\wmic.exe", "*\\mshta.exe", "*\\wscript.exe", "*\\cscript.exe", "*\\cmd.exe", "*\\whoami.exe", "*\\mmc.exe", "*\\systeminfo.exe", "*\\csvde.exe", "*\\certutil.exe") | stats values(CommandLine) by Computer</query>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <drilldown>
+          <link target="_blank">/app/Arc_reactor_app/computer_overview?Computer=$click.value2$</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+</form>

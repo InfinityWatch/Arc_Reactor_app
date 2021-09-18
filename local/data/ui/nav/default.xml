@@ -1,0 +1,155 @@
+<nav search_view="search" color="#00afc6">  
+    <collection label="Home">
+      <view name="mitre_attack_overview"/>
+      <view name="tstats_overview"/>
+      <view name="arc_network_map"/>
+      <!--view name="network_map"/--> 
+	  <view name="analyst_annotation_maker"/>
+	  <view name="analyst_annotation_viewer"/>
+	  <!--view name="cyber_key_terrain"/-->
+    </collection>	
+    <collection label="Host">
+	  <collection label="Sysmon">
+        <view name="sysmon_overview"/>
+	    <view name="sysmon_network_overview"/>
+		<view name="sysmon_network_connections"/>
+	    <view name="process_overview"/>
+        <view name="process_watch"/>
+        <view name="registry_overview"/>
+        <view name="file_creation_overview"/>     
+      </collection>
+      <collection label="Windows Events">
+        <view name="windows_events_summary_arc"/>
+	    <view name="audit_events_arc"/>
+		<view name="users_and_groups_arc"/>
+	    <view name="interesting_events_arc"/>
+        <view name="processes_arc"/>
+        <view name="event_sources_arc"/>
+        <view name="xml_arc"/> 
+      </collection>  
+      <collection label="Powershell">  
+        <view name="windows_powershell"/>
+      </collection>
+      <collection label="TSTATS Sysmon">
+        <view name="tstats_sysmon_overview"/>
+        <view name="tstats_process_overview"/>
+        <view name="tstats_sysmon_network_connections"/>
+        <view name="tstats_sysmon_network_overview"/>
+        <view name="tstats_sysmon_process_watch"/>
+        <view name="tstats_sysmon_registry_overview"/>
+        <view name="tstats_sysmon_file_creation_overview"/> 
+      </collection>
+      <collection label="TSTATS Windows Events">
+        <view name="tstats_windows_events_summary"/>
+        <view name="tstats_sysmon_network_connections"/>
+        <view name="tstats_sysmon_network_overview"/>
+      </collection> 
+      <!--collection label="Windows Security Extra">
+        <view name="4672_account_login_superuser_by_account_name"/>
+        <view name="windows_events_security__success_failed_logons"/>
+        <view name="windows_events_security_logon_types"/>
+      </collection-->
+    </collection>
+    <collection label="Network">
+      <collection label="Zeek">
+        <view name="zeek_status"/>
+	    <view name="zeek_connections"/>
+        <view name="zeek_dcerpc"/>
+        <view name="zeek_dhcp"/>
+        <!--view name="zeek_dnp3">Zeek DNP3</a-->
+        <view name="zeek_dns"/>
+        <view name="zeek_files"/>
+        <view name="zeek_ftp"/>
+        <view name="zeek_http"/>
+        <view name="zeek_intel"/>
+        <view name="zeek_irc"/>
+        <view name="zeek_kerberos"/>
+        <!--view name="zeek_modbus">Zeek Modbus</a-->
+        <!--view name="zeek_mysql">Zeek MYSQL</a-->
+        <view name="zeek_ntlm"/>
+        <view name="zeek_pe"/>
+        <view name="zeek_radius"/>
+        <view name="zeek_rdp"/>
+        <!--view name="zeek_rfb">Zeek RFB</a-->
+        <!--view name="zeek_sip">Zeek SIP</a-->
+        <view name="zeek_smb"/>
+        <view name="zeek_smtp"/>
+        <!--view name="zeek_snmp">Zeek SNMP</a-->
+        <view name="zeek_software"/>
+        <view name="zeek_ssh"/>
+        <view name="zeek_ssl"/>
+        <view name="zeek_tunnels"/>
+        <view name="zeek_x509"/>
+        <view name="zeek_weird"/>
+        <view name="zeek_notice"/>
+	</collection>
+    <collection label="TSTATS Zeek">
+        <view name="tstats_zeek_conn"/>
+        <view name="tstats_zeek_dns"/>
+        <view name="tstats_zeek_http"/>
+        <view name="tstats_ssl_and_x509"/>
+        <view name="tstats_zeek_conn_stats"/>
+        <view name="tstats_zeek_conn_stats_by_ip"/>
+        <view name="tstats_zeek_conn_stats_by_destination_ip"/>
+    </collection>  
+      <view name="easy_ip_search"/>
+      <view name="passive_dns"/>
+    </collection>
+  	<collection label="Drilldowns">
+      <collection label="Normal">
+        <view name="computer_overview"/>
+        <view name="computer_drilldown"/>
+        <view name="user_drilldown"/>
+        <view name="file_create_drilldown"/>
+        <view name="network_conection_drilldown"/>
+        <view name="pipe_name_drilldown"/>
+        <view name="parentprocess_guid_drilldown"/>
+        <view name="process_guid_drilldown"/>
+      </collection>  
+    </collection>
+    <collection label="Initial Triage">
+      <view name="tstats_intel_string_search"/>
+      <view name="initial_triage_mitre_host_jarvis"/>
+      <view name="initial_triage_mitre_network_jarvis"/>
+      <view name="surricata_alerts"/>
+      <view name="network_anomalies"/>
+      <view name="access_anomalies"/>
+      <view name="six_ioc_event_ids"/>
+    </collection>
+    <collection label="WhiteLists">
+        <view name="asset_priority"/>
+        <view name="process_create_whitelist"/>
+        <view name="network_whitelist"/>      
+        <view name="file_access_whitelist"/>
+        <view name="file_create_whitelist"/>        
+        <view name="process_access_whitelist"/>
+        <view name="remote_thread_whitelist"/>            
+        <view name="registry_whitelist"/>      
+        <view name="image_load_whitelist"/>
+        <view name="dns_whitelist"/>        
+        <view name="pipe_whitelist"/>
+        <view name="wmi_whitelist"/>      
+     </collection>
+    <collection label="DevOps">
+    <view name="jarvis2"/>  
+    <view name="cyber_key_terrain"/>
+    <view name="mitre_attack_coverage"/>
+    <view name="dashboards"/>
+    </collection>
+    <collection label="Splunk">
+    <view name="search"  label="Search"/>
+    <view name="analysis_workspace"/>
+    <view name="datasets"/>
+    <view name="reports"/>
+    <view name="alerts"/>
+    <view name="dashboards"/>
+    </collection>
+    <collection label="F.R.I.D.A.Y.">
+      <view name="about"/>
+      <view name="friday_disk_usage"/>
+      <view name="friday_license_usage"/>
+      <view name="friday_metadata"/>
+      <view name="friday_splunk_stats"/>
+      <view name="friday_user_metrics"/>
+    </collection>    
+</nav>

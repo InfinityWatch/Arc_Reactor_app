@@ -1,0 +1,102 @@
+<form theme="dark">
+  <label>Easy IP Search</label>
+  <description>I stole this from corelight IP under investigation</description>
+  <search id="searchbase">
+    <query>`network` tag::conn | fields src dest src_ip dest_ip src_port dest_port flow_id uri_path http_user_agent app http_method transport | eval allips = coalesce(src_ip,dest_ip)
+      </query>
+  </search>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="time" token="TimeRange" searchWhenChanged="true">
+      <label>Interval to Search</label>
+      <default>
+        <earliest>-60m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" token="src">
+      <label>Originating IP</label>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Connections</title>
+      <chart>
+        <title>Top Non-Web Protocol Usage</title>
+        <search base="searchbase">
+          <query>| search src=$src$ OR dest=$src$ dest_port!=80 AND dest_port!=8080 AND 
+dest_port!=443 | eval tp=transport + "/" + dest_port | top tp limit=10</query>
+        </search>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.chart">bar</option>
+        <option name="charting.drilldown">all</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Connections</title>
+      <chart>
+        <title>Internal vs External</title>
+        <search base="searchbase">
+          <query>| search src=$src$ OR dest=$src$ | search NOT (dest=192.168.* OR dest=10.* OR dest=8.8.4.4 OR dest=8.8.8.8 OR dest=224.*) | stats sum(bytes_in) as total_bytes_in sum(bytes_out) as total_bytes_out by src dest | table src dest total_bytes_in total_bytes_out | sort – total_bytes_out</query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Connections</title>
+      <table>
+        <title>Top Connections/Services by Bytes Transferred</title>
+        <search base="searchbase">
+          <query>| search src_ip=$src$ OR dest_ip=$src$ NOT 192.168.0.255 | eval pr=(transport + "/" + dest_port) | eval tbytes=(bytes_in + bytes_out) | stats values(pr) as Service sum(tbytes) as Bytes by src_ip dest_ip flow_id | sort - Bytes | head 10 | lookup dnslookup clientip as dest_ip OUTPUT clienthost | eval resp_hostname = coalesce(clienthost,"Unknown") | iplocation dest_ip | fields - lat lon City Region | fields src_ip dest_ip app flow_id Country resp_hostname Bytes | rename src_ip AS Source dest_ip AS Destination flow_id AS UID resp_hostname AS "Destination Hostname"</query>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>HTTP</title>
+      <table>
+        <title>Top Destination IP, Method, &amp; URI</title>
+        <search base="searchbase">
+          <query>| search src=$src$ OR dest=$src$ |  stats count by dest src http_method uri_path | sort 10 - count
+          </query>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">heatmap</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>HTTP</title>
+      <chart>
+        <title>Web Ports Breakdown</title>
+        <search base="searchbase">
+          <query>| search (src=$src$ OR dest=$src$) dest_port=80 OR dest_port=8080 OR dest_port=443 |  top dest_port
+          </query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>HTTP</title>
+      <chart>
+        <title>Rare User Agents</title>
+        <search base="searchbase">
+          <query>| search src=$src$ OR dest=$src$ |  stats count by http_user_agent | sort 10 count
+          </query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+</form>

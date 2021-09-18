@@ -1,0 +1,1142 @@
+<form theme="dark">
+  <label>User drilldown</label>
+  <fieldset submitButton="false" autoRun="true">
+    <input type="time" token="time_picker" searchWhenChanged="true">
+      <label>Timespan</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" token="user_name" searchWhenChanged="true">
+      <label>user_name</label>
+      <default>*</default>
+      <initialValue>*</initialValue>
+      <prefix>*</prefix>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>User activity by technique</title>
+      <viz type="punchcard_app.punchcard">
+        <search>
+          <query>index=threathunting user_name=$user_name$
+| stats count by date_hour mitre_technique</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="punchcard_app.punchcard.colorMode">categorical</option>
+        <option name="punchcard_app.punchcard.labelRotation">angle</option>
+        <option name="punchcard_app.punchcard.maxColor">#3fc77a</option>
+        <option name="punchcard_app.punchcard.minColor">#d93f3c</option>
+        <option name="punchcard_app.punchcard.numOfBins">9</option>
+        <option name="punchcard_app.punchcard.radiusScale">global</option>
+        <option name="punchcard_app.punchcard.useColors">false</option>
+        <option name="refresh.display">preview</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>User activity by host</title>
+      <table>
+        <search>
+          <query>index=threathunting user_name=$user_name$
+| eventstats count, sparkline by host_fqdn | dedup host_fqdn | table count sparkline host_fqdn user_name</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">preview</option>
+      </table>
+    </panel>
+    <panel depends="$panel_afail$">
+      <title>Authentication Failures over time</title>
+      <chart>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_afail">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_afail"></unset>
+            </condition>
+          </progress>
+          <query>`windows-security` (EventCode=4771 AND "Audit Failure" NOT Failure_Code=0x19) OR EventCode=4625 (user_name=$user_name$ OR target_user_name=$user_name$ OR Account_Name=$user_name$ OR User_Name=$user_name$)
+| timechart count</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+        </search>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_afail$">
+      <title>Authentication Failures by user and host</title>
+      <viz type="sankey_diagram_app.sankey_diagram">
+        <search>
+          <query>`windows-security` (EventCode=4771 AND "Audit Failure" NOT Failure_Code=0x19) OR EventCode=4625 user_name!="*$$"  (user_name=$user_name$ OR target_user_name=$user_name$ OR Account_Name=$user_name$ OR User_Name=$user_name$)
+| stats count by user_name, Computer
+| sort -count 
+| head 10</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+    <panel>
+      <title>Authentication Success by user and host</title>
+      <viz type="sankey_diagram_app.sankey_diagram">
+        <search>
+          <query>`windows-security` EventCode=4624 user_name!="*$" Logon_Type!=5 (user_name=** OR target_user_name=** OR Account_Name=** OR User_Name=**)
+| stats count by user_name, Computer Logon_Type
+| sort -count 
+| head 25</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">preview</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_accreate$">
+      <title>Accounts Created</title>
+      <table>
+        <title>EventID 4720 - SA Accounts are excluded</title>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_accreate">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_accreate"></unset>
+            </condition>
+          </progress>
+          <query>`windows-security` EventCode="4720" (user_name=$user_name$ OR target_user_name=$user_name$ OR SubjectUserName=$user_name$ OR User_Name=$user_name$)
+| eval "admin_name"=SubjectUserName
+| eval "user_name"=TargetUserName
+| search admin_name!=SA_*
+| table _time user_name DisplayName admin_name 
+| rename user_name AS "Added User" DisplayName AS "Full User Name" admin_name AS "Added by"</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">preview</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel depends="$panel_accenabled$">
+      <title>Accounts Enabled</title>
+      <table>
+        <title>EventID 4722 - SA and Computer Accounts are excluded</title>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_accenabled">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_accenabled"></unset>
+            </condition>
+          </progress>
+          <query>`windows-security` EventCode="4722" (user_name=$user_name$ OR target_user_name=$user_name$ OR SubjectUserName=$user_name$ OR User_Name=$user_name$)
+| eval "admin_name"=SubjectUserName
+| eval "user_name"=TargetUserName
+| table _time user_name admin_name
+| search admin_name!= SA_* user_name!=*$
+| rename user_name as "User Account" admin_name AS "Enabled By"</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">row</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel depends="$panel_accdelete$">
+      <title>Accounts Deleted</title>
+      <table>
+        <title>EventID 4726 - SA and Computer Accounts are excluded</title>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_accdelete">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_accdelete"></unset>
+            </condition>
+          </progress>
+          <query>`windows-security` EventCode="4726" (user_name=$user_name$ OR target_user_name=$user_name$ OR SubjectUserName=$user_name$ OR User_Name=$user_name$)
+| eval "admin_name"=SubjectUserName
+| eval "user_name"=TargetUserName
+| search admin_name!=SA_* admin_name!=*$ 
+| table _time user_name admin_name 
+| rename user_name AS "Removed User" admin_name AS "Removed by"</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_acccreatech$">
+      <title>Accounts Created or Changed and Added to Group(s)</title>
+      <table>
+        <title>EventID 4738 OR 4720 + 4728,4732,4746,4751,4755,4761 - SA Accounts are excluded</title>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_acccreatech">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_acccreatech"></unset>
+            </condition>
+          </progress>
+          <query>`windows-security` (EventCode=4720 OR EventCode=4738 OR EventCode=4728 OR EventCode=4732 OR EventCode=4746 OR EventCode=4751 OR EventCode=4756 OR EventCode=4761) (user_name=$user_name$ OR target_user_name=$user_name$ OR SubjectUserName=$user_name$ OR User_Name=$user_name$)
+| table _time host EventCode SubjectUserName TargetUserName Group_Name signature</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_accchrem$">
+      <title>Accounts Changed and Removed from Group(s)</title>
+      <table>
+        <title>EventID 4738 + 4729,4733,4747,4752,4756,4762 - SA Accounts are excluded</title>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_accchrem">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_accchrem"></unset>
+            </condition>
+          </progress>
+          <query>`windows-security` (EventCode=4738 OR EventCode=4729 OR EventCode=4733 OR EventCode=4747 OR EventCode=4752 OR EventCode=4756 OR EventCode=4762) (user_name=$user_name$ OR target_user_name=$user_name$ OR SubjectUserName=$user_name$ OR User_Name=$user_name$)
+| table _time host EventCode SubjectUserName TargetUserName Group_Name signature</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_acclocked$">
+      <title>Accounts Locked Out</title>
+      <table>
+        <title>EventID 4740- No exclusions are made</title>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_acclocked">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_acclocked"></unset>
+            </condition>
+          </progress>
+          <query>`windows-security` EventCode="4740" (user_name=$user_name$ OR target_user_name=$user_name$ OR Account_Name=$user_name$ OR User_Name=$user_name$)
+| eval "Account_Name"=mvindex(Account_Name,1)
+| table _time Account_Name, Caller_Computer_Name
+| rename Account_Name as "User Account" Caller_Computer_Name AS "Used Computer"</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel depends="$panel_accunlocked$">
+      <title>Accounts Unlocked</title>
+      <table>
+        <title>EventID 4767- No exclusions are made</title>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_accunlocked">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_accunlocked"></unset>
+            </condition>
+          </progress>
+          <query>`windows-security` EventCode="4767" (user_name=$user_name$ OR target_user_name=$user_name$ OR Account_Name=$user_name$ OR User_Name=$user_name$)
+| eval "user_name"=mvindex(Account_Name,1)
+| eval "admin_name"=mvindex(Account_Name,0)
+| table _time user_name admin_name
+| rename user_name as "User Account" admin_name AS "Unlocked By"</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel depends="$panel_accdisabled$">
+      <title>Accounts Disabled</title>
+      <table>
+        <title>EventID 4725 - SA and Computer Accounts are excluded</title>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_accdisabled">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_accdisabled"></unset>
+            </condition>
+          </progress>
+          <query>`windows-security` EventCode="4725" (user_name=$user_name$ OR target_user_name=$user_name$ OR Account_Name=$user_name$ OR User_Name=$user_name$)
+| eval "admin_name"=mvindex(Account_Name,0)
+| eval "user_name"=mvindex(Account_Name,1)
+| search admin_name!="SA_*" admin_name!="*$"
+| search user_name!="*$"
+| table _time user_name admin_name
+| rename user_name AS "Disabled User" admin_name AS "Disabled by"</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="rowNumbers">false</option>
+      </table>
+    </panel>
+    <panel depends="$panel_accrenamed$">
+      <title>Accounts Renamed</title>
+      <table>
+        <title>EventID 4781- No exclusions are made</title>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_accrenamed">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_accrenamed"></unset>
+            </condition>
+          </progress>
+          <query>`windows-security` EventCode="4781" (user_name=$user_name$ OR target_user_name=$user_name$ OR Account_Name=$user_name$ OR User_Name=$user_name$)
+| table  _time Old_Account_Name, New_Account_Name, Account_Name,
+| rename Old_Account_Name as "Old Account Name", New_Account_Name as "New Account Name", Account_Name as "Renamed by", _time as Day
+| convert timeformat="%d/%m/%Y - %H:%M:%S" ctime(Day)</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_accpassuser$">
+      <title>Accounts Password Changed by user</title>
+      <table>
+        <title>EventID 4723 - No exclusions are made</title>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_accpassuser">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_accpassuser"></unset>
+            </condition>
+          </progress>
+          <query>`windows-security` EventCode="4723"  Type!="Audit Failure" (user_name=$user_name$ OR target_user_name=$user_name$ OR Account_Name=$user_name$ OR User_Name=$user_name$)
+| eval "user_name"=mvindex(Account_Name,1)
+| search user_name!="*$"
+| table _time user_name 
+| rename user_name as "User Account"</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel depends="$panel_accpassadmin$">
+      <title>Account Password Change by administrator</title>
+      <table>
+        <title>EventID 4724 - SA Accounts are excluded</title>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_accpassadmin">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_accpassadmin"></unset>
+            </condition>
+          </progress>
+          <query>`windows-security` EventCode="4724"  (user_name=$user_name$ OR target_user_name=$user_name$ OR Account_Name=$user_name$ OR User_Name=$user_name$)
+| eval "user_name"=TargetUserName | eval "admin_name"=SubjectUserName
+| search admin_name!="SA_*"
+| table _time user_name admin_name
+| rename user_name AS "User Account" admin_name AS "Changed By"</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_ntlm$">
+      <title>Failed NTLM authentications</title>
+      <table>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_ntlm">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_ntlm"></unset>
+            </condition>
+          </progress>
+          <query>`windows-security` EventCode=4776 Status!=0x0 
+| eval description=case(ta_windows_status = "0xc0000064", "user name does not exist", ta_windows_status = "0xc000006a", "user name is correct but the password is wrong",ta_windows_status = "0xc0000234", "user is currently locked out",ta_windows_status = "0xc0000072", "account is currently disabled",ta_windows_status = "0xc000006F", "user tried to logon outside his day of week or time of day restrictions",ta_windows_status = "0xc0000070", "workstation restriction",ta_windows_status = "0xc0000193", "account expiration",ta_windows_status = "0xc0000071", "expired password",ta_windows_status = "0xc0000224", "user is required to change password at next logon") 
+| stats count by Computer TargetUserName status description 
+| sort - count</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">true</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_pth$">
+      <title>Pass the Hash</title>
+      <table>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_pth">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_pth"></unset>
+            </condition>
+          </progress>
+          <query>`windows-security` EventCode=4624 AND ((SubjectUserSid="NULL SID" OR SubjectUserSid="S-1-0-0") AND (LogonType="3") AND (src_ip != "*::1*") AND (LogonProcessName="*NtLmSsp") AND (KeyLength="0") AND (user != "*ANONYMOUS LOGON" OR TargetUserName != "*ANONYMOUS LOGON"))
+| table _time indextime,host_fqdn, user_sid, user_name src_host_name src_ip target_user_name target_user_domain</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">true</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_proc_show$">
+      <title>Process Create</title>
+      <table>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_proc_show">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_proc_show"></unset>
+            </condition>
+          </progress>
+          <query>index=threathunting user_name=$user_name$ event_description="Process Creat*"
+| eval hash_sha256=lower(hash_sha256)
+| `process_create_whitelist`
+| rename mitre_technique_id AS ID, mitre_technique AS Technique, mitre_category AS Category, hunting_trigger AS Trigger
+| table _time indextime ID Technique Category Trigger host_fqdn user_name process_parent_path process_path original_file_name process_parent_command_line process_command_line process_parent_guid process_guid hash_sha256 process_id process_parent_id</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+        </search>
+        <option name="count">12</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <condition field="_time">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_create_whitelist?form.mitre_technique_id=$row.ID$&form.host_fqdn=$row.host_fqdn$&form.user_name=$row.user_name$&form.process_path=$row.process_path$&form.process_parent_path=$row.process_parent_path$&form.process_command_line=$row.process_command_line$&form.process_parent_command_line=$row.process_parent_command_line$&form.hash_sha256=$row.hash_sha256$]]>
+            </link>
+          </condition>
+          <condition field="Category">
+            <link target="_blank">https://attack.mitre.org/wiki/$row.Category$</link>
+          </condition>
+          <condition field="Technique">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="ID">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="hash_sha256">
+            <link target="_blank">https://www.virustotal.com/#/file/$row.hash_sha256$/detection</link>
+          </condition>
+          <condition field="user_name">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/user_drilldown?form.user_name=$row.user_name$&earliest=$earliest$&latest=$latest$]]>
+            </link>
+          </condition>
+          <condition field="host_fqdn">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/computer_drilldown?form.computer=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="process_guid">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="process_path">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="original_file_name">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="process_command_line">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="process_id">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition>
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/parentprocess_guid_drilldown?form.process_parent_guid=$row.process_parent_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_proca_show$">
+      <title>Process Access</title>
+      <table>
+        <search>
+          <query>index=threathunting user_name=$user_name$ event_description="Process Access" | `process_access_whitelist`
+          | rename mitre_technique_id AS ID, mitre_technique AS Technique, mitre_category AS Category, hunting_trigger AS Trigger
+          | table _time indextime ID Technique Category Trigger host_fqdn process_path target_process_path process_granted_access target_process_guid process_id target_process_id</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_proca_show">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_proca_show"></unset>
+            </condition>
+          </progress>
+        </search>
+        <option name="count">6</option>
+        <option name="drilldown">cell</option>
+        <drilldown>
+          <condition field="Category">
+            <link target="_blank">https://attack.mitre.org/wiki/$row.Category$</link>
+          </condition>
+          <condition field="Technique">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="ID">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="user_name">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/activity_drilldown?form.user=$row.user_name$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="target_process_guid">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.target_process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="_time">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_access_whitelist?form.mitre_technique_id=$row.ID$&form.host_fqdn=$row.host_fqdn$&form.target_process_path=$row.target_process_path$&form.process_path=$row.process_path$&form.process_granted_access=$row.process_granted_access$]]>
+            </link>
+          </condition>
+          <condition field="host_fqdn">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/computer_drilldown?form.computer=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="target_process_guid">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.target_process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="target_process_id">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.target_process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="target_process_path">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.target_process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition>
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/parentprocess_guid_drilldown?form.process_parent_guid=$row.process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_filec_show$">
+      <title>File Created</title>
+      <table>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_filec_show">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_filec_show"></unset>
+            </condition>
+          </progress>
+          <query>index=threathunting event_description="File Created" user_name=$user_name$
+| `file_create_whitelist` 
+| rename mitre_technique_id AS ID, mitre_technique AS Technique, mitre_category AS Category, hunting_trigger AS Trigger 
+| table _time ID Technique Category Trigger host_fqdn process_path file_name file_path process_guid process_id</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+        </search>
+        <option name="count">6</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <condition field="Category">
+            <link target="_blank">https://attack.mitre.org/wiki/$row.Category$</link>
+          </condition>
+          <condition field="Technique">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="ID">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="user_name">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/activity_drilldown?form.user=$row.user_name$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="_time">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/file_create_whitelist?form.mitre_technique_id=$row.ID$&form.host_fqdn=$row.host_fqdn$&form.file_path=$row.file_path$&form.file_name=$row.file_name$&form.process_path=$row.process_path$]]>
+            </link>
+          </condition>
+          <condition field="host_fqdn">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/computer_drilldown?form.computer=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="process_guid">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="file_name">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/file_create_drilldown?form.file_name=$row.file_name$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="file_path">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/file_create_drilldown?form.file_path=$row.file_path$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="process_path">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/file_create_drilldown?form.process_path=$row.process_path$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition>
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_img_show$">
+      <title>Image Loaded</title>
+      <table>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_img_show">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_img_show"></unset>
+            </condition>
+          </progress>
+          <query>index=threathunting user_name=$user_name$ event_description="Image *"  | fillnull value=NULL | `image_load_whitelist`
+          | rename mitre_technique_id AS ID, mitre_technique AS Technique, mitre_category AS Category, hunting_trigger AS Trigger
+          | table _time indextime ID Technique Category Trigger host_fqdn process_path driver_loaded driver_is_signed driver_signature driver_signature_status process_id process_guid</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+        </search>
+        <option name="count">6</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <condition field="Category">
+            <link target="_blank">https://attack.mitre.org/wiki/$row.Category$</link>
+          </condition>
+          <condition field="Technique">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="ID">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="_time">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/image_load_whitelist?form.mitre_technique_id=$row.ID$&form.host_fqdn=$row.host_fqdn$&form.driver_loaded=$row.driver_loaded$&form.process_path=$row.process_path$&form.driver_is_signed=$row.driver_is_signed$&form.driver_signature=$row.driver_signature$&form.driver_signature_status=$row.driver_signature_status$]]>
+            </link>
+          </condition>
+          <condition field="host_fqdn">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/computer_drilldown?form.computer=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition>
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_net_show$">
+      <title>Network Connection</title>
+      <table>
+        <search>
+          <query>index=threathunting user_name=$user_name$ event_description="Network *"
+          | `network_whitelist`
+          | rename mitre_technique_id AS ID, mitre_technique AS Technique, mitre_category AS Category, hunting_trigger AS Trigger
+          | table _time indextime ID Technique Category Trigger host_fqdn user_name process_path process_id process_guid src_ip dst_ip dst_port src_host_name dst_host_name</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_net_show">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_net_show"></unset>
+            </condition>
+          </progress>
+        </search>
+        <option name="count">6</option>
+        <option name="drilldown">cell</option>
+        <drilldown>
+          <condition field="_time">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/network_whitelist?form.mitre_technique_id=$row.ID$&form.host_fqdn=$row.host_fqdn$&form.user_name=$row.user_name$&form.process_path=$row.process_path$&form.src_ip=$row.src_ip$&form.dst_ip=$row.dst_ip$&form.dst_port=$row.dst_port$]]>
+            </link>
+          </condition>
+          <condition field="Category">
+            <link target="_blank">https://attack.mitre.org/wiki/$row.Category$</link>
+          </condition>
+          <condition field="Technique">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="ID">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="user_name">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/user_drilldown?form.user_name=$row.user_name$&earliest=$earliest$&latest=$latest$]]>
+            </link>
+          </condition>
+          <condition field="src_ip">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/network_connection_drilldown?form.src_ip=$row.src_ip$&earliest=$earliest$&latest=$latest$]]>
+            </link>
+          </condition>
+          <condition field="dst_ip">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/network_connection_drilldown?form.dst_ip=$row.dst_ip$&earliest=$earliest$&latest=$latest$]]>
+            </link>
+          </condition>
+          <condition field="src_host_name">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/dns_stacking?form.query_name=$row.src_host_name$&earliest=$earliest$&latest=$latest$]]>
+            </link>
+          </condition>
+          <condition field="dst_host_name">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/dns_stacking?form.query_name=$row.dst_host_name$&earliest=$earliest$&latest=$latest$]]>
+            </link>
+          </condition>
+          <condition>
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.process_guid$&earliest=$earliest$&latest=$latest$]]>
+            </link>
+          </condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_thread_show$">
+      <title>Create Remote Thread</title>
+      <table>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_thread_show">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_thread_show"></unset>
+            </condition>
+          </progress>
+          <query>index=threathunting event_description="Create Remote Thread" 
+| `remote_thread_whitelist` 
+| rename mitre_technique_id AS ID, mitre_technique AS Technique, mitre_category AS Category, hunting_trigger AS Trigger 
+| table _time indextime ID Technique Category Trigger host_fqdn process_name target_process_path target_process_address thread_new_id process_guid process_parent_guid</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+        </search>
+        <option name="count">6</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <condition field="Category">
+            <link target="_blank">https://attack.mitre.org/wiki/$row.Category$</link>
+          </condition>
+          <condition field="Technique">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="ID">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="_time">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/remote_thread_whitelist?form.mitre_technique_id=$row.ID$&form.host_fqdn=$row.host_fqdn$&form.event_type=$row.event_type$&form.process_path=$row.process_path$&form.target_process_path=$row.target_process_path$&form.target_process_address=$row.target_process_address$]]>
+            </link>
+          </condition>
+          <condition field="host_fqdn">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/computer_drilldown?form.computer=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="target_process_guid">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.target_process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="target_process_path">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.target_process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="process_guid">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/parentprocess_guid_drilldown?form.process_parent_guid=$row.process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition>
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/parentprocess_guid_drilldown?form.process_parent_guid=$row.process_parent_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_reg_show$">
+      <title>Registry Access</title>
+      <table>
+        <search>
+          <query>index=threathunting user_name=$user_name$ event_description="Registry*" | `registry_whitelist` | rename mitre_technique_id AS ID, mitre_technique AS Technique, mitre_category AS Category, hunting_trigger AS Trigger
+          | table _time indextime ID Technique Category Trigger event_type host_fqdn process_path  process_id process_guid registry_key_path registry_key_details</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_reg_show">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_reg_show"></unset>
+            </condition>
+          </progress>
+        </search>
+        <option name="count">6</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <condition field="Category">
+            <link target="_blank">https://attack.mitre.org/wiki/$row.Category$</link>
+          </condition>
+          <condition field="Technique">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="ID">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="_time">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/registry_whitelist?form.mitre_technique_id=$row.ID$&form.host_fqdn=$row.host_fqdn$&form.event_type=$row.event_type$&form.process_path=$row.process_path$&form.registry_key_path=$row.registry_key_path$&form.registry_details=$row.registry_key_details$]]>
+            </link>
+          </condition>
+          <condition field="host_fqdn">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/computer_drilldown?form.computer=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="process_guid">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="process_path">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.process_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition>
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/parentprocess_guid_drilldown?form.process_parent_guid=$row.process_parent_guid$&form.host_fqdn=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_wmi_show$">
+      <title>WMI</title>
+      <table>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_wmi_show">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_wmi_show"></unset>
+            </condition>
+          </progress>
+          <query>index=threathunting event_description="WMI*" user_name=$user_name$
+| `wmi_whitelist` 
+| rename mitre_technique_id AS ID, mitre_technique AS Technique, mitre_category AS Category, hunting_trigger AS Trigger 
+| table _time ID Technique Category Trigger host_fqdn user_name wmi_consumer_name wmi_consumer_destination</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+        </search>
+        <option name="count">6</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <condition field="Category">
+            <link target="_blank">https://attack.mitre.org/wiki/$row.Category$</link>
+          </condition>
+          <condition field="Technique">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="ID">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="user_name">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/user_drilldown?form.user_name=$row.user_name$&earliest=$earliest$&latest=$latest$]]>
+            </link>
+          </condition>
+          <condition field="wmi_consumer_name">
+            <link target="_blank">https://www.google.com/search?q=$row.wmi_consumer_name$</link>
+          </condition>
+          <condition field="wmi_consumer_destination">
+            <link target="_blank">https://www.google.com/search?q=$row.wmi_consumer_destination$</link>
+          </condition>
+          <condition field="host_fqdn">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/computer_drilldown?form.computer=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$panel_pipe_show$">
+      <title>Pipes</title>
+      <table>
+        <search>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="panel_pipe_show">true</set>
+            </condition>
+            <condition>
+              <unset token="panel_pipe_show"></unset>
+            </condition>
+          </progress>
+          <query>index=threathunting event_description="Pipe*" user_name=$user_name$
+| `pipe_whitelist` 
+| rename mitre_technique_id AS ID, mitre_technique AS Technique, mitre_category AS Category, hunting_trigger AS Trigger 
+| table _time ID Technique Category Trigger host_fqdn pipe_name process_path process_guid process_id</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+        </search>
+        <option name="count">6</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <condition field="Category">
+            <link target="_blank">https://attack.mitre.org/wiki/$row.Category$</link>
+          </condition>
+          <condition field="Technique">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="ID">
+            <link target="_blank">https://attack.mitre.org/wiki/Technique/$row.ID$</link>
+          </condition>
+          <condition field="host_fqdn">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/computer_drilldown?form.computer=$row.host_fqdn$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition field="process_guid">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.process_guid$&earliest=$earliest$&latest=$latest$]]>
+            </link>
+          </condition>
+          <condition field="pipe_name">
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/pipe_drilldown?form.host_fqdn=$row.host_fqdn$&form.pipe_name=$row.pipe_name$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+          <condition>
+            <link target="_blank">
+              <![CDATA[/app/ThreatHunting/process_guid_drilldown?form.process_guid=$row.process_guid$&form.time_picker.earliest=$time_picker.earliest$&form.time_picker.latest=$time_picker.latest$]]>
+            </link>
+          </condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Related raw logs</title>
+      <event>
+        <search>
+          <query>`sysmon` user_name=$user_name$</query>
+          <earliest>$time_picker.earliest$</earliest>
+          <latest>$time_picker.latest$</latest>
+        </search>
+        <option name="list.drilldown">inner</option>
+        <option name="list.wrap">1</option>
+        <option name="maxLines">0</option>
+        <option name="raw.drilldown">inner</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="table.wrap">1</option>
+        <option name="type">list</option>
+      </event>
+    </panel>
+  </row>
+</form>

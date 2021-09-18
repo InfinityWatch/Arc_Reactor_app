@@ -1,0 +1,409 @@
+<form theme="dark">
+  <label>Audit Events</label>
+  <description>Click on the event to check it on www.eventid.net</description>
+  <fieldset autoRun="true" submitButton="false">
+    <input type="time" searchWhenChanged="true" token="interval">
+      <label>Select time range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="multiselect" token="Computer" searchWhenChanged="true">
+      <label>Computer</label>
+      <choice value="*">All</choice>
+      <default>*</default>
+      <prefix>(</prefix>
+      <suffix>)</suffix>
+      <valuePrefix>ComputerName="</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+      <delimiter> OR </delimiter>
+      <search>
+        <query>`event_sources` ("Audit Success" OR "Audit Failure") | stats count by ComputerName</query>
+        <earliest>$interval.earliest$</earliest>
+        <latest>$interval.latest$</latest>
+      </search>
+      <fieldForLabel>ComputerName</fieldForLabel>
+      <fieldForValue>ComputerName</fieldForValue>
+    </input>
+    <input type="checkbox" searchWhenChanged="true" token="Audit_Type">
+      <label>Audit Events</label>
+      <default>Audit Failure,Audit Success</default>
+      <choice value="Audit Failure">Failure</choice>
+      <choice value="Audit Success">Success</choice>
+      <prefix>(</prefix>
+      <suffix>)</suffix>
+      <valuePrefix>"</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+      <delimiter> OR </delimiter>
+      <fieldForLabel>Audit Type</fieldForLabel>
+      <fieldForValue>Audit Type</fieldForValue>
+      <initialValue>Audit Failure,Audit Success</initialValue>
+    </input>
+    <input type="text" token="keyword" searchWhenChanged="true">
+      <label>Keyword:</label>
+      <default>*</default>
+    </input>
+    <input type="radio" token="nopriv" searchWhenChanged="true">
+      <label>Hide privilege related events</label>
+      <choice value="Message!=&quot;*privilege*&quot;">Yes</choice>
+      <choice value="*">No</choice>
+      <default>Message!="*privilege*"</default>
+    </input>
+    <input type="radio" token="nocomputer" searchWhenChanged="true">
+      <label>Hide computer accounts events</label>
+      <choice value="Account_Name != &quot;*$*&quot;">Yes</choice>
+      <choice value="*">No</choice>
+      <default>Account_Name != "*$$*"</default>
+      <initialValue>Account_Name != "*$$*"</initialValue>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Audit events over time</title>
+      <chart>
+        <search>
+          <query>`event_sources` ("Audit Success" OR "Audit Failure") AND $Computer$ AND $keyword$ $nopriv$ $nocomputer$ $Audit_Type$
+| fillnull  
+| timechart count</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Accounts with 3 or more failed logons</title>
+      <chart>
+        <search>
+          <query>`event_sources` Failure_Reason=* ("Audit Failure") AND $Computer$ AND $keyword$ $nopriv$ Message != "*privilege*" Account_Name != "*$*"
+| table ComputerName, Account_Name, Failure_Reason 
+| stats count by Account_Name 
+| where count &gt; 2</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Audit Failure events by computer</title>
+      <chart>
+        <title>Computer Clickable</title>
+        <search>
+          <query>`event_sources` "Audit Failure" AND $Computer$ AND $keyword$ $nocomputer$ $nopriv$
+| fillnull   
+| stats count by ComputerName</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <link target="_blank">/app/Arc_reactor_app/computer_overview?ComputerName=$click.value2$</link>
+        </drilldown>
+      </chart>
+    </panel>
+    <panel>
+      <title>Distinct Accounts</title>
+      <single>
+        <search>
+          <query>`event_sources` AND $Computer$ AND $keyword$ $nopriv$ $nocomputer$ TaskCategory=Logon $Audit_Type$
+| stats dc(Account_Name)</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x6db7c6","0x6db7c6"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Logon Successful Audits</title>
+      <single>
+        <search>
+          <query>`event_sources` AND $keyword$ $nopriv$ $nocomputer$ TaskCategory=Logon 
+| stats count</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0x65a637","0x65a637"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Logon Audit Failure events</title>
+      <single>
+        <search>
+          <query>`event_sources` AND $Computer$ AND $keyword$ $nocomputer$ $nopriv$ Failure_Reason=* ("Audit Failure") 
+| stats count</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0xd93f3c","0xd93f3c"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">1</option>
+        <drilldown>
+          <link target="_blank">search?q=`event_sources` Failure_Reason=* * ("Audit Failure") AND $Computer$ AND $keyword$ Message != "*privilege*" Account_Name != "*$*" | stats count&amp;earliest=$interval.earliest$&amp;latest=$interval.latest$</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>New Local Admins</title>
+      <single>
+        <search>
+          <query>`event_sources`AND $Computer$ AND $keyword$ $nocomputer$ $nopriv$ 
+| transaction Security_ID maxspan=180m  
+| search EventCode=4720 OR (EventCode=4732 Administrators)  
+| stats count</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0xf58f39","0xf58f39"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Events Summary</title>
+      <table id="link2">
+        <title>Computer Clickable</title>
+        <search>
+          <query>`event_sources` AND $Computer$ AND $keyword$ $nopriv$ $nocomputer$ $Audit_Type$
+| fillnull 
+| eval Type=if(Keywords=="Audit Success",Keywords, Type) 
+| eval Type=if(Keywords=="Audit Failure",Keywords, Type) 
+| stats earliest(_time) as First latest(_time) as Last  max(Message) as Sample_Message count by ComputerName, EventCode, Type 
+| sort -count ComputerName, EventCode,  Type, Sample_message 
+| rename EventCode as "EventId" 
+| fieldformat First=strftime(First,"%x %X") | fieldformat Last=strftime(Last,"%x %X")</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">row</option>
+        <option name="rowNumbers">false</option>
+        <option name="wrap">true</option>
+        <drilldown>
+          <link target="_blank">/app/Arc_reactor_app/computer_overview?ComputerName=$click.value2$</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Audit Failure Events</title>
+      <table>
+        <search>
+          <query>`event_sources` AND $Computer$ AND $keyword$ $nocomputer$ $nopriv$ AND "Audit Failure"
+| fillnull 
+| eval user=mvindex(Account_Name,1) 
+| table _time, ComputerName, EventCode, Message, user, Failure_Reason, Source_Workstation, Caller_Process_Name 
+| rename EventCode as "EventId", Caller_Process_Name as Process</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Accounts successfully logged on</title>
+      <chart>
+        <search>
+          <query>`event_sources`AND $Computer$ AND $keyword$ $nocomputer$ $nopriv$ AND  TaskCategory=Logon AND NOT Account_Name="*ANONYMOUS*" 
+| timechart count</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Audit Success Events</title>
+      <table>
+        <search>
+          <query>`event_sources` AND $Computer$ AND $keyword$ $nopriv$ $nocomputer$ "Audit Success"
+| fillnull 
+| eval Type=if(Keywords=="Audit Success",Keywords, Type) 
+| eval Type=if(Keywords=="Audit Failure",Keywords, Type) 
+| eval user=mvindex(Account_Name,1) 
+| table _time, ComputerName, EventCode, Message, user, Source_Workstation, Process_Name 
+| rename EventCode as "EventId", Process_Name as Process</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Audit events - drill down option</title>
+      <event>
+        <search>
+          <query>`event_sources` $Audit_Type$  AND $Computer$ AND $keyword$ $nopriv$ $nocomputer$ 
+| fillnull 
+| eval Type=if(Keywords=="Audit Success",Keywords, Type) 
+| eval Type=if(Keywords=="Audit Failure",Keywords, Type) 
+| eval user=mvindex(Account_Name,1) 
+| table _time, ComputerName, EventCode, Type, Message, user</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <fields>ComputerName, LogName, EventCode, SourceName, Type, Message, user</fields>
+        <option name="list.drilldown">full</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="table.drilldown">all</option>
+        <option name="type">list</option>
+      </event>
+    </panel>
+  </row>
+</form>

@@ -1,0 +1,26 @@
+<form theme="dark">
+  <label>Files</label>
+  <fieldset submitButton="false">
+    <input type="time" token="time1">
+      <label>Time Range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Top 20 Mime Types by File Count</title>
+      <table>
+        <search>
+          <query>index=zeek_files | stats count by mime_type | sort - count |rename count as Count, mime_type as "Mime Type"| head 20</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+      </table>
+    </panel>
+  </row>
+</form>

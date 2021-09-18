@@ -1,0 +1,59 @@
+<dashboard theme="dark">
+  <label>SSH</label>
+  <fieldset submitButton="false">
+    <input type="time" token="time1">
+      <label>Time Range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>SSH Connections</title>
+      <input type="dropdown" token="selected_source" searchWhenChanged="true">
+        <label>Source:</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search>
+          <query>index=zeek_ssh | stats count by id.orig_h</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+        </search>
+        <fieldForLabel>id.orig_h</fieldForLabel>
+        <fieldForValue>id.orig_h</fieldForValue>
+      </input>
+      <input type="dropdown" token="selected_destination" searchWhenChanged="true">
+        <label>Destination:</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search>
+          <query>index=zeek_ssh | stats count by id.resp_h</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+        </search>
+        <fieldForLabel>id.resp_h</fieldForLabel>
+        <fieldForValue>id.resp_h</fieldForValue>
+      </input>
+      <table>
+        <search>
+          <query>index=zeek_ssh id.orig_h="$selected_source$" id.resp_h="$selected_destination$" | table _time id.orig_h id.resp_h auth_success | rename id.orig_h as Source, id.resp_h as Destination, auth_success as "Successful Connection"</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>

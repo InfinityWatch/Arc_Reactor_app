@@ -1,0 +1,2069 @@
+[app/ui]
+version = 7.3.5
+modtime = 1590110528.279224000
+
+[app/launcher]
+version = 7.3.5
+modtime = 1590110528.280963000
+
+[nav/default]
+version = 8.2.2
+modtime = 1631406455.595116000
+
+[views/zeek_dcerpc]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631835911.433329000
+
+[views/zeek_dhcp]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631836008.376914000
+
+[views/zeek_dnp3]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409010.109856000
+
+[views/zeek_dns]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631839998.687999000
+
+[views/zeek_files]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631836633.012020000
+
+[views/zeek_ftp]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631836685.450999000
+
+[views/zeek_http]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631836758.486334000
+
+[views/zeek_intel]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631836798.244271000
+
+[views/zeek_irc]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631836815.674714000
+
+[views/zeek_kerberos]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631836877.021542000
+
+[views/zeek_modbus]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409010.230322000
+
+[views/zeek_mysql]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409010.309827000
+
+[views/zeek_ntlm]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631836902.998473000
+
+[views/zeek_pe]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631836943.721704000
+
+[views/zeek_radius]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631836964.860409000
+
+[views/zeek_rdp]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631837021.210322000
+
+[views/zeek_rfb]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409010.399217000
+
+[views/zeek_sip]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409010.383780000
+
+[views/zeek_smb]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631837059.935893000
+
+[views/zeek_smtp]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631837259.029053000
+
+[views/zeek_snmp]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409010.449629000
+
+[views/zeek_software]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631837183.266961000
+
+[views/zeek_ssh]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631837236.232837000
+
+[views/zeek_ssl]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631837630.329289000
+
+[views/zeek_tunnels]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631837651.198729000
+
+[views/zeek_weird]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631837943.179196000
+
+[views/zeek_x509]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631837820.110256000
+
+[views/windows_sysmon]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.967841000
+
+[views/windows_powershell]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.932748000
+
+[views/friday_splunk_stats]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.596009000
+
+[views/zeek_connections]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631835830.127294000
+
+[views/friday_disk_usage]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.555912000
+
+[views/friday_license_usage]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.620997000
+
+[views/friday_user_metrics]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.713295000
+
+[macros/sysmon]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.581165000
+
+[savedsearches/Crtitcal%20Process]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408980.827823000
+
+[views/passive_dns]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.284849000
+
+[views/easy_ip_search]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.297940000
+
+[views/friday_metadata]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.579989000
+
+[views/about]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631414829.531714000
+
+[views/home]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.683352000
+
+[]
+access = read : [ * ], write : [ admin, power ]
+export = system
+version = 7.3.5
+modtime = 1590450446.174744000
+
+[app/install/install_source_checksum]
+version = 8.2.2
+modtime = 1629857768.469946000
+
+[views/surricata_alerts]
+access = write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.565810000
+
+[views/zeek_status]
+access = write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631835705.109318000
+
+[macros/suricata]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.560133000
+
+[views/recon]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.420986000
+
+[inputs/monitor%3A%2F%2F%2Fhome%2Fxadmin%2FDownloads%2Fmitre_attack.csv]
+owner = admin
+version = 7.3.5
+modtime = 1593875636.398164000
+
+[views/windows_events_security]
+access = write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.790327000
+
+[views/windows_events_application]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.716761000
+
+[views/analyst_annotation_maker]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.341879000
+
+[views/analyst_annotation_viewer]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.394314000
+
+[views/4672_account_login_superuser_by_account_name]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631408980.800122000
+
+[views/file_creation_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.551937000
+
+[views/grrreat]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.761914000
+
+[views/host_analyst]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.738842000
+
+[views/network_connections]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.155679000
+
+[views/network_map]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.192840000
+
+[views/process_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.456780000
+
+[views/process_watch]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.373371000
+
+[views/recon2]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.464140000
+
+[views/registry_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.481848000
+
+[views/remote_access]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.544846000
+
+[views/sysmon_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.643987000
+
+[views/users_and_groups]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.677854000
+
+[views/windows_events_security_clone]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.755719000
+
+[views/windows_events_system]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.840570000
+
+[views/windows_processes]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.947532000
+
+[views/zeek_status_clone]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409010.522320000
+
+[views/cyber_key_terrain]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.256463000
+
+[views/network_anomalies]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.044499000
+
+[datamodels/Network_Data]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1631839678.798035000
+
+[models/Network_Data]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1631839678.802449000
+
+[macros/annotatations1]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.418831000
+
+[macros/event_sources]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.276854000
+
+[macros/mitre_attack_framework]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.867805000
+
+[macros/requirements]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.476912000
+
+[macros/OPORD]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408981.189710000
+
+[macros/mitre_attack_framework_rules]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.932882000
+
+[macros/mitre_attack_framework_rules_from_alerts]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.957505000
+
+[transforms/analyst_annotations1_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.431785000
+
+[transforms/mitre_attack_framework_all_rule_compliance_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.927913000
+
+[transforms/mitre_attack_framework_all_rule_technique_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.923652000
+
+[transforms/mitre_attack_framework_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.896424000
+
+[transforms/mitre_attack_framework_tt_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.021039000
+
+[lookups/mitre_attack_framework.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1594763069.813330000
+
+[panels/Show_Hide_panels]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408981.385817000
+
+[views/six_ioc_event_ids]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.525477000
+
+[views/mitre_attack_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.059962000
+
+[lookups/requirements.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 8.2.2
+modtime = 1629913681.683376000
+
+[macros/powershell]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.306404000
+
+[views/about_clone]
+access = write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.281247000
+
+[views/access_anomalies]
+access = write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.295124000
+
+[views/example1]
+access = write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.463691000
+
+[views/old_executive_summary]
+access = write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.233978000
+
+[views/sysmon_network_connections]
+access = write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.604044000
+
+[views/sysmon_network_overview]
+access = write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.622959000
+
+[views/windows_events_security__success_failed_logons]
+access = write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.687333000
+
+[views/windows_events_security_logon_types]
+access = write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.808776000
+
+[panels/incident_viz]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.701916000
+
+[views/jarvis]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.815226000
+
+[lookups/analyst_annotations.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596478223.861010000
+
+[datamodels/alertsignature]
+access = write : [ * ]
+export = none
+owner = admin
+version = 8.2.2
+modtime = 1631408443.575054000
+
+[models/alertsignature]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597082773.238078000
+
+[datamodels/Arc_Event_Signatures]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 7.3.5
+modtime = 1596581257.733749000
+
+[models/Arc_Event_Signatures]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = nobody
+version = 7.3.5
+modtime = 1596581257.748455000
+
+[datamodels/Sysmon]
+access = write : [ * ]
+export = none
+owner = admin
+version = 8.2.2
+modtime = 1631408450.346618000
+
+[models/Sysmon]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599427508.567636000
+
+[datamodels/Powershell]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596651483.109138000
+
+[models/Powershell]
+access = write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1596651483.132029000
+
+[views/windows_events_summary_arc]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.764697000
+
+[views/audit_events_arc]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.059263000
+
+[views/users_and_groups_arc]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.667400000
+
+[views/interesting_events_arc]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.802054000
+
+[views/processes_arc]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.368350000
+
+[views/event_sources_arc]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.326004000
+
+[views/xml_arc]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409010.039881000
+
+[lookups/arc_windows_interesting_events.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597173389.133701000
+
+[lookups/arc_windows_interesting_processes.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597173395.889771000
+
+[lookups/arc_xml_event_types.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597173404.712464000
+
+[lookups/jarvis_results.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1597173411.269929000
+
+[transforms/arc_windows_interesting_events_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.020530000
+
+[transforms/arc_windows_interesting_processes_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.110868000
+
+[transforms/arc_xml_event_types_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.101930000
+
+[transforms/processlookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.406765000
+
+[transforms/xml_raw_data_lookup]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409010.068420000
+
+[eventtypes/arc_bro_conn]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.478515000
+
+[tags/eventtype%3Darc_bro_conn]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.384480000
+
+[eventtypes/arc_bro_dns]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.520525000
+
+[tags/eventtype%3Darc_bro_dns]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.409924000
+
+[lookups/network_map.csv]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1598908784.832574000
+
+[views/arc_network_map]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.979179000
+
+[lookups/network_map2.csv]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1598918519.529903000
+
+[eventtypes/arc_bro_dhcp]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.492853000
+
+[tags/eventtype%3Darc_bro_dhcp]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.397896000
+
+[eventtypes/arc_bro_files]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.538419000
+
+[eventtypes/arc_bro_ftp]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.656222000
+
+[eventtypes/arc_bro_http]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.597260000
+
+[tags/eventtype%3Darc_bro_http]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.405888000
+
+[eventtypes/arc_bro_notice]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.791080000
+
+[tags/eventtype%3Darc_bro_notice]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.430272000
+
+[eventtypes/arc_bro_smb]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.871355000
+
+[eventtypes/arc_bro_smtp]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.760431000
+
+[tags/eventtype%3Darc_bro_smtp]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.467995000
+
+[eventtypes/arc_bro_software]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.839821000
+
+[eventtypes/arc_bro_ssh]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.853859000
+
+[eventtypes/arc_bro_ssl]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.847851000
+
+[eventtypes/arc_bro_x509]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.144311000
+
+[props/Powershell%3AScriptExecutionSummary/EXTRACT-Identity%2CInvocationLine%2CTerminatingError%2CErrorCount]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599326404.973935000
+
+[views/tstats_sysmon_network_overview]
+access = write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.927346000
+
+[views/tstats_sysmon_network_connections]
+access = write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.878332000
+
+[views/tstats_process_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.819353000
+
+[views/tstats_sysmon_overview]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.964060000
+
+[views/tstats_sysmon_process_watch]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.988739000
+
+[views/tstats_sysmon_registry_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.510361000
+
+[views/tstats_sysmon_file_creation_overview]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.857840000
+
+[views/tstats_zeek_conn]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.532815000
+
+[views/tstats_zeek_dns]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631839021.821683000
+
+[views/tstats_zeek_http]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631839755.173611000
+
+[views/tstats_windows_events_summary]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.489936000
+
+[datamodels/windows_events]
+access = write : [ * ]
+export = system
+owner = admin
+version = 8.2.2
+modtime = 1631408454.464110000
+
+[models/windows_events]
+access = write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1599672697.401370000
+
+[views/tstats_overview]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.742982000
+
+[views/tstats_intel_string_search]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.728507000
+
+[lookups/ja3-hashes.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599750842.617334000
+
+[lookups/ja3-user_agents.csv]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 7.3.5
+modtime = 1599750850.799682000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fimport%2Fbro%2Fbro-KTrl0T0s]
+owner = admin
+version = 7.3.5
+modtime = 1599751562.037546000
+
+[props/_json/FIELDALIAS-_json]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409022.368374000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fimport%2Fbro%2Fbro2]
+owner = admin
+version = 7.3.5
+modtime = 1599754650.599394000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fimport%2Fbro%2Fbro3]
+owner = admin
+version = 7.3.5
+modtime = 1599760204.841430000
+
+[views/zeek_notice]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631837993.512303000
+
+[props/bro%3Assl%3Ajson/LOOKUP-ja3-user-agent]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.155463000
+
+[props/%28%3F%3A%3A%29%7B0%7Dbro%28_%7C%3A%29%2A/FIELDALIAS-bro%20extraction]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408980.977845000
+
+[props/stream%28_%7C%3A%29%2A/FIELDALIAS-Stream]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.601792000
+
+[views/computer_overview]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.210896000
+
+[views/tstats_ssl_and_x509]
+access = read : [ * ], write : [ * ]
+export = none
+owner = splunk
+version = 8.2.2
+modtime = 1631839920.372087000
+
+[views/tstats_zeek_conn_stats]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631840167.210929000
+
+[savedsearches/tstats%20zeek%20conn%20stats%20dest_ip]
+access = write : [ * ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1631839983.976541000
+
+[savedsearches/tstats%20zeek%20conn%20stats%20dest_port]
+access = write : [ * ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911951.035378000
+
+[savedsearches/tstats%20zeek%20conn%20stats%20src_ip]
+access = write : [ * ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911951.129624000
+
+[savedsearches/tstats%20zeek%20conn%20stats%20src_port]
+access = write : [ * ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911951.127951000
+
+[views/tstats_zeek_conn_stats_by_ip]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631840358.764271000
+
+[views/tstats_zeek_conn_stats_by_destination_ip]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631840604.255821000
+
+[savedsearches/tstats%20zeek%20conn%20stats%20query]
+access = write : [ * ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911951.094449000
+
+[macros/network_traffic]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.226851000
+
+[savedsearches/tstats%20zeek%20conn%20stats%20ja3]
+access = write : [ * ]
+export = system
+owner = nobody
+version = 8.2.2
+modtime = 1629911951.039536000
+
+[views/computer_drilldown]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.172938000
+
+[views/user_drilldown]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409009.644996000
+
+[views/file_create_drilldown]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409023.530721000
+
+[views/network_conection_drilldown]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.210813000
+
+[views/pipe_name_drilldown]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.317953000
+
+[views/parentprocess_guid_drilldown]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.251868000
+
+[views/process_guid_drilldown]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631409024.337018000
+
+[lookups/Frothly.csv]
+access = read : [ * ], write : [ * ]
+export = system
+owner = admin
+version = 7.3.5
+modtime = 1603115091.577025000
+
+[savedsearches/%5BT0000%5D%20Connections%20from%20Uncommon%20Locations]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631754765.442548000
+
+[savedsearches/%5BT0000%5D%20Console%20History]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408981.566175000
+
+[savedsearches/%5BT0000%5D%20Suspicious%20filename%20used]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408981.984960000
+
+[savedsearches/%5BT0000%5D%20Remotely%20Query%20Login%20Sessions%20-%20Network]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408981.925875000
+
+[savedsearches/%5BT0000%5D%20Named%20Pipes%20-%20CobaltStrike]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408981.674031000
+
+[savedsearches/%5BT0000%5D%20Named%20Pipes]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631833631.647749000
+
+[savedsearches/%5BT0000%5D%20Remotely%20Query%20Login%20Sessions%20-%20Process]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408981.946891000
+
+[savedsearches/%5BT1002%5D%20Data%20Compressed]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408981.791284000
+
+[savedsearches/%5BT1003%5D%20Credential%20Dumping%20-%20Process]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.028431000
+
+[savedsearches/%5BT1002%5D%20Data%20Compressed%20-%20Files]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.098990000
+
+[savedsearches/%5BT1003%5D%20Credential%20Dumping%20-%20Registry]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.193423000
+
+[savedsearches/%5BT1003%5D%20Credential%20Dumping%20-%20Process%20Access]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.207069000
+
+[savedsearches/%5BT1003%5D%20Credential%20Dumping%20-%20Registry%20Save]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.329106000
+
+[savedsearches/%5BT1003%5D%20Credential%20Dumping%20ImageLoad]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.343747000
+
+[views/jarvis2]
+owner = splunk
+version = 8.2.2
+modtime = 1630006412.842610000
+
+[views/mitre_attack_coverage]
+owner = splunk
+version = 8.2.2
+modtime = 1629939514.362015000
+
+[views/mitre_attack_overview_th]
+owner = splunk
+version = 8.2.2
+modtime = 1630010995.235627000
+
+[views/dns_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007166.188115000
+
+[views/file_access_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007266.220523000
+
+[views/file_created_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007302.265886000
+
+[views/process_access_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007347.852588000
+
+[views/remote_thread_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007382.543985000
+
+[views/registry_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007412.567534000
+
+[views/image_load_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007444.348832000
+
+[views/pipe_created_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007524.104177000
+
+[views/wmi_whitelist_editor]
+owner = splunk
+version = 8.2.2
+modtime = 1630007555.265715000
+
+[indexes/network]
+owner = splunk
+version = 8.2.2
+modtime = 1630013860.975151000
+
+[views/initial_triage_mitre_network_jarvis]
+owner = splunk
+version = 8.2.2
+modtime = 1631409162.902019000
+
+[views/initial_triage_mitre_host_jarvis]
+owner = splunk
+version = 8.2.2
+modtime = 1631409136.243044000
+
+[indexes/network_jarvis_summary]
+owner = splunk
+version = 8.2.2
+modtime = 1631406532.672658000
+
+[indexes/host_jarvis_summary]
+owner = splunk
+version = 8.2.2
+modtime = 1631406545.395429000
+
+[macros/host_jarvis_summary]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631407955.706276000
+
+[macros/network_jarvis_summary]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631407972.004706000
+
+[macros/indextime]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631423116.503848000
+
+[props/WinEventLog%3AMicrosoft-Windows-Sysmon%2FOperational/LOOKUP-sysmoneventcodes]
+owner = splunk
+version = 8.2.2
+modtime = 1631408981.523823000
+
+[props/XmlWinEventLog%3AMicrosoft-Windows-Sysmon%2FOperational/LOOKUP-sysmoneventcodes]
+owner = splunk
+version = 8.2.2
+modtime = 1631408981.531228000
+
+[savedsearches/%5BT1004%5D%20Winlogon%20Helper%20DLL]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.341775000
+
+[savedsearches/%5BT1007%5D%20System%20Service%20Discovery]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.345532000
+
+[savedsearches/%5BT1012%5D%20Query%20Registry%20-%20Network]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.436849000
+
+[savedsearches/%5BT1012%5D%20Query%20Registry%20-%20Process]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.440758000
+
+[savedsearches/%5BT1015%5D%20Accessibility%20Features%20-%20Registry]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.505698000
+
+[savedsearches/%5BT1015%5D%20Accessibility%20Features]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.512793000
+
+[savedsearches/%5BT1013%5D%20Local%20Port%20Monitor]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.514650000
+
+[savedsearches/%5BT1016%5D%20System%20Network%20Configuration%20Discovery]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.516489000
+
+[savedsearches/%5BT1018%5D%20Remote%20System%20Discovery%20-%20Network]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.646103000
+
+[savedsearches/%5BT1018%5D%20Remote%20System%20Discovery%20-%20Process]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.649767000
+
+[savedsearches/%5BT1027%5D%20Obfuscated%20Files%20or%20Information]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.750004000
+
+[savedsearches/%5BT1031%5D%20Modify%20Existing%20Service]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.757763000
+
+[savedsearches/%5BT1028%5D%20Windows%20Remote%20Management]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.759624000
+
+[savedsearches/%5BT1033%5D%20System%20Owner%2FUser%20Discovery]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.761585000
+
+[savedsearches/%5BT1036%5D%20Masquerading%20-%20Extension]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.862832000
+
+[savedsearches/%5BT1033%5D%20System%20Owner%2FUser%20Discovery%20-%20Network]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.866850000
+
+[savedsearches/%5BT1036%5D%20Masquerading%20-%20Location]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.949462000
+
+[savedsearches/%5BT1036%5D%20Masquerading%20-%20renamedbin]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.953537000
+
+[savedsearches/%5BT1036%5D%20Masquerading%20-%20explorer]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408982.960736000
+
+[savedsearches/%5BT1037%5D%20Logon%20Scripts]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.034686000
+
+[savedsearches/%5BT1040%5D%20Network%20Sniffing]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.072954000
+
+[savedsearches/%5BT1036%5D%20Masquerading%20-%20svchost]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.089798000
+
+[savedsearches/%5BT1040%5D%20Network%20Sniffing%20-%20Packet%20Capture%20Tools]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.130626000
+
+[savedsearches/%5BT1040%5D%20Network%20Sniffing%20-%20Process]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.134020000
+
+[savedsearches/%5BT1042%5D%20Change%20Default%20File%20Association]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.196081000
+
+[savedsearches/%5BT1043%5D%20Commonly%20Used%20Port]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.257133000
+
+[savedsearches/%5BT1044%5D%20File%20System%20Permissions%20Weakness]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.270194000
+
+[savedsearches/%5BT1047%5D%20WMI%20command%20execution]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.275961000
+
+[savedsearches/%5BT1047%5D%20Windows%20Management%20Instrumentation%20-%20Instances%20of%20an%20Active%20Script%20Event%20Consumer%20-%20FileAccess]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.279394000
+
+[savedsearches/%5BT1047%5D%20Windows%20Management%20Instrumentation%20-%20Instances%20of%20an%20Active%20Script%20Event%20Consumer%20-%20Process]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.282867000
+
+[savedsearches/%5BT1050%5D%20New%20Service%20-%20Process]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.535729000
+
+[savedsearches/%5BT1047%5D%20Windows%20Management%20Instrumentation%20-%20Process]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.542828000
+
+[savedsearches/%5BT1049%5D%20System%20Network%20Connections%20Discovery]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.573866000
+
+[savedsearches/%5BT1047%5D%20Windows%20Management%20Instrumentation%20-%20Network]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.582530000
+
+[savedsearches/%5BT1053%5D%20Scheduled%20Task%20-%20FileAccess]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.850905000
+
+[savedsearches/%5BT1053%5D%20Scheduled%20Task%20-%20Process]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408983.921703000
+
+[savedsearches/%5BT1054%5D%20Indicator%20Blocking%20-%20Unknown%20Sysmon%20Config%20loaded]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631754745.236683000
+
+[savedsearches/%5BT1054%5D%20Indicator%20Blocking%20-%20Driver%20unloaded]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.203948000
+
+[savedsearches/%5BT1054%5D%20Indicator%20Blocking%20-%20Sysmon%20registry%20edited%20from%20other%20source]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.286679000
+
+[savedsearches/%5BT1055%5D%20Process%20Injection]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.327979000
+
+[savedsearches/%5BT1055%5D%20Process%20Injection%20-%20CobaltStrike]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.384889000
+
+[savedsearches/%5BT1057%5D%20Process%20Discovery]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.497214000
+
+[savedsearches/%5BT1060%5D%20Registry%20Run%20Keys%20or%20Start%20Folder]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.540236000
+
+[savedsearches/%5BT1059%5D%20Command-Line%20Interface]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.576765000
+
+[savedsearches/%5BT1055%5D%20Process%20Injection%20-%20Process]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.582838000
+
+[savedsearches/%5BT1060%5D%20Registry%20Run%20Keys%20or%20Start%20Folder%20-%20Folder%20Changed]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.691096000
+
+[savedsearches/%5BT1063%5D%20Security%20Software%20Discovery]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.703850000
+
+[savedsearches/%5BT1069%5D%20Permission%20Groups%20Discovery%20-%20Network]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.730174000
+
+[savedsearches/%5BT1070%5D%20Indicator%20Removal%20on%20Host]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.795216000
+
+[savedsearches/%5BT1071%5D%20Standard%20Application%20Layer%20Protocol]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.806811000
+
+[savedsearches/%5BT1069%5D%20Permission%20Groups%20Discovery%20-%20Process]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.808941000
+
+[savedsearches/%5BT1074%5D%20Data%20Staged%20-%20Process]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.884442000
+
+[savedsearches/%5BT1073%5D%20DLL%20Side-Loading%20-%20PowerShell]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.896808000
+
+[savedsearches/%5BT1073%5D%20DLL%20Side-Loading%20-%20WMI]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.898920000
+
+[savedsearches/%5BT1076%5D%20Remote%20Desktop%20Protocol%20-%20Process]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.972270000
+
+[savedsearches/%5BT1075%5D%20Pass%20the%20Hash%20NULL%20SID]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.982912000
+
+[savedsearches/%5BT1076%5D%20Remote%20Desktop%20Protocol%20-%20Network]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408984.985107000
+
+[savedsearches/%5BT1077%5D%20Windows%20Admin%20Shares%20-%20Network]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408985.064095000
+
+[savedsearches/%5BT1076%5D%20Remote%20Desktop%20Protocol%20-%20Registry]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408985.071016000
+
+[savedsearches/%5BT1077%5D%20Windows%20Admin%20Shares%20-%20Process]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408985.103643000
+
+[savedsearches/%5BT1082%5D%20System%20Information%20Discovery]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408985.162669000
+
+[savedsearches/%5BT1077%5D%20Windows%20Admin%20Shares%20-%20Process%20-%20Created]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408985.171879000
+
+[savedsearches/%5BT1081%5D%20Credentials%20in%20Files]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408985.173985000
+
+[savedsearches/%5BT1084%5D%20Windows%20Management%20Instrumentation%20Event%20Subscription]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408985.256043000
+
+[savedsearches/%5BT1085%5D%20Rundll32]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408985.276775000
+
+[savedsearches/%5BT1086%5D%20PowerShell]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408985.294818000
+
+[savedsearches/%5BT1086%5D%20PowerShell%20Base64%20block%20used]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408985.355267000
+
+[savedsearches/%5BT1086%5D%20PowerShell%20Downloads%20-%20WinProcess]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408985.377179000
+
+[savedsearches/%5BT1086%5D%20PowerShell%20Downloads%20-%20Process]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631408985.390866000
+
+[macros/zeek_fat]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631835121.778752000
+
+[macros/zeek_skinny]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631835126.390584000
+
+[macros/windows-app]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631411290.126254000
+
+[macros/windows]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631411298.235491000
+
+[macros/windows-security]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631411305.597497000
+
+[macros/windows-system]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631411312.614082000
+
+[macros/windows-wmi]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631411319.722853000
+
+[macros/dns_whitelist]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631415290.626608000
+
+[macros/file_access_whitelist]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631415296.566324000
+
+[macros/file_create_whitelist]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631415302.518793000
+
+[macros/image_load_whitelist]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631415308.604311000
+
+[macros/network_whitelist]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631415316.526241000
+
+[macros/pipe_whitelist]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631415323.956820000
+
+[macros/process_access_whitelist]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631415331.222430000
+
+[macros/process_create_whitelist]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631415337.352656000
+
+[macros/registry_whitelist]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631415343.167886000
+
+[macros/remote_thread_whitelist]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631415348.587038000
+
+[macros/wmi_whitelist]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631415362.683083000
+
+[lookups/dns_whitelist.csv]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631418110.000882000
+
+[savedsearches/%5BT1089%5D%20Disabling%20Security%20Tools%20-%20Sysmon%20service%20state%20change]
+version = 8.2.2
+modtime = 1631754775.905455000
+
+[macros/zeek]
+access = read : [ * ], write : [ * ]
+export = system
+owner = splunk
+version = 8.2.2
+modtime = 1631835115.763769000

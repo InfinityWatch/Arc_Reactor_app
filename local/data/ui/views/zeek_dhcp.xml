@@ -1,0 +1,27 @@
+<form theme="dark">
+  <label>Zeek DHCP</label>
+  <fieldset submitButton="false">
+    <input type="time" token="time1">
+      <label>Time Range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>DHCP Client address</title>
+      <table>
+        <search>
+          <!-- <query>eventtype="bro_dhcp"  | table client_addr host_name domain mac | dedup client_addr</query> -->
+          <query>index=zeek_dhcp  | table src_ip host src_mac | dedup src_ip</query>
+          <earliest>$time1.earliest$</earliest>
+          <latest>$time1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+      </table>
+    </panel>
+  </row>
+</form>

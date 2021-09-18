@@ -1,0 +1,110 @@
+<form theme="dark">
+  <label>SSL and X509</label>
+  <search id="basesearch">
+    <query>index=zeek_ssl OR index=zeek_x509  | fields  issuer server_name validation_status cipher ja3 ja3-User-Agent </query>
+    <earliest>$field1.earliest$</earliest>
+    <latest>$field1.latest$</latest>
+    <sampleRatio>1</sampleRatio>
+  </search>
+  <search id="basesearch2">
+    <query>index=zeek_ssl OR index=zeek_x509 | fields  cipher certificate.subject </query>
+    <earliest>$field1.earliest$</earliest>
+    <latest>$field1.latest$</latest>
+    <sampleRatio>1</sampleRatio>
+  </search>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="time" token="field1">
+      <label>Time Range</label>
+      <default>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row id="row_top_1">
+    <panel>
+      <title>SSL Top Certificate Subjects</title>
+      <table>
+        <search base="basesearch">
+          <query> | eval c_id = coalesce(issuer, server_name) | top c_id | rename c_id as ID, count as Count, percent as Percent</query>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel>
+      <title>SSL Top JA3 User-Agents</title>
+      <table>
+        <search base="basesearch">
+          <query>| stats count by ja3 | rename ja3 as "JA3 Hash" ja3s as "JA3 server" | sort - count</query>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row id="row_top_2">
+    <panel>
+      <title>SSL Top Local Responders - Validation Status</title>
+      <table>
+        <search base="basesearch">
+          <query> | top validation_status | rename validation_status as "Validation Status", count as Count, percent as Percent</query>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel>
+      <title>SSL Top Ciphers</title>
+      <chart>
+        <search base="basesearch">
+          <query> | top cipher</query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row id="row_x509_2">
+    <panel>
+      <title>x509 Top Subjects</title>
+      <table>
+        <search base="basesearch2">
+          <query> | top certificate.subject | rename certificate.subject as "Certificate Subject"</query>
+        </search>
+      </table>
+    </panel>
+    <panel>
+      <title>x509 Rare Subjects</title>
+      <table>
+        <search base="basesearch2">
+          <query>| rare certificate.subject | rename certificate.subject as "Certificate Subject", count as Count, percent as Percent</query>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>

@@ -1,0 +1,86 @@
+<form theme="dark">
+  <label>Tstats overview</label>
+  <fieldset submitButton="false">
+    <input type="time" token="field1">
+      <label></label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <table>
+        <title>Network Data</title>
+        <search id="basesearch1">
+          <query>| tstats count from datamodel=Network_Data.All_Traffic by All_Traffic.src_user
+| sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>Windows Data</title>
+        <search id="basesearch2">
+          <query>| tstats count from datamodel=windows_events.Windows_events_sources by Windows_events_sources.ComputerName | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>Sysmon Data</title>
+        <search id="basesearch3">
+          <query>| tstats  count from datamodel=Sysmon.sysmon by sysmon.Computer sysmon.User | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Network Data</title>
+      <table>
+        <title>Eval'd</title>
+        <search base="basesearch1">
+          <query>| table *</query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Windows data</title>
+      <table>
+        <title>Eval'd</title>
+        <search base="basesearch2">
+          <query>| table *</query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Sysmon Data</title>
+      <table>
+        <title>Eval'd</title>
+        <search base="basesearch3">
+          <query>| table *</query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>

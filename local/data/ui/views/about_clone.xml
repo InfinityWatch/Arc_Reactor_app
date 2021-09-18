@@ -1,0 +1,67 @@
+<dashboard>
+  <label>About this app</label>
+  <row>
+    <panel>
+      <title>Required app status</title>
+      <table>
+        <search>
+          <query>| inputlookup requirements.csv | eval tag="csv" | append [| rest /services/apps/local | search disabled=0 label="Microsoft Sysmon Add-on" OR label="Splunk Add-on for Microsoft Windows" OR label="Palo Alto Networks Add-on" OR label="Splunk Stream" OR label="TA-Suricata" OR label="Splunk Add-on for Zeek aka Bro" OR label="Tenable Add-On for Splunk" OR label="Tenable App for Splunk" OR label="Splunk Common Information Model" OR label="Splunk Datasets Add-On" | eval tag="rest" ] | stats count(eval(tag=="csv")) as csv count(eval(tag=="rest")) as rest list(required) as required by label | eval status=if((rest&gt;0), "Installed", "Missing") | rename label as app | table app status</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <format type="color" field="status">
+          <colorPalette type="sharedList"></colorPalette>
+          <scale type="sharedCategory"></scale>
+        </format>
+      </table>
+    </panel>
+    <panel>
+      <title>Whitelist files created/installed - without searches will not work</title>
+      <table>
+        <search>
+          <query>| rest /servicesNS/-/-/data/lookup-table-files 
+| search eai:appName=Arc_reactor_app title="*whitelist.csv" OR "*annotations1.csv" OR "*mitre_attack_framework.csv"  
+| rex field=title mode=sed "s/Arc_reactor_app_//g" 
+| rex field=title mode=sed "s/.csv//g" 
+| eval tag="csv" 
+| append 
+	[| rest /servicesNS/-/Arc_reactor_app/configs/conf-macros 
+	| search title="*_whitelist" OR "*annotations1" OR "*etp"
+	| eval tag="rest" ] 
+| stats count(eval(tag=="csv")) as csv count(eval(tag=="rest")) as rest list(required) as required by title 
+| eval status=if((csv>0), "Installed", "Missing") 
+| table title status</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <format type="color" field="status">
+          <colorPalette type="sharedList"></colorPalette>
+          <scale type="sharedCategory"></scale>
+        </format>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Macro's - make sure the indexes are set properly</title>
+      <table>
+        <search>
+          <query>| rest /servicesNS/-/Arc_reactor_app/configs/conf-macros | search title!="*_whitelist" | table title definition</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">row</option>
+        <drilldown>
+          <link target="_blank">
+            <![CDATA[../../manager/Arc_reactor_app/admin/macros]]>
+          </link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+</dashboard>

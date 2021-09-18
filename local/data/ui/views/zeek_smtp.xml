@@ -1,0 +1,111 @@
+<form theme="dark">
+  <label>SMTP</label>
+  <search id="basesearch">
+    <query>index=zeek_smtp | fields src_ip dest_ip content_transfer_encoding recipient sender_email subject content  </query>
+    <earliest>$field1.earliest$</earliest>
+    <latest>$field1.latest$</latest>
+    <sampleRatio>1</sampleRatio>
+  </search>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="time" token="field1">
+      <label>Time Range</label>
+      <default>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Top Receiver</title>
+      <table>
+        <title>Click on the Count arrows to see rare values</title>
+        <search base="basesearch">
+          <query>| stats count by recipient 
+|  sort - count</query>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top Sender</title>
+      <table>
+        <search base="basesearch">
+          <query>| stats count by sender_email
+| sort - count</query>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top Subject</title>
+      <table>
+        <search base="basesearch">
+          <query>| stats count by subject
+| sort - count</query>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Encoding Types</title>
+      <table>
+        <search base="basesearch">
+          <query>| stats count by content_transfer_encoding
+| sort - count</query>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <input type="dropdown" token="recipient">
+        <label>Top Receiver</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search base="basesearch">
+          <query> | stats count by recipient</query>
+        </search>
+        <fieldForLabel>recipient</fieldForLabel>
+        <fieldForValue>recipient</fieldForValue>
+      </input>
+      <input type="dropdown" token="sender_email">
+        <label>Top Sender</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search base="basesearch">
+          <query> | stats count by sender_email</query>
+        </search>
+        <fieldForLabel>sender_email</fieldForLabel>
+        <fieldForValue>sender_email</fieldForValue>
+      </input>
+      <input type="dropdown" token="subject" searchWhenChanged="true">
+        <label>Top Subject</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search base="basesearch">
+          <query> | stats count by subject</query>
+        </search>
+        <fieldForLabel>subject</fieldForLabel>
+        <fieldForValue>subject</fieldForValue>
+      </input>
+      <table>
+        <search base="basesearch">
+          <query>| search subject="$subject$" recipient="$recipient$" sender_email="$sender_email$" | eval Time=strftime(_time, "%d/%m/%Y %H:%M:%S") | table Time recipient sender_email subject | rename subject AS Subject, recipient AS "Receiver Email", sender_email AS "Sender Email"</query>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>

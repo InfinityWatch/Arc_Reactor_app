@@ -1,0 +1,155 @@
+<form theme="dark">
+  <label>HTTP</label>
+  <search id="basesearch">
+    <query>index=zeek_http | fields flow_id dest_ip src_ip http_comment http_method http_user_agent method status status_code status_msg</query>
+    <earliest>$field1.earliest$</earliest>
+    <latest>$field1.latest$</latest>
+    <sampleRatio>1</sampleRatio>
+  </search>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="time" token="field1">
+      <label>Time Range</label>
+      <default>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row id="row_top_2">
+    <panel>
+      <title>Top Host Headers by Count</title>
+      <table>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_http | stats values(*) as * by uid dest src | iplocation id.resp_h | top id.orig_h showperc=f | rename id.orig_h as Host, count as Count</query> -->
+          <query>| stats values(*) as * by flow_id dest_ip src_ip | top src_ip showperc=f | rename src_ip as Host, count as Count</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>HTTP Status Code Breakdown</title>
+      <chart>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_http | top status_code</query> -->
+          <query>| top status</query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Top Originators</title>
+      <table>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_http  | stats sparkline as "Originator Over Time" count by id.orig_h| sort - count | head 10 | rename id.orig_h as Host, count as Count</query> -->
+          <query>| stats sparkline as "Originator Over Time" count by src_ip | sort - count | head 10 | rename src_ip as Host, count as Count</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <format field="Originator over time" type="sparkline">
+          <option name="type">bar</option>
+        </format>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Host Breakdown By HTTP Method</title>
+      <input type="dropdown" token="selected_method_host" searchWhenChanged="true">
+        <label>Host:</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_http | stats count by id.orig_h</query> -->
+          <query>| stats count by src_ip</query>
+        </search>
+        <fieldForLabel>src_ip</fieldForLabel>
+        <fieldForValue>src_ip</fieldForValue>
+      </input>
+      <input type="dropdown" token="data_selected_method" searchWhenChanged="true">
+        <label>HTTP Method:</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_http | stats count by method</query> -->
+          <query>| stats count by http_method</query>
+        </search>
+        <fieldForLabel>http_method</fieldForLabel>
+        <fieldForValue>http_method</fieldForValue>
+      </input>
+      <table>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_http id.orig_h="$selected_method_host$" method="$data_selected_method$" | stats count by id.orig_h, method | sort - count | table id.orig_h, method,count | rename id.orig_h as Host, method as Method, count as Count</query> -->
+          <query>| search src_ip="$selected_method_host$" method="$data_selected_method$" | stats count by src_ip, method | sort - count | table src_ip, http_method, count | rename src_ip as Host, http_method as Method, count as Count</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Host Breakdown By HTTP Status</title>
+      <input type="dropdown" token="selected_status_host" searchWhenChanged="true">
+        <label>Host:</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_http | stats count by id.orig_h</query> -->
+          <query>| stats count by src_ip</query>
+        </search>
+        <fieldForLabel>src_ip</fieldForLabel>
+        <fieldForValue>src_ip</fieldForValue>
+      </input>
+      <input type="dropdown" token="data_selected_status" searchWhenChanged="true">
+        <label>HTTP Status:</label>
+        <default>*</default>
+        <initialValue>*</initialValue>
+        <choice value="*">All</choice>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_http | stats count by status_code</query> -->
+          <query>| stats count by status_code</query>
+        </search>
+        <fieldForLabel>status_code</fieldForLabel>
+        <fieldForValue>status_code</fieldForValue>
+      </input>
+      <table>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_http id.orig_h="$selected_status_host$" status_code="$data_selected_status$" | stats count by id.orig_h,status_code,status_msg | sort - count | table id.orig_h,status_code,status_msg,count | rename id.orig_h as Host, count as Count, status_code as "Status Code", status_msg as "Status Message"</query> -->
+          <query>| search src_ip="$selected_status_host$" status_code="$data_selected_status$" | stats count by src_ip, status, status_msg | sort - count | table src_ip, status, status_msg, count | rename src_ip as Host, count as Count, status as "Status Code", status_msg as "Status Message"</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Rare User Agents</title>
+      <table>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_http | rare http_user_agent | sort count | rename http_user_agent as "User Agent", count as Count, percent as Percent</query> -->
+          <query>| rare http_user_agent | sort count | rename http_user_agent as "User Agent", count as Count, percent as Percent</query>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Rare Host Headers</title>
+      <table>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_http | rare id.orig_h | sort count | rename id.orig_h as Host, count as Count, percent as Percent</query> -->
+          <query>| rare src_ip | sort count | rename src_ip as Host, count as Count, percent as Percent</query>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>

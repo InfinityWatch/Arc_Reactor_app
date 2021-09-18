@@ -1,0 +1,97 @@
+<form onunloadCancelJobs="true" theme="dark">
+  <label>example1</label>
+  <description>view annotations from a lookup table</description>
+  <init>
+    <set token="colorizeData">
+      <![CDATA[{"benign":#adff22, "benign":#adff22, "suspicious":#ffd700, "malicious":#ff0000}]]>
+    </set>
+  </init>
+  <search id="mainQuery">
+    <query>| inputlookup analyst_annotations1.csv $drillDown$</query>
+    <done>
+      <set token="jobSid">$job.sid$</set>
+    </done>
+  </search>
+  <fieldset submitButton="true">
+    <input type="text" token="drillDown" searchWhenChanged="false">
+      <label>Search for Indicator</label>
+      <prefix>| search annotatedIndicator="*</prefix>
+      <suffix>*"</suffix>
+      <default></default>
+    </input>
+    <input type="checkbox" token="drillDown" searchWhenChanged="true">
+      <label>Reset Drilldowns</label>
+      <choice value=" | search * ">Check/Re-Check to Reset</choice>
+    </input>
+  </fieldset>
+  <row>
+    <panel depends="$hideAnnotationTable$">
+      <title>Annotation Table</title>
+      <table>
+        <search base="mainQuery">
+          <query>| table annotatedSubmissionTime annotatedUsername annotatedRating annotatedType annotatedTactic annotatedTechnique1 annotatedEventStart annotatedEventEnd annotatedAffectedAsset annotatedIndicator annotatedComment | eval hide = "⊘" | sort -annotatedSubmissionTime</query>
+          <progress>
+            <condition match="'job.resultCount' &gt; 0">
+              <set token="hideAnnotationTable">true</set>
+            </condition>
+            <condition>
+              <unset token="hideAnnotationTable"></unset>
+            </condition>
+          </progress>
+        </search>
+        <option name="count">5</option>
+        <format type="color" field="annotatedRating">
+          <colorPalette type="map">$colorizeData$</colorPalette>
+        </format>
+        <drilldown>
+          <condition field="annotatedSubmissionTime">
+            <set token="drilldown">$drillDown$ AND annotatedSubmissionTime="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedUsername">
+            <set token="drilldown">$drillDown$ AND annotatedUsername="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedRating">
+            <set token="drilldown">$drillDown$ AND annotatedRating="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedType">
+            <set token="drilldown">$drillDown$ AND annotatedType="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedPhase">
+            <set token="drilldown">$drillDown$ AND annotatedPhase="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedEventStart">
+            <set token="drilldown">$drillDown$ AND annotatedEventStart="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedEventEnd">
+            <set token="drilldown">$drillDown$ AND annotatedEventEnd="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedAffectedAsset">
+            <set token="drilldown">$drillDown$ AND annotatedAffectedAsset="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedIndicator">
+            <set token="drilldown">$drillDown$ AND annotatedIndicator="$click.value2$"</set>
+          </condition>
+          <condition field="annotatedComment">
+            <set token="drilldown">$drillDown$ AND annotatedComment="$click.value2$"</set>
+          </condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| inputlookup analyst_annotations1.csv 
+|  search annotatedTactic="discovery"
+| stats count by annotatedTechnique1
+| rename annotatedTechnique1 AS Discovery
+| eval output = (Discovery) . ";" . (count)</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>

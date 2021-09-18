@@ -1,0 +1,103 @@
+<form theme="dark">
+  <label>Tstats Zeek DNS</label>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="time" token="field1">
+      <label>Time Range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row id="row_top_1">
+    <panel>
+      <title>Top Query Types</title>
+      <chart>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic by All_Traffic.record_type | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Top 10 Queries by Count</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where NOT All_Traffic.record_type="PTR" by All_Traffic.query | stats sparkline count by All_Traffic.query | sort - count | rename All_Traffic.query as Query, sparkline as Sparkline, count as Count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top 10 Rare Queries by Count</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where NOT All_Traffic.record_type="PTR" by All_Traffic.query | rename All_Traffic.query as Query, count as Count | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row id="row_top_2">
+    <panel>
+      <title>Top 10 Queries by Count to Non-Existent Domains</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where NOT All_Traffic.record_type="PTR" by All_Traffic.query | sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top Originators by Count</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic by All_Traffic.src_ip | sort - count| rename All_Traffic.src_ip as Source, count as Count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top Successful Reverse Queries by Count</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.record_type="PTR" All_Traffic.rcode_name="NoError" by All_Traffic.query | sort - count | rename All_Traffic.query as Query, count as Count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Top Reverse Queries by Count to Non-Existent Domains</title>
+      <table>
+        <search>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.record_type="PTR" All_Traffic.rcode_name="NXDomain" by All_Traffic.query 
+| rare 40 All_Traffic.query</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>

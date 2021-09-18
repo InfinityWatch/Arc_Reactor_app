@@ -1,0 +1,50 @@
+<form theme="dark">
+  <label>Sysmon Network Connections</label>
+  <fieldset submitButton="true">
+    <input type="time" token="timsel">
+      <label></label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" token="imgsel">
+      <label>Image</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="destinations">
+      <label>Destinations</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="portsel">
+      <label>Ports</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="protosel">
+      <label>Protocols</label>
+      <default>*</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title></title>
+      <table>
+        <title></title>
+        <search>
+          <query>`sysmon` EventCode=3 Image="$imgsel$" Protocol="$protosel$" DestinationPort="$portsel$" "$destinations$" | eval Destination=coalesce(DestinationHostname,DestinationIp) | stats count, values(Destination) AS "Destinations", values(DestinationPort) AS "Ports", values(Protocol) AS "Protocols" by Image | fields Image Destinations Ports Protocols count | sort - count</query>
+          <earliest>$timsel.earliest$</earliest>
+          <latest>$timsel.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>

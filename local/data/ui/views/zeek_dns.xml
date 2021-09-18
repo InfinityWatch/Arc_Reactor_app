@@ -1,0 +1,101 @@
+<form theme="dark">
+  <label>DNS</label>
+  <search id="basesearch">
+    <query>index=zeek_dns | fields Time conn_state src_ip src_port dest_ip dest_port "name{}" proto query record_type rcode_name service query  </query>
+    <earliest>$field1.earliest$</earliest>
+    <latest>$field1.latest$</latest>
+    <sampleRatio>1</sampleRatio>
+  </search>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="time" token="field1">
+      <label>Time Range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row id="row_top_1">
+    <panel>
+      <title>Top Query Types</title>
+      <chart>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_dns | top record_type</query> -->
+          <query> | top record_type</query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Top 10 Queries by Count</title>
+      <table>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_dns NOT record_type="PTR" | stats sparkline count by query | sort - count | head 10 | rename query as Query, sparkline as Sparkline, count as Counth</query> -->
+          <query>| search NOT record_type="PTR" | stats sparkline count by query | sort - count | head 10 | rename query as Query, sparkline as Sparkline, count as Count</query>
+        </search>
+        <option name="count">10</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top 10 Rare Queries by Count</title>
+      <table>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_dns NOT record_type="PTR" | stats sparkline count by query | sort - count | tail 10 | rename query as Query, sparkline as Sparkline, count as Count</query> -->
+          <query>| search NOT record_type="PTR" | stats sparkline count by query | sort - count | tail 10 | rename query as Query, sparkline as Sparkline, count as Count</query>
+        </search>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row id="row_top_2">
+    <panel>
+      <title>Top 10 Queries by Count to Non-Existent Domains</title>
+      <table>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_dns rcode_name="NXDOMAIN" NOT record_type="PTR" | stats sparkline count by query | sort - count | head 10 | rename query as Query, sparkline as Sparkline, count as Count</query> -->
+          <query>| search "rcode_name"="NXDomain" NOT record_type="PTR" | stats sparkline count by "query" | sort - count | head 10 | rename "query" as Query, sparkline as Sparkline, count as Count</query>
+        </search>
+        <option name="count">10</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top Originators by Count</title>
+      <table>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_dns | top src_ip showperc=f | rename src_ip as Source, count as Count</query> -->
+          <query> | top src_ip showperc=f | rename src_ip as Source, count as Count</query>
+        </search>
+        <option name="count">10</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Top Successful Reverse Queries by Count</title>
+      <table>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_dns record_type="PTR" rcode_name="NOERROR" | top query showperc=f | rename query as Query, count as Count</query> -->
+          <query>| search record_type="PTR" rcode_name="NoError" | top query showperc=f | rename query as Query, count as Count</query>
+        </search>
+        <option name="count">10</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Top Reverse Queries by Count to Non-Existent Domains</title>
+      <table>
+        <search base="basesearch">
+          <!-- <query>index=zeek eventtype=bro_dns record_type="PTR" rcode_name="NXDOMAIN" | top query showperc=f | rename query as Query, count as Count</query> -->
+          <query>| search record_type="PTR" rcode_name="NXDomain" | top query showperc=f | rename query as Query, count as Count</query>
+        </search>
+        <option name="count">10</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>

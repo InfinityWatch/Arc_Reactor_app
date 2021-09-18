@@ -1,0 +1,127 @@
+<form theme="dark">
+  <label>Tstats Intel String Search</label>
+  <fieldset autoRun="false" submitButton="true">
+    <input type="time" searchWhenChanged="false" token="interval">
+      <label>Select time range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" searchWhenChanged="false" token="keyword">
+      <label>Keyword:</label>
+      <default>*</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <chart>
+        <search>
+          <query>| tstats count where `OPORD` TERM("$keyword$") by sourcetype _time
+| timechart count by sourcetype</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="charting.chart">area</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <single>
+        <title>Sysmon Count</title>
+        <search>
+          <query>| tstats count where `sysmon` TERM("$keyword$")</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Network Count</title>
+        <search>
+          <query>| tstats count where `network` TERM("$keyword$")</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Windows Count</title>
+        <search>
+          <query>| tstats count where `win_event_sources` TERM("$keyword$")</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <table>
+        <title>Count by Sourcetype</title>
+        <search>
+          <query>| tstats count where `OPORD` TERM("$keyword$") by sourcetype</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Sysmon Data</title>
+      <table>
+        <search>
+          <query>`sysmon` TERM("$keyword$") 
+| table _time Computer EventID CommandLineProcessId ParentProcessId _raw</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Network Data</title>
+      <table>
+        <search>
+          <query>`network` TERM("$keyword$") 
+| table _time src_ip src_port dest_ip dest_port protocol _raw</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Windows Data</title>
+      <table>
+        <search>
+          <query>`win_event_sources` TERM("$keyword$") 
+| table _time event_id ComputerName user _raw</query>
+          <earliest>$interval.earliest$</earliest>
+          <latest>$interval.latest$</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>

@@ -1,0 +1,60 @@
+<form theme="dark">
+  <label>Zeek DCE/RPC</label>
+  <search id="basesearch">
+    <query>`zeek` | fields Time src_ip src_port dest_ip dest_port endpoint operation </query>
+    <earliest>$time1.earliest$</earliest>
+    <latest>$time1.latest$</latest>
+    <sampleRatio>1</sampleRatio>
+  </search>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="time" token="time1">
+      <label>Time Range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row id="row_top_1">
+    <panel>
+      <title>Top Endpoints</title>
+      <table>
+        <search base="basesearch">
+          <query>| stats count by endpoint | sort - count</query>
+        </search>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Lowest endpints</title>
+      <table>
+        <search base="basesearch">
+          <query>| stats count by endpoint | sort + count</query>
+        </search>
+        <option name="count">10</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Count by Dest port</title>
+      <table>
+        <search base="basesearch">
+          <query>| stats count by dest_port | sort - count</query>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Table of all info</title>
+      <table>
+        <search base="basesearch">
+          <query>| table  _time src_ip dest_ip dest_port endpoint operation | sort - _time</query>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>

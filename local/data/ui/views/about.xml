@@ -1,0 +1,413 @@
+<form theme="dark">
+  <label>About</label>
+  <fieldset submitButton="false"></fieldset>
+  <row>
+    <panel>
+      <html>
+      <h1>
+        <b>The Avengers</b>
+      </h1>
+        <p>Welcome to the Arc Reactor developed by Kenneth Stogner, Stanley Thomas, and Tyler Casey.</p>
+        <p>This app was developed to to aid investigations to the operator by aggregating data sources organically employed within a typically Windows Domain.</p>
+      <br/>
+      <p style="clear: both;"/>
+      <br/>
+      <p>
+          <b>
+            <i>Select additional content to view using the checkboxes below:</i>
+          </b>
+        </p>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <input type="checkbox" token="required_apps" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Required Apps</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="lookup_files" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Lookup Files</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="jarvis_whitelist" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Jarvis Whitelist</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="home_tab" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Home Tab</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="host_tab" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Host Tab</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="network_tab" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Network Tab</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="ioc_tab" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">IOC Tab</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="friday_tab" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">F.R.I.D.A.Y</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="TSTATS" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">TSTATS</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="Macros" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Macros</choice>
+        <delimiter> </delimiter>
+      </input>
+      <input type="checkbox" token="Datamodels" searchWhenChanged="true">
+        <label></label>
+        <choice value="1">Datamodels</choice>
+        <delimiter> </delimiter>
+      </input>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$required_apps$">
+      <html tokens="true">
+      <h2>
+        <b>Required Splunk Apps</b>
+      </h2>
+      <p>There are a number of Splunk apps and TAs loaded on this system in order to support this hands-on experience. Here are the key ones we will use today :</p>
+        <ul>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/742/" target="_blank">Splunk Add-on For Microsoft Windows</a> to provide extractions for Windows event logs.</li>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/1914/" target="_blank">Add-on for Microsoft Sysmon</a> to provide extractions for Sysmon output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2757/" target="_blank">Palo Alto Networks Add-on for Splunk</a> to provide extractions for Palo Alto output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/1809/" target="_blank">Splunk Stream</a> to provide extractions for Splunk Stream output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2760/" target="_blank">Splunk TA for Suricata</a> to provide extractions for Suricata output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/1724/" target="_blank">Lookup File Editor</a> To Edit CSV's in Splunk.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/1914/" target="_blank">Splunk Add-On for Microsoft Sysmon</a> to provide extractions for Sysmon output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/491/" target="_blank">Palo Alto Networks app</a> For Palo Alto visualization.</li>
+          <li>
+            <a href="hhttps://splunkbase.splunk.com/app/1621/" target="_blank">Splunk Common Information Model</a> Used for field aliases as well as data model examples</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/4060/" target="_blank">Tenable Add-on</a> To provide extractions for ACAS output. </li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/4061/" target="_blank">Tenable App</a> ACAS visualization. </li>  
+        </ul>
+        <p>Thank you to the authors of each app which makes our collective lives easier each day!</p>
+    </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$lookup_files$">
+      <html tokens="true">
+      <h2>
+        <b>CSV's/Lookup Files Required</b>
+      </h2>
+      <p>There are a number of Lookups and/or CSV's loaded on this system in order to support many of the dashboard views in various ways. :</p>
+        <ul>
+        	<li>
+            <a> Analyst_annotations.csv </a> Allows the visualization of dashboard Mitre Attack Overview </li>
+        	<li>
+        	  <a> mitre_attack_framework.csv </a> Allows the visualizationn of dashboard Mitre Attack Overview</li>
+          <li>  
+            <a> network_map.csv </a> To provide a Network Map visualization example for Site1.</li>
+          <li>
+            <a> network_map2.csv </a> To provide a Network Map visualization example for Site2.</li>
+          <li>
+            <a> requirements.csv </a> To provide a visualization for the about Dashboard.</li>
+          <li>
+            <a> jarvis_results.csv </a> To provide an output file for results from Arc-Jarvis saved searches.</li>  
+        </ul>
+        <p>Thank you to the authors of each app which makes our collective lives easier each day!</p>
+    </html>
+    </panel>
+    <panel depends="$jarvis_whitelist$">
+      <html tokens="true">
+      <h2>
+        <b>Jarvis Whitelist Tab</b>
+      </h2>
+      <p>Haven't completed yet !!!!!!!!!!!!!!!!!!!!!!!!!!!!!</p>
+      
+      <p>Mitre Attack Overview - This dashboard is populated from the Analyst Annotation Maker. The Dashboard is an overview of where incidents are follwoing the Mitre Attack Framework </p>
+      <p>Network Map - This dashboard is populated from NMAP scans and in future examples also from ACAS scans. These scans have been uploaded as Lookup files for as examples for quick visualization techniques. This dashboard requires the Network Diagram Viz app to work. </p>
+      <p>Case Incident Network Visualization - This dashboard is supposed to populate from the Analyst Annotation Maker and represent specific incidents in visual context for clarity. This dashboard currently does not function. This dashboard requires the Network Diagram Viz app to work. </p>
+      <p>Analyst Annotation Maker- This Dashboard can be utilized to demonstrate incidents from all analysts involved from one location. This Dashboard populates the Mitre Attack Overview. </p>
+      <p>Analyst Annotation Viewss submissions from Annotation Maker dashboard</p>
+      <p>Thank you to the authors of each app which makes our collective lives easier each day!</p>
+    </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$home_tab$">
+      <html tokens="true">
+      <h2>
+        <b>Home Tab</b>
+      </h2>
+      <p>All Pages contained within the Home tab are to facilitate an overview of Incidents within the environment.</p>
+      
+      <p>Mitre Attack Overview - This dashboard is populated from the Analyst Annotation Maker. The Dashboard is an overview of where incidents are follwoing the Mitre Attack Framework </p>
+      <p>Network Map - This dashboard is populated from NMAP scans and in future examples also from ACAS scans. These scans have been uploaded as Lookup files for as examples for quick visualization techniques. This dashboard requires the Network Diagram Viz app to work. </p>
+      <p>Case Incident Network Visualization - This dashboard is supposed to populate from the Analyst Annotation Maker and represent specific incidents in visual context for clarity. This dashboard currently does not function. This dashboard requires the Network Diagram Viz app to work. </p>
+      <p>Analyst Annotation Maker- This Dashboard can be utilized to demonstrate incidents from all analysts involved from one location. This Dashboard populates the Mitre Attack Overview. </p>
+      <p>Analyst Annotation Viewss submissions from Annotation Maker dashboard</p>
+      <p>Thank you to the authors of each app which makes our collective lives easier each day!</p>
+    </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$host_tab$">
+      <html tokens="true">
+      <h2>
+        <b>Host Tab</b>
+      </h2>
+      <p>There are a number of Splunk apps and TAs loaded on this system in order to support this hands-on experience. Here are the key ones we will use today :</p>
+        <ul>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/742/" target="_blank">Splunk Add-on For Microsoft Windows</a> to provide extractions for Windows event logs.</li>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/1914/" target="_blank">Add-on for Microsoft Sysmon</a> to provide extractions for Sysmon output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2757/" target="_blank">Palo Alto Networks Add-on for Splunk</a> to provide extractions for Palo Alto output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/1809/" target="_blank">Splunk Stream</a> to provide extractions for Splunk Stream output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2760/" target="_blank">Splunk TA for Suricata</a> to provide extractions for Suricata output.</li>
+        </ul>
+        <p>Thank you to the authors of each app which makes our collective lives easier each day!</p>
+    </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$network_tab$">
+      <html tokens="true">
+      <h2>
+        <b>Network Tab</b>
+      </h2>
+      <p>There are a number of Splunk apps and TAs loaded on this system in order to support this hands-on experience. Here are the key ones we will use today :</p>
+        <ul>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/742/" target="_blank">Splunk Add-on For Microsoft Windows</a> to provide extractions for Windows event logs.</li>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/1914/" target="_blank">Add-on for Microsoft Sysmon</a> to provide extractions for Sysmon output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2757/" target="_blank">Palo Alto Networks Add-on for Splunk</a> to provide extractions for Palo Alto output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/1809/" target="_blank">Splunk Stream</a> to provide extractions for Splunk Stream output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2760/" target="_blank">Splunk TA for Suricata</a> to provide extractions for Suricata output.</li>
+        </ul>
+        <p>Thank you to the authors of each app which makes our collective lives easier each day!</p>
+    </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$ioc_tab$">
+      <html tokens="true">
+      <h2>
+        <b>IOC Tab</b>
+      </h2>
+      <p> don't wanna do it</p>
+        <ul>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/742/" target="_blank">Splunk Add-on For Microsoft Windows</a> to provide extractions for Windows event logs.</li>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/1914/" target="_blank">Add-on for Microsoft Sysmon</a> to provide extractions for Sysmon output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2757/" target="_blank">Palo Alto Networks Add-on for Splunk</a> to provide extractions for Palo Alto output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/1809/" target="_blank">Splunk Stream</a> to provide extractions for Splunk Stream output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2760/" target="_blank">Splunk TA for Suricata</a> to provide extractions for Suricata output.</li>
+        </ul>
+        <p>Thank you to the authors of each app which makes our collective lives easier each day!</p>
+    </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$friday_tab$">
+      <html tokens="true">
+      <h2>
+        <b>F.R.I.D.A.Y.</b>
+      </h2>
+      <p>There are a number of Splunk apps and TAs loaded on this system in order to support this hands-on experience. Here are the key ones we will use today :</p>
+        <ul>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/742/" target="_blank">Splunk Add-on For Microsoft Windows</a> to provide extractions for Windows event logs.</li>
+        	<li>
+            <a href="https://splunkbase.splunk.com/app/1914/" target="_blank">Add-on for Microsoft Sysmon</a> to provide extractions for Sysmon output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2757/" target="_blank">Palo Alto Networks Add-on for Splunk</a> to provide extractions for Palo Alto output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/1809/" target="_blank">Splunk Stream</a> to provide extractions for Splunk Stream output.</li>
+          <li>
+            <a href="https://splunkbase.splunk.com/app/2760/" target="_blank">Splunk TA for Suricata</a> to provide extractions for Suricata output.</li>
+        </ul>
+        <p>Thank you to the authors of each app which makes our collective lives easier each day!</p>
+    </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$TSTATS$">
+      <html tokens="true">
+      <h2>
+        <b>TSTATS</b>
+      </h2>
+      <p>All TSTATS dashboards utilize datamodels in order to run.</p>
+      <p>All TSTATS dashboards utilize datamodels in order to run.</p>
+    </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$Macros$">
+      <html tokens="true">
+      <h2>
+        <b>Macros</b>
+      </h2>
+      <p>The most important factor for this app to work correctly is setting the `OPORD` marco to the index used. This affects all dashboards and datamodels used.</p>
+      <p>Please look below on the About page/Macro's Panel to verify the correct index is being utilized.</p>
+      <p>To change the macro to a different index, go to Settings-Advanced Search-search macros. </p>
+       
+    </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$Datamodels$">
+      <html tokens="true">
+      <h2>
+        <b>DataModels</b>
+      </h2>
+      <p>All tstats dashboard utilze Arc Reactor Datamodels</p>
+      <p>To verify acceleration, please see below in Datamodels Acceleration Status or Friday-Splunk Stats dashboard</p>
+      <p>To edit DataModels, go to Settings- Data Models.</p>
+    </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Required app status (needs requirements csv in order to run)</title>
+      <table>
+        <search>
+          <query>| inputlookup requirements.csv | eval tag="csv" | append [| rest /services/apps/local | search disabled=0 label="Microsoft Sysmon Add-on" OR label="Lookup Editor" OR label="Splunk Add-on for Microsoft Windows" OR label="Palo Alto Networks Add-on" OR label="Splunk Stream" OR label="TA-Suricata" OR label="Splunk Add-on for Zeek aka Bro" OR label="Tenable Add-On for Splunk" OR label="Tenable App for Splunk" OR label="Splunk Common Information Model" OR label="Splunk Datasets Add-On" OR label="Arc Reactor" OR label="MITRE ATT&amp;CK Framework" OR label="Splunk Add-on for Zeek" OR label="Splunk Dashboard Examples" OR label="ThreatHunting" OR label="Zeek App for Splunk" | eval tag="rest" ] | stats count(eval(tag=="csv")) as csv count(eval(tag=="rest")) as rest list(required) as required by label | eval status=if((rest&gt;0), "Installed", "Missing") | rename label as app | table app status</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <format type="color" field="status">
+          <colorPalette type="sharedList"></colorPalette>
+          <scale type="sharedCategory"></scale>
+        </format>
+      </table>
+    </panel>
+    <panel>
+      <title>Inputlookup CSV files created/installed - without searches/dashboards will not work</title>
+      <table>
+        <search>
+          <!-- This points at a macro and compares it to the lookup files. If you want the query to check for a specific lookup table, there has to be a comparable macro. -->
+          <query>| rest /servicesNS/-/-/data/lookup-table-files 
+| search eai:appName=Arc_reactor_app title IN (analyst_annotations.csv, ja3-user_agents.csv, mitre_attack_framework.csv, network_map.csv, requirements.csv, jarvis_results.csv, techniques.csv, sysmoneventcodes.csv, dns_whitelist.csv, file_access_whitelist.csv, file_create_whitelist.csv, image_load_whitelist.csv, network_whitelist.csv, new_hashes.csv, pipe_whitelist.csv, process_access_whitelist.csv, process_create_whitelist.csv, registry_whitelist.csv, remote_thread_whitelist.csv, trusted-sysmon-configurations.csv, wmi_whitelist.csv )
+ | rex field=title mode=sed "s/Arc_reactor_app_//g" | rex field=title mode=sed "s/.csv//g" | eval tag="csv"  | stats count(eval(tag=="csv")) as csv count(eval(tag=="rest")) as rest list(required) as required by title | eval status=if((csv&gt;0), "Installed", "Missing") | table title status</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <format type="color" field="status">
+          <colorPalette type="sharedList"></colorPalette>
+          <scale type="sharedCategory"></scale>
+        </format>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Macro's - make sure the indexes are set properly</title>
+      <table>
+        <search>
+          <query>| rest /servicesNS/-/Arc_reactor_app/configs/conf-macros | search eai:acl.app=Arc_reactor_app | table title definition</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">row</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <link target="_blank">
+            <![CDATA[../../manager/Arc_reactor_app/admin/macros]]>
+          </link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <title>Jarvis Whitelist</title>
+      <table>
+        <title>These inputlookups are needed to use the Jarvis searches</title>
+        <search>
+          <query>| rest /servicesNS/-/-/data/lookup-table-files 
+| search eai:appName=Arc_reactor_app title=*whitelist.csv 
+| rex field=title mode=sed "s/Arc_reactor_app_//g" 
+| rex field=title mode=sed "s/.csv//g" 
+| eval tag="csv" 
+| append 
+    [| rest /servicesNS/-/Arc_reactor_app/configs/conf-macros 
+    | search title="*_whitelist" 
+    | eval tag="rest" ] 
+| stats count(eval(tag=="csv")) as csv count(eval(tag=="rest")) as rest list(required) as required by title 
+| eval status=if((csv&gt;0), "Installed", "Missing") 
+| table title status</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>All Data Models: Status</title>
+      <table>
+        <title>All accelerated data models in your environment and their status. The datamodels need to be in acceleration mode in order to use TSTATS dashboards</title>
+        <search>
+          <query>| rest /servicesNS/-/-/data//models 
+| search eai:acl.app=Arc_reactor_app
+| table title acceleration acceleration.allow_old_summaries updated</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <format type="color" field="acceleration">
+          <colorPalette type="list">[#53A051,#DC4E41]</colorPalette>
+          <scale type="threshold">0,1</scale>
+        </format>
+      </table>
+    </panel>
+  </row>
+</form>

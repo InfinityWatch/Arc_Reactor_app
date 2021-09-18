@@ -1,0 +1,179 @@
+<form>
+  <label>old_executive_summary</label>
+  <search id="basesearch">
+    <query>source="/home/xadmin/Downloads/mitre_attack.csv" host="sos" index=main sourcetype="csv" "Collection"="$collection_t$" "Command and Control"="$command_and_control_t$" "Credential Access"="$credential_access_t$" "Defense Evasion"="$defense_evansion_t$" "Discovery"="$discovery_t$" "Execution"="$execution_t$" "Exfiltration"="$exfiltration_t$" "Impact"="$impact_t$" "Initial Access"="$initial_access_t$" "Lateral Movement"="$lateral_movement_t$" "Persistence"="$persistence_t$" "Privilege Escalation"="$privilege_escalation_t$" | table "Collection" "Command and Control" "Credential Access" "Defense Evasion" "Discovery" "Execution" "Exfiltration" "Impact" "Initial Access" "Lateral Movement" "Persistence" "Privilege Escalation"</query>
+  </search>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="field1">
+      <label>Time</label>
+      <default>
+        <earliest>0</earliest>
+        <latest></latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+	  <input type="dropdown" token="collection_t" searchWhenChanged="true">
+        <label>Collection</label>
+        <fieldForLabel>Collection</fieldForLabel>
+        <fieldForValue>Collection</fieldForValue>
+        <choice value="*">Select Value</choice>
+        <search base="basesearch">
+          <query>| table Collection | where isnotnull(Collection)</query>
+        </search>
+        <default>*</default>
+        <initialValue>*</initialValue>
+      </input>
+	</panel>
+  </row>
+  <row>
+    <panel>
+      <input type="dropdown" token="collection_t" searchWhenChanged="true">
+        <label>Collection</label>
+        <fieldForLabel>Collection</fieldForLabel>
+        <fieldForValue>Collection</fieldForValue>
+        <choice value="*">Select Value</choice>
+        <search base="basesearch">
+          <query>| table Collection | where isnotnull(Collection)</query>
+        </search>
+        <default>*</default>
+        <initialValue>*</initialValue>
+      </input>
+      <input type="dropdown" token="command_and_control_t" searchWhenChanged="true">
+        <label>Command and Control</label>
+        <fieldForLabel>Command and Control</fieldForLabel>
+        <fieldForValue>Command and Control</fieldForValue>
+        <choice value="*">Select Value</choice>
+        <search base="basesearch">
+          <query>| table "Command and Control" | where isnotnull("Command and Control")</query>
+        </search>
+        <default>*</default>
+        <initialValue>*</initialValue>
+      </input>
+      <input type="dropdown" token="credential_access_t" searchWhenChanged="true">
+        <label>Credential Access</label>
+        <fieldForLabel>Credential Access</fieldForLabel>
+        <fieldForValue>Credential Access</fieldForValue>
+        <choice value="*">Select Value</choice>
+        <search base="basesearch">
+          <query>| table "Credential Access" | where isnotnull("Credential Access")</query>
+        </search>
+        <default>*</default>
+        <initialValue>*</initialValue>
+      </input>
+      <input type="dropdown" token="defense_evansion_t" searchWhenChanged="true">
+        <label>Defense Evasion</label>
+        <fieldForLabel>Defense Evasion</fieldForLabel>
+        <fieldForValue>Defense Evasion</fieldForValue>
+        <choice value="*">Select Value</choice>
+        <search base="basesearch">
+          <query>| table "Defense Evasion" | where isnotnull("Defense Evasion")</query>
+        </search>
+        <default>*</default>
+        <initialValue>*</initialValue>
+      </input>
+      <input type="dropdown" token="discovery_t" searchWhenChanged="true">
+        <label>Discovery</label>
+        <fieldForLabel>Discovery</fieldForLabel>
+        <fieldForValue>Discovery</fieldForValue>
+        <choice value="*">Select Value</choice>
+        <search base="basesearch">
+          <query>| table "Discovery" | where isnotnull("Discovery")</query>
+        </search>
+        <default>*</default>
+        <initialValue>*</initialValue>
+      </input>
+      <input type="dropdown" token="execution_t" searchWhenChanged="true">
+        <label>Execution</label>
+        <fieldForLabel>Execution</fieldForLabel>
+        <fieldForValue>Execution</fieldForValue>
+        <choice value="*">Select Value</choice>
+        <search base="basesearch">
+          <query>| table "Execution" | where isnotnull("Execution")</query>
+        </search>
+        <default>*</default>
+        <initialValue>*</initialValue>
+      </input>
+      <input type="dropdown" token="exfiltration_t" searchWhenChanged="true">
+        <label>Exfiltration</label>
+        <fieldForLabel>Exfiltration</fieldForLabel>
+        <fieldForValue>Exfiltration</fieldForValue>
+        <choice value="*">Select Value</choice>
+        <search base="basesearch">
+          <query>| table "Exfiltration" | where isnotnull("Exfiltration")</query>
+        </search>
+        <default>*</default>
+        <initialValue>*</initialValue>
+      </input>
+      <input type="dropdown" token="impact_t" searchWhenChanged="true">
+        <label>Impact</label>
+        <fieldForLabel>Impact</fieldForLabel>
+        <fieldForValue>Impact</fieldForValue>
+        <choice value="*">Select Value</choice>
+        <search base="basesearch">
+          <query>| table "Impact" | where isnotnull("Impact")</query>
+        </search>
+        <default>*</default>
+        <initialValue>*</initialValue>
+      </input>
+      <input type="dropdown" token="initial_access_t" searchWhenChanged="true">
+        <label>Initial Access</label>
+        <fieldForLabel>Initial Access</fieldForLabel>
+        <fieldForValue>Initial Access</fieldForValue>
+        <choice value="*">Select Value</choice>
+        <search base="basesearch">
+          <query>| table "Initial Access" | where isnotnull("Initial Access")</query>
+        </search>
+        <default>*</default>
+        <initialValue>*</initialValue>
+      </input>
+      <input type="dropdown" token="lateral_movement_t" searchWhenChanged="true">
+        <label>Lateral Movement</label>
+        <fieldForLabel>Lateral Movement</fieldForLabel>
+        <fieldForValue>Lateral Movement</fieldForValue>
+        <choice value="*">Select Value</choice>
+        <search base="basesearch">
+          <query>| table "Lateral Movement" | where isnotnull("Lateral Movement")</query>
+        </search>
+        <default>*</default>
+        <initialValue>*</initialValue>
+      </input>
+      <input type="dropdown" token="persistence_t" searchWhenChanged="true">
+        <label>Persistence</label>
+        <fieldForLabel>Persistence</fieldForLabel>
+        <fieldForValue>Persistence</fieldForValue>
+        <choice value="*">Select Value</choice>
+        <search base="basesearch">
+          <query>| table "Persistence" | where isnotnull("Persistence")</query>
+        </search>
+        <default>*</default>
+        <initialValue>*</initialValue>
+      </input>
+      <input type="dropdown" token="privilege_escalation_t" searchWhenChanged="true">
+        <label>Privilege Escalation</label>
+        <fieldForLabel>Privilege Escalation</fieldForLabel>
+        <fieldForValue>Privilege Escalation</fieldForValue>
+        <choice value="*">Select Value</choice>
+        <search base="basesearch">
+          <query>| table "Privilege Escalation" | where isnotnull("Privilege Escalation")</query>
+        </search>
+        <default>*</default>
+        <initialValue>*</initialValue>
+      </input>
+	 </panel>
+  </row>
+  <row>
+	<panel> 	
+      <table>
+        <search>
+          <query>source="/home/xadmin/Downloads/mitre_attack.csv" | table "Collection" "Command and Control" "Credential Access" "Defense Evasion" "Discovery" "Execution" "Exfiltration" "Impact" "Initial Access" "Lateral Movement" "Persistence" "Privilege Escalation" | reverse</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>

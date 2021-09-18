@@ -1,0 +1,100 @@
+<form theme="dark">
+  <label>Tstats Zeek Conn Stats</label>
+  <description>Stats are loaded from saved searched</description>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="time" token="field1">
+      <label>Time Range</label>
+      <default>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <table>
+        <title>Stats count by Src_ip</title>
+        <search>
+          <query>| loadjob savedsearch="nobody:Arc_reactor_app:tstats zeek conn stats src_ip"</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <!-- The author of this page is Stogner. All questions can be forwarded to him  -->
+        <!-- | tstats count from datamodel=Network_Data_slim.All_Traffic by All_Traffic.src_ip  -->
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <link target="_blank">/app/Arc_reactor_app/tstats_zeek_conn_stats_by_ip?All_Traffic.src_ip=$click.value2$</link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>Stats count by Dest_ip</title>
+        <search>
+          <query>| loadjob savedsearch="nobody:Arc_reactor_app:tstats zeek conn stats dest_ip"</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <!-- The author of this page is Stogner. All questions can be forwarded to him  -->
+        <!-- | tstats count from datamodel=Network_Data_slim.All_Traffic by All_Traffic.dest_ip  -->
+        <option name="drilldown">cell</option>
+        <drilldown>
+          <link target="_blank">/app/Arc_reactor_app/tstats_zeek_conn_stats_by_destination_ip?All_Traffic.dest_ip=$click.value2$</link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>Stats count by Src_port</title>
+        <search>
+          <query>| loadjob savedsearch="nobody:Arc_reactor_app:tstats zeek conn stats src_port"</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <!-- The author of this page is Stogner. All questions can be forwarded to him  -->
+        <!-- | tstats count from datamodel=Network_Data_slim.All_Traffic by All_Traffic.src_port  -->
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>Stats count by Dest_port</title>
+        <search>
+          <query>| loadjob savedsearch="nobody:Arc_reactor_app:tstats zeek conn stats dest_port"</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <!-- The author of this page is Stogner. All questions can be forwarded to him  -->
+        <!-- | tstats count from datamodel=Network_Data_slim.All_Traffic by All_Traffic.dest_port  -->
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Stats count by Query</title>
+        <search>
+          <query>| loadjob savedsearch="nobody:Arc_reactor_app:tstats zeek conn stats query"</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>Stats Count by ja3</title>
+        <search>
+          <query>| loadjob savedsearch="nobody:Arc_reactor_app:tstats zeek conn stats ja3"</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>

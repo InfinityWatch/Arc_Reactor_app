@@ -9,9 +9,8 @@ Cron Scdedule is currently set to run once a day at midnight in this example. Pl
 Enable_sched is set to 0 or false. Set to 1 if you want the 
 ![Time Run and Enabled](https://github.com/InfinityWatch/Arc_Reactor_app/blob/main/pictures/savedsearches%20-%20time%20run%20and%20enabled.PNG)
 
-Index_time 
+indextime macro sets the control for the time range of the seach. Currently it is set to all time. Change and find the macro in advance search - macros. 
 ![Index Time macro](https://github.com/InfinityWatch/Arc_Reactor_app/blob/main/pictures/savedsearch%20-%20index%20time.PNG)
 
-
-Network Map Example 2:
+Summary Index - Collect exemplifies taking the results and saving the results into a different index. This index needs to be created in order for the search to work correctly. Check indexes for host_jarvis_summary in indexes as shown in the example below.
 ![Summary Index Used](https://github.com/InfinityWatch/Arc_Reactor_app/blob/main/pictures/savedsearches%20-%20summary%20index.PNG)

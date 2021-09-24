@@ -55,6 +55,10 @@ Initial Triage - Network Anomolies shows interesting identifiers such as potenti
 Initial Triage - Surricata. shows all alerts in different formats. Easy to categorize by multiple fields. 
 ![Initial Triage Suricata](https://github.com/InfinityWatch/Arc_Reactor_app/blob/main/pictures/Initial%20Triage%20Suricata.PNG)
 
+Initial Triage - Jarvis Host Analysis - Utilizes saved searche IOC's within the MITRE ATTACK framework. 
+THE WHITELISTS Tab will only affect the Jarvis DASHBOARD!
+![Initial Triage Suricata](https://github.com/InfinityWatch/Arc_Reactor_app/blob/main/pictures/Initial%20Triage%20Jarvis%20Host.PNG)
+
 Whitelist is used in association with the Initial Triage - Host Jaris Dashboard. More pending
 ![Whitelist Editor](https://github.com/InfinityWatch/Arc_Reactor_app/blob/main/pictures/Whitelest%20Editor.PNG)
 

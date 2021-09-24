@@ -1,7 +1,7 @@
 <form theme="dark">
-  <label>SMTP</label>
+  <label>Zeek SMTP</label>
   <search id="basesearch">
-    <query>index=zeek_smtp | fields src_ip dest_ip content_transfer_encoding recipient sender_email subject content  </query>
+    <query>`OPORD` eventtype=arc_bro_smtp | fields src_ip dest_ip content_transfer_encoding recipient sender_email subject content  </query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
     <sampleRatio>1</sampleRatio>

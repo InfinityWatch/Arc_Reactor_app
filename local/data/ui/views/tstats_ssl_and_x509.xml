@@ -1,13 +1,13 @@
 <form theme="dark">
   <label>Tstats SSL and X509</label>
   <search id="basesearch">
-    <query>index=zeek_ssl OR index=zeek_x509  | fields  issuer server_name validation_status cipher ja3 ja3-User-Agent </query>
+    <query>`OPORD` eventtype=arc_bro_ssl  | fields  issuer server_name validation_status cipher ja3 ja3-User-Agent </query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
     <sampleRatio>1</sampleRatio>
   </search>
   <search id="basesearch2">
-    <query>index=zeek_ssl OR index=zeek_x509  | fields  cipher certificate.subject </query>
+    <query>`OPORD`  eventtype=arc_bro_x509  | fields  cipher certificate.subject </query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
     <sampleRatio>1</sampleRatio>

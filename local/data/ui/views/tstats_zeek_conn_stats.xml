@@ -15,7 +15,7 @@
       <table>
         <title>Stats count by Src_ip</title>
         <search>
-          <query>| loadjob savedsearch="nobody:Arc_reactor_app:tstats zeek conn stats src_ip"</query>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:tstats zeek conn stats src_ip"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -32,7 +32,7 @@
       <table>
         <title>Stats count by Dest_ip</title>
         <search>
-          <query>| loadjob savedsearch="nobody:Arc_reactor_app:tstats zeek conn stats dest_ip"</query>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:tstats zeek conn stats dest_ip"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -48,7 +48,7 @@
       <table>
         <title>Stats count by Src_port</title>
         <search>
-          <query>| loadjob savedsearch="nobody:Arc_reactor_app:tstats zeek conn stats src_port"</query>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:tstats zeek conn stats src_port"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -61,7 +61,7 @@
       <table>
         <title>Stats count by Dest_port</title>
         <search>
-          <query>| loadjob savedsearch="nobody:Arc_reactor_app:tstats zeek conn stats dest_port"</query>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:tstats zeek conn stats dest_port"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -77,7 +77,7 @@
       <table>
         <title>Stats count by Query</title>
         <search>
-          <query>| loadjob savedsearch="nobody:Arc_reactor_app:tstats zeek conn stats query"</query>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:tstats zeek conn stats query"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -89,7 +89,7 @@
       <table>
         <title>Stats Count by ja3</title>
         <search>
-          <query>| loadjob savedsearch="nobody:Arc_reactor_app:tstats zeek conn stats ja3"</query>
+          <query>| loadjob savedsearch="admin:Arc_reactor_app:tstats zeek conn stats ja3"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>

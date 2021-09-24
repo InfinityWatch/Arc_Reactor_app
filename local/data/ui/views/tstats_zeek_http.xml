@@ -1,7 +1,7 @@
 <form theme="dark">
   <label>Tstats Zeek HTTP</label>
   <search id="basesearch">
-    <query>index=zeek_http | fields flow_id dest_ip src_ip http_comment http_method http_user_agent method status status_code status_msg</query>
+    <query>`network` | fields flow_id dest_ip src_ip http_comment http_method http_user_agent method status status_code status_msg</query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
     <sampleRatio>1</sampleRatio>
@@ -115,7 +115,7 @@
       </input>
       <table>
         <search>
-          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.src_ip="*" All_Traffic.status_msg="*"  by All_Traffic.src_ip, All_Traffic.status_msg | sort - count | table All_Traffic.src_ip, All_Traffic.status_msg, count | rename All_Traffic.src_ip as Host, count as Count, All_Traffic.status_msg as "Status Message"</query>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.src_ip="$selected_status_host$" All_Traffic.http_comment="$data_selected_status$"  by All_Traffic.src_ip, All_Traffic.http_comment | sort - count | table All_Traffic.src_ip, All_Traffic.http_comment, count | rename All_Traffic.src_ip as Host, count as Count, All_Traffic.http_comment as "Status Message"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>

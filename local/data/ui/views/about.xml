@@ -323,7 +323,7 @@
         <search>
           <!-- This points at a macro and compares it to the lookup files. If you want the query to check for a specific lookup table, there has to be a comparable macro. -->
           <query>| rest /servicesNS/-/-/data/lookup-table-files 
-| search eai:appName=Arc_reactor_app title IN (analyst_annotations.csv, ja3-user_agents.csv, mitre_attack_framework.csv, network_map.csv, requirements.csv, jarvis_results.csv, techniques.csv, sysmoneventcodes.csv, dns_whitelist.csv, file_access_whitelist.csv, file_create_whitelist.csv, image_load_whitelist.csv, network_whitelist.csv, new_hashes.csv, pipe_whitelist.csv, process_access_whitelist.csv, process_create_whitelist.csv, registry_whitelist.csv, remote_thread_whitelist.csv, trusted-sysmon-configurations.csv, wmi_whitelist.csv )
+| search eai:appName=Arc_reactor_app title IN (analyst_annotations.csv, ja3-user_agents.csv, mitre_attack_framework.csv, network_map.csv, requirements.csv, jarvis_results.csv, techniques.csv, sysmoneventcodes.csv  )
  | rex field=title mode=sed "s/Arc_reactor_app_//g" | rex field=title mode=sed "s/.csv//g" | eval tag="csv"  | stats count(eval(tag=="csv")) as csv count(eval(tag=="rest")) as rest list(required) as required by title | eval status=if((csv&gt;0), "Installed", "Missing") | table title status</query>
           <earliest>-15m</earliest>
           <latest>now</latest>

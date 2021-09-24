@@ -1,5 +1,5 @@
 <form theme="dark">
-  <label>RDP</label>
+  <label>Zeek RDP</label>
   <fieldset submitButton="false">
     <input type="time" token="time1">
       <label>Time Range</label>
@@ -14,7 +14,7 @@
       <title>RDP Source to Destination I.P.</title>
       <table>
         <search>
-          <query>index=zeek_rdp | stats dedup_splitvals=t count AS "Count"  by src_ip, dest_ip | sort src_ip | rename src_ip AS src_ip dest_ip AS dest_ip  | fillnull "Count" | fields src_ip, dest_ip, "Count"</query>
+          <query>(index=zeek sourcetype="bro:rdp:json") | stats dedup_splitvals=t count AS "Count"  by src_ip, dest_ip | sort src_ip | rename src_ip AS src_ip dest_ip AS dest_ip  | fillnull "Count" | fields src_ip, dest_ip, "Count"</query>
           <earliest>$time1.earliest$</earliest>
           <latest>$time1.latest$</latest>
           <sampleRatio>1</sampleRatio>
@@ -27,7 +27,7 @@
       <title>Count by cookie</title>
       <table>
         <search>
-          <query>index=zeek_rdp | stats count by cookie</query>
+          <query>(index=zeek sourcetype="bro:rdp:json") | stats count by cookie</query>
           <earliest>$time1.earliest$</earliest>
           <latest>$time1.latest$</latest>
         </search>

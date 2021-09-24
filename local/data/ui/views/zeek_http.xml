@@ -1,7 +1,7 @@
 <form theme="dark">
   <label>HTTP</label>
   <search id="basesearch">
-    <query>index=zeek_http | fields flow_id dest_ip src_ip http_comment http_method http_user_agent method status status_code status_msg</query>
+    <query>`network` | fields flow_id dest_ip src_ip http_comment http_method http_user_agent method status status_code status_msg</query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
     <sampleRatio>1</sampleRatio>

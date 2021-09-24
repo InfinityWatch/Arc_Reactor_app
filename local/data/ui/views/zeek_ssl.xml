@@ -1,13 +1,13 @@
 <form theme="dark">
   <label>SSL and X509</label>
   <search id="basesearch">
-    <query>index=zeek_ssl OR index=zeek_x509  | fields  issuer server_name validation_status cipher ja3 ja3-User-Agent </query>
+    <query>`OPORD` eventtype=arc_bro_ssl  | fields  issuer server_name validation_status cipher ja3 ja3-User-Agent </query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
     <sampleRatio>1</sampleRatio>
   </search>
   <search id="basesearch2">
-    <query>index=zeek_ssl OR index=zeek_x509 | fields  cipher certificate.subject </query>
+    <query>`OPORD`  eventtype=arc_bro_x509  | fields  cipher certificate.subject </query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
     <sampleRatio>1</sampleRatio>
@@ -41,7 +41,7 @@
       <title>SSL Top JA3 User-Agents</title>
       <table>
         <search base="basesearch">
-          <query>| stats count by ja3 | rename ja3 as "JA3 Hash" ja3s as "JA3 server" | sort - count</query>
+          <query>| stats count by  ja3-User-Agent ja3 | rename ja3 as "JA3 Hash" ja3-User-Agent as "JA3 User Agent" | sort - count</query>
         </search>
         <option name="count">10</option>
         <option name="dataOverlayMode">none</option>

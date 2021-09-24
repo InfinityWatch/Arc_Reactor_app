@@ -1,7 +1,7 @@
 <form theme="dark">
-  <label>SMB</label>
+  <label>Zeek SMB</label>
   <search id="basesearch">
-    <query>index=zeek_smb | fields src_ip dest_ip path name filename flow_id </query>
+    <query>`OPORD` tag=smb | fields src_ip dest_ip path name filename flow_id </query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
     <sampleRatio>1</sampleRatio>

@@ -1,7 +1,7 @@
 <form theme="dark">
   <label>Zeek Conn</label>
   <search id="basesearch">
-    <query>index=zeek_conn | fields Time src_ip src_port dest_ip dest_port proto service conn_state </query>
+    <query>`OPORD` eventtype=arc_bro_conn | fields Time src_ip src_port dest_ip dest_port proto service conn_state </query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
     <sampleRatio>1</sampleRatio>

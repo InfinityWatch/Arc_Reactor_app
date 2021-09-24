@@ -1,5 +1,5 @@
 <form theme="dark">
-  <label>PE</label>
+  <label>Zeek PE</label>
   <description>time_one</description>
   <fieldset submitButton="false">
     <input type="time" token="field1">
@@ -14,7 +14,7 @@
     <panel>
       <table>
         <search>
-          <query>index=zeek_pe | stats count by os</query>
+          <query>index=zeek sourcetype=bro:pe:json | stats count by os</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>

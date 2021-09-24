@@ -1,5 +1,5 @@
 <form theme="dark">
-  <label>Kerberos</label>
+  <label>Zeek Kerberos</label>
   <fieldset submitButton="false">
     <input type="time" token="field1">
       <label></label>
@@ -14,7 +14,7 @@
       <table>
         <title>Source IP to Dest IP by Count</title>
         <search>
-          <query>index=zeek_kerberos | stats count by src_ip dest_ip | sort -count</query>
+          <query>index=zeek sourcetype=bro:kerberos:json | stats count by src_ip dest_ip | sort -count</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -27,7 +27,7 @@
     <panel>
       <table>
         <search>
-          <query>index=zeek_kerberos | stats count by src_ip dest_ip dest_port | sort -count</query>
+          <query>index=zeek sourcetype=bro:kerberos:json | stats count by src_ip dest_ip dest_port | sort -count</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>

@@ -18,7 +18,7 @@
         <initialValue>*</initialValue>
         <choice value="*">All</choice>
         <search>
-          <query>index=zeek_software | eval sourcehost=mvindex(dvc,1) | stats count by sourcehost</query>
+          <query>index=zeek eventtype=bro_files | eval sourcehost=mvindex(dvc,1) | stats count by sourcehost</query>
           <earliest>$time1.earliest$</earliest>
           <latest>$time1.latest$</latest>
         </search>
@@ -27,7 +27,7 @@
       </input>
       <table>
         <search>
-          <query>index=zeek_software | eval sourcehost=mvindex(host,1) | search sourcehost="$filter_host$" | eval Time=strftime(_time, "%d/%m/%Y %H:%M:%S") | table Time, sourcehost, host_p, name, software_type, unparsed_version | rename sourcehost as "Source Host", host_p as "Port", name as Name, software_type as "Software Type", unparsed_version as Version</query>
+          <query>index=zeek eventtype=bro_files | eval sourcehost=mvindex(host,1) | search sourcehost="$filter_host$" | eval Time=strftime(_time, "%d/%m/%Y %H:%M:%S") | table Time, sourcehost, host_p, name, software_type, unparsed_version | rename sourcehost as "Source Host", host_p as "Port", name as Name, software_type as "Software Type", unparsed_version as Version</query>
           <earliest>$time1.earliest$</earliest>
           <latest>$time1.latest$</latest>
         </search>
@@ -47,7 +47,7 @@
       <title>Top Software Versions</title>
       <table>
         <search>
-          <query>index=zeek_software | stats count by name,unparsed_version | sort - count | rename name as Name, unparsed_version as Version, count as Count | head</query>
+          <query>index=zeek eventtype=bro_files | stats count by name,unparsed_version | sort - count | rename name as Name, unparsed_version as Version, count as Count | head</query>
           <earliest>$time1.earliest$</earliest>
           <latest>$time1.latest$</latest>
         </search>
@@ -58,7 +58,7 @@
       <title>Top Software</title>
       <chart>
         <search>
-          <query>index=zeek_software | top name showperc=f</query>
+          <query>index=zeek eventtype=bro_files | top name showperc=f</query>
           <earliest>$time1.earliest$</earliest>
           <latest>$time1.latest$</latest>
         </search>
@@ -70,7 +70,7 @@
       <title>Top Software Types</title>
       <table>
         <search>
-          <query>index=zeek_software | top software_type showperc=f | rename software_type as "Software Type", count as Count</query>
+          <query>index=zeek eventtype=bro_files | top software_type showperc=f | rename software_type as "Software Type", count as Count</query>
           <earliest>$time1.earliest$</earliest>
           <latest>$time1.latest$</latest>
         </search>

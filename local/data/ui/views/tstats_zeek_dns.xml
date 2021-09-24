@@ -26,7 +26,7 @@
       <title>Top 10 Queries by Count</title>
       <table>
         <search>
-          <query>| tstats count from datamodel=Network_Data.All_Traffic where NOT All_Traffic.record_type="PTR" by All_Traffic.query | stats sparkline count by All_Traffic.query | sort - count | rename All_Traffic.query as Query, sparkline as Sparkline, count as Count</query>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where NOT All_Traffic.record_type="PTR" by All_Traffic.query | stats sparkline count by query | sort - count | rename All_Traffic.query as Query, sparkline as Sparkline, count as Count</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -38,7 +38,7 @@
       <title>Top 10 Rare Queries by Count</title>
       <table>
         <search>
-          <query>| tstats count from datamodel=Network_Data.All_Traffic where NOT All_Traffic.record_type="PTR" by All_Traffic.query | rename All_Traffic.query as Query, count as Count | sort - count</query>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where NOT All_Traffic.record_type="PTR" by All_Traffic.query | rare All_Traffic.query 40 | rename All_Traffic.query as Query, count as Count</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -76,7 +76,7 @@
       <title>Top Successful Reverse Queries by Count</title>
       <table>
         <search>
-          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.record_type="PTR" All_Traffic.rcode_name="NoError" by All_Traffic.query | sort - count | rename All_Traffic.query as Query, count as Count</query>
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.record_type="PTR" All_Traffic.reply_code="NoError" by All_Traffic.query | sort - count | rename All_Traffic.query as Query, count as Count</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -90,7 +90,7 @@
       <title>Top Reverse Queries by Count to Non-Existent Domains</title>
       <table>
         <search>
-          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.record_type="PTR" All_Traffic.rcode_name="NXDomain" by All_Traffic.query 
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.record_type="PTR" All_Traffic.reply_code="NXDomain" by All_Traffic.query 
 | rare 40 All_Traffic.query</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>

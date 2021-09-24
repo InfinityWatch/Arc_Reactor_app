@@ -1,11 +1,5 @@
 <form theme="dark">
-  <label>X509</label>
-  <search id="basesearch">
-    <query>index=zeek_x509  | fields  issuer server_name validation_status cipher ja3 ja3-User-Agent </query>
-    <earliest>$field1.earliest$</earliest>
-    <latest>$field1.latest$</latest>
-    <sampleRatio>1</sampleRatio>
-  </search>
+  <label>Zeek X509</label>
   <fieldset submitButton="true" autoRun="false">
     <input type="time" token="field1" searchWhenChanged="false">
       <label></label>
@@ -65,7 +59,7 @@
       <title>Capture Loss</title>
       <chart>
         <search>
-          <query>| table _time acks gaps | rename gaps as "Missed ACKs", acks as ACKs</query>
+          <query>sourcetype="bro:capture_loss:json" | table _time acks gaps | rename gaps as "Missed ACKs", acks as ACKs</query>
           <earliest>0</earliest>
           <latest></latest>
           <sampleRatio>1</sampleRatio>
@@ -111,7 +105,7 @@
       <title>Packets Seen vs Processed</title>
       <chart>
         <search>
-          <query>| table _time pkts_proc pkts_link | rename pkts_proc as "Packets Precessed", pkts_link as "Total Packets"</query>
+          <query>sourcetype="bro:stats:json" | table _time pkts_proc pkts_link | rename pkts_proc as "Packets Precessed", pkts_link as "Total Packets"</query>
           <earliest>0</earliest>
           <latest></latest>
           <sampleRatio>1</sampleRatio>

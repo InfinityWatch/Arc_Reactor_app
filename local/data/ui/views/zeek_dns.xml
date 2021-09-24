@@ -1,7 +1,7 @@
 <form theme="dark">
   <label>DNS</label>
   <search id="basesearch">
-    <query>index=zeek_dns | fields Time conn_state src_ip src_port dest_ip dest_port "name{}" proto query record_type rcode_name service query  </query>
+    <query>`OPORD` eventtype=arc_bro_dns | fields Time conn_state src_ip src_port dest_ip dest_port "name{}" proto query record_type  reply_code service query  </query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
     <sampleRatio>1</sampleRatio>
@@ -56,7 +56,7 @@
       <table>
         <search base="basesearch">
           <!-- <query>index=zeek eventtype=bro_dns rcode_name="NXDOMAIN" NOT record_type="PTR" | stats sparkline count by query | sort - count | head 10 | rename query as Query, sparkline as Sparkline, count as Count</query> -->
-          <query>| search "rcode_name"="NXDomain" NOT record_type="PTR" | stats sparkline count by "query" | sort - count | head 10 | rename "query" as Query, sparkline as Sparkline, count as Count</query>
+          <query>| search "reply_code"="NXDomain" NOT record_type="PTR" | stats sparkline count by "query" | sort - count | head 10 | rename "query" as Query, sparkline as Sparkline, count as Count</query>
         </search>
         <option name="count">10</option>
         <option name="refresh.display">progressbar</option>
@@ -78,7 +78,7 @@
       <table>
         <search base="basesearch">
           <!-- <query>index=zeek eventtype=bro_dns record_type="PTR" rcode_name="NOERROR" | top query showperc=f | rename query as Query, count as Count</query> -->
-          <query>| search record_type="PTR" rcode_name="NoError" | top query showperc=f | rename query as Query, count as Count</query>
+          <query>| search record_type="PTR" reply_code="NoError" | top query showperc=f | rename query as Query, count as Count</query>
         </search>
         <option name="count">10</option>
         <option name="refresh.display">progressbar</option>
@@ -91,7 +91,7 @@
       <table>
         <search base="basesearch">
           <!-- <query>index=zeek eventtype=bro_dns record_type="PTR" rcode_name="NXDOMAIN" | top query showperc=f | rename query as Query, count as Count</query> -->
-          <query>| search record_type="PTR" rcode_name="NXDomain" | top query showperc=f | rename query as Query, count as Count</query>
+          <query>| search record_type="PTR" reply_code="NXDomain" | top query showperc=f | rename query as Query, count as Count</query>
         </search>
         <option name="count">10</option>
         <option name="refresh.display">progressbar</option>

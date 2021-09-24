@@ -18,7 +18,7 @@
       <title>All Connections</title>
       <table>
         <search>
-          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.dest_ip="*" by All_Traffic.dest_ip All_Traffic.dest_port  
+          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.dest_ip="$All_Traffic.dest_ip1$" by All_Traffic.dest_ip, All_Traffic.dest_ip,  All_Traffic.dest_port  
 | `drop_dm_object_name(All_Traffic)`</query>
           <earliest>$timepicker.earliest$</earliest>
           <latest>$timepicker.latest$</latest>

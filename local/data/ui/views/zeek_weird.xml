@@ -1,5 +1,5 @@
 <form theme="dark">
-  <label>Weird</label>
+  <label>Zeek Weird</label>
   <fieldset submitButton="false">
     <input type="time" token="time1">
       <label>Time Range</label>
@@ -14,7 +14,7 @@
       <title>Weird Count by Destination I.P.</title>
       <table>
         <search>
-          <query>index=zeek_weird | stats dedup_splitvals=t count AS "Count" by src_ip, dest_ip, dest_port | sort limit=100 src_ip | fields - _span | fields src_ip, dest_ip, dest_port, "Count"</query>
+          <query>`OPORD` sourcetype="bro:weird:json" | stats dedup_splitvals=t count AS "Count" by src_ip, dest_ip, dest_port | sort limit=100 src_ip | fields - _span | fields src_ip, dest_ip, dest_port, "Count"</query>
           <earliest>$time1.earliest$</earliest>
           <latest>$time1.latest$</latest>
           <sampleRatio>1</sampleRatio>
@@ -27,7 +27,7 @@
       <title>Weird Count by Name</title>
       <table>
         <search>
-          <query>index=zeek_weird| stats dedup_splitvals=t earliest(_time) AS earliest_time dc(dest_ip) AS "Distinct Count of dest_ip"  by name | sort limit=100 name | fields - _span  | fillnull "Distinct Count of dest_ip" | fields name, earliest_time, "Distinct Count of dest_ip" | eval earliest_time= strftime('earliest_time', "%FT%H:%M:%S.%3N%z")</query>
+          <query>`OPORD` sourcetype="bro:weird:json" | stats dedup_splitvals=t earliest(_time) AS earliest_time dc(dest_ip) AS "Distinct Count of dest_ip"  by name | sort limit=100 name | fields - _span  | fillnull "Distinct Count of dest_ip" | fields name, earliest_time, "Distinct Count of dest_ip" | eval earliest_time= strftime('earliest_time', "%FT%H:%M:%S.%3N%z")</query>
           <earliest>$time1.earliest$</earliest>
           <latest>$time1.latest$</latest>
         </search>

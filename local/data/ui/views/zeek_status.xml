@@ -14,7 +14,7 @@
       <title>Index Events over Time</title>
       <chart>
         <search>
-          <query>| tstats prestats=t count where `zeek` by index, _time | timechart count by index</query>
+          <query>| tstats prestats=t count where `OPORD` by index, _time | timechart count by index</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
@@ -59,7 +59,7 @@
       <title>Capture Loss</title>
       <chart>
         <search>
-          <query>`zeek` "sourcetype=capture_loss-json" | table _time acks gaps | rename gaps as "Missed ACKs", acks as ACKs</query>
+          <query>`OPORD` "sourcetype=capture_loss-json" | table _time acks gaps | rename gaps as "Missed ACKs", acks as ACKs</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
@@ -105,7 +105,7 @@
       <title>Packets Seen vs Processed</title>
       <chart>
         <search>
-          <query>`zeek` sourcetype="bro:stats:json" | table _time pkts_proc pkts_link | rename pkts_proc as "Packets Precessed", pkts_link as "Total Packets"</query>
+          <query>`OPORD` sourcetype="bro:stats:json" | table _time pkts_proc pkts_link | rename pkts_proc as "Packets Precessed", pkts_link as "Total Packets"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>

@@ -18,7 +18,7 @@
       <title>All Connections</title>
       <table>
         <search>
-          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.src_ip="$All_Traffic.src_ip1$" by All_Traffic.src_ip, All_Traffic.dest_ip,  All_Traffic.dest_port  
+          <query>| tstats count from datamodel=Network_Data_83.All_Traffic where All_Traffic.src_ip="$All_Traffic.src_ip1$" by All_Traffic.src_ip, All_Traffic.dest_ip,  All_Traffic.dest_port  
 | `drop_dm_object_name(All_Traffic)`</query>
           <earliest>$timepicker.earliest$</earliest>
           <latest>$timepicker.latest$</latest>
@@ -36,7 +36,7 @@
     <panel>
       <chart>
         <search>
-          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.src_ip=$All_Traffic.src_ip1$ by _time All_Traffic.dest_ip | timechart count by All_Traffic.dest_ip</query>
+          <query>| tstats count from datamodel=Network_Data_83.All_Traffic where All_Traffic.src_ip=$All_Traffic.src_ip1$ by _time All_Traffic.dest_ip | timechart count by All_Traffic.dest_ip</query>
           <earliest>$timepicker.earliest$</earliest>
           <latest>$timepicker.latest$</latest>
         </search>
@@ -52,7 +52,7 @@
       <title>Top Services Last 24 Hours</title>
       <table>
         <search>
-          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.src_ip=$All_Traffic.src_ip1$ by All_Traffic.service | sort - count | `drop_dm_object_name(All_Traffic)`</query>
+          <query>| tstats count from datamodel=Network_Data_83.All_Traffic where All_Traffic.src_ip=$All_Traffic.src_ip1$ by All_Traffic.service | sort - count | `drop_dm_object_name(All_Traffic)`</query>
           <earliest>$timepicker.earliest$</earliest>
           <latest>$timepicker.latest$</latest>
         </search>
@@ -65,7 +65,7 @@
       <title>Top Ports Last 24 hours</title>
       <table>
         <search>
-          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.src_ip=$All_Traffic.src_ip1$ by All_Traffic.dest_port | sort - count | `drop_dm_object_name(All_Traffic)`</query>
+          <query>| tstats count from datamodel=Network_Data_83.All_Traffic where All_Traffic.src_ip=$All_Traffic.src_ip1$ by All_Traffic.dest_port | sort - count | `drop_dm_object_name(All_Traffic)`</query>
           <earliest>$timepicker.earliest$</earliest>
           <latest>$timepicker.latest$</latest>
         </search>
@@ -80,7 +80,7 @@
       <table>
         <title>Query</title>
         <search>
-          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.src_ip=$All_Traffic.src_ip1$ by All_Traffic.query | sort - count | `drop_dm_object_name(All_Traffic)`</query>
+          <query>| tstats count from datamodel=Network_Data_83.All_Traffic where All_Traffic.src_ip=$All_Traffic.src_ip1$ by All_Traffic.query | sort - count | `drop_dm_object_name(All_Traffic)`</query>
           <earliest>$timepicker.earliest$</earliest>
           <latest>$timepicker.latest$</latest>
         </search>
@@ -91,7 +91,7 @@
       <table>
         <title>HTTP User Agent</title>
         <search>
-          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.src_ip=$All_Traffic.src_ip1$ by All_Traffic.http_user_agent | sort - count | `drop_dm_object_name(All_Traffic)`</query>
+          <query>| tstats count from datamodel=Network_Data_83.All_Traffic where All_Traffic.src_ip=$All_Traffic.src_ip1$ by All_Traffic.http_user_agent | sort - count | `drop_dm_object_name(All_Traffic)`</query>
           <earliest>$timepicker.earliest$</earliest>
           <latest>$timepicker.latest$</latest>
         </search>
@@ -102,7 +102,7 @@
       <table>
         <title>HTTP Method</title>
         <search>
-          <query>| tstats count from datamodel=Network_Data.All_Traffic where All_Traffic.src_ip=$All_Traffic.src_ip1$ by All_Traffic.http_method | sort - count | `drop_dm_object_name(All_Traffic)`</query>
+          <query>| tstats count from datamodel=Network_Data_83.All_Traffic where All_Traffic.src_ip=$All_Traffic.src_ip1$ by All_Traffic.http_method | sort - count | `drop_dm_object_name(All_Traffic)`</query>
           <earliest>$timepicker.earliest$</earliest>
           <latest>$timepicker.latest$</latest>
         </search>

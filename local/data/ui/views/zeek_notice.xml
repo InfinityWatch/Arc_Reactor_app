@@ -1,5 +1,5 @@
 <form theme="dark">
-  <label>Notices</label>
+  <label>Zeek Notice</label>
   <fieldset submitButton="false">
     <input type="time" token="time1">
       <label>Time Range</label>
@@ -14,7 +14,7 @@
       <title>Notice Count by Destination I.P.</title>
       <table>
         <search>
-          <query>index=zeek_notices| stats dedup_splitvals=t count AS "Count" by src_ip, dest_ip, dest_port | sort limit=100 src_ip | fields - _span | fields src_ip, dest_ip, dest_port, "Count"</query>
+          <query>`OPORD` sourcetype="bro:notice:json" | stats dedup_splitvals=t count AS "Count" by src_ip, dest_ip, dest_port | sort limit=100 src_ip | fields - _span | fields src_ip, dest_ip, dest_port, "Count"</query>
           <earliest>$time1.earliest$</earliest>
           <latest>$time1.latest$</latest>
           <sampleRatio>1</sampleRatio>
@@ -27,7 +27,7 @@
       <title>Notice Count by Name</title>
       <table>
         <search>
-          <query>index=zeek_notices | fields name, earliest_time, src_ip src_port dest_ip dest_port , msg, note sub 
+          <query>`OPORD` sourcetype="bro:notice:json"  | fields name, earliest_time, src_ip src_port dest_ip dest_port , msg, note sub 
 | stats count by msg note src_ip</query>
           <earliest>$time1.earliest$</earliest>
           <latest>$time1.latest$</latest>

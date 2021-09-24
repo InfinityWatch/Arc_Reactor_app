@@ -15,7 +15,7 @@
       <table>
         <search>
           <!-- <query>eventtype="bro_dhcp"  | table client_addr host_name domain mac | dedup client_addr</query> -->
-          <query>index=zeek_dhcp  | table src_ip host src_mac | dedup src_ip</query>
+          <query>`network` tag::dhcp  | table src_ip host src_mac | dedup src_ip</query>
           <earliest>$time1.earliest$</earliest>
           <latest>$time1.latest$</latest>
           <sampleRatio>1</sampleRatio>

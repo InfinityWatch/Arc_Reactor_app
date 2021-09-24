@@ -1,7 +1,7 @@
 <form theme="dark">
-  <label>FTP</label>
+  <label>Zeek FTP</label>
   <search id="basesearch">
-    <query>index=zeek_ftp | fields src_ip src_port dest_ip dest_port filename loadway reply_content reply_code </query>
+    <query>`OPORD` eventtype=arc_bro_ftp | fields src_ip src_port dest_ip dest_port filename loadway reply_content reply_code </query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
     <sampleRatio>1</sampleRatio>

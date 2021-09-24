@@ -18,7 +18,7 @@
         <initialValue>*</initialValue>
         <choice value="*">All</choice>
         <search>
-          <query>index=zeek_ssh | stats count by id.orig_h</query>
+          <query>index=zeek eventtype=bro_ssh | stats count by id.orig_h</query>
           <earliest>$time1.earliest$</earliest>
           <latest>$time1.latest$</latest>
         </search>
@@ -31,7 +31,7 @@
         <initialValue>*</initialValue>
         <choice value="*">All</choice>
         <search>
-          <query>index=zeek_ssh | stats count by id.resp_h</query>
+          <query>index=zeek eventtype=bro_ssh | stats count by id.resp_h</query>
           <earliest>$time1.earliest$</earliest>
           <latest>$time1.latest$</latest>
         </search>
@@ -40,7 +40,7 @@
       </input>
       <table>
         <search>
-          <query>index=zeek_ssh id.orig_h="$selected_source$" id.resp_h="$selected_destination$" | table _time id.orig_h id.resp_h auth_success | rename id.orig_h as Source, id.resp_h as Destination, auth_success as "Successful Connection"</query>
+          <query>index=zeek eventtype=bro_ssh id.orig_h="$selected_source$" id.resp_h="$selected_destination$" | table _time id.orig_h id.resp_h auth_success | rename id.orig_h as Source, id.resp_h as Destination, auth_success as "Successful Connection"</query>
           <earliest>$time1.earliest$</earliest>
           <latest>$time1.latest$</latest>
           <sampleRatio>1</sampleRatio>

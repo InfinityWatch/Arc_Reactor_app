@@ -1,7 +1,6 @@
 <nav search_view="search" color="#00afc6">  
     <collection label="Home">
       <view name="mitre_attack_overview"/>
-      <view name="tstats_overview"/>
       <view name="arc_network_map"/>
       <!--view name="network_map"/--> 
 	  <view name="analyst_annotation_maker"/>
@@ -30,20 +29,6 @@
       <collection label="Powershell">  
         <view name="windows_powershell"/>
       </collection>
-      <collection label="TSTATS Sysmon">
-        <view name="tstats_sysmon_overview"/>
-        <view name="tstats_process_overview"/>
-        <view name="tstats_sysmon_network_connections"/>
-        <view name="tstats_sysmon_network_overview"/>
-        <view name="tstats_sysmon_process_watch"/>
-        <view name="tstats_sysmon_registry_overview"/>
-        <view name="tstats_sysmon_file_creation_overview"/> 
-      </collection>
-      <collection label="TSTATS Windows Events">
-        <view name="tstats_windows_events_summary"/>
-        <view name="tstats_sysmon_network_connections"/>
-        <view name="tstats_sysmon_network_overview"/>
-      </collection> 
       <!--collection label="Windows Security Extra">
         <view name="4672_account_login_superuser_by_account_name"/>
         <view name="windows_events_security__success_failed_logons"/>
@@ -82,18 +67,41 @@
         <view name="zeek_x509"/>
         <view name="zeek_weird"/>
         <view name="zeek_notice"/>
-	</collection>
-    <collection label="TSTATS Zeek">
+	</collection>	
+      <view name="easy_ip_search"/>
+      <view name="passive_dns"/>
+    </collection>
+    <collection label="IOC">
+      <view name="tstats_intel_string_search"/>
+      <view name="surricata_alerts"/>
+      <view name="network_anomalies"/>
+      <view name="access_anomalies"/>
+      <view name="six_ioc_event_ids"/>
+      <!--view name="jarvis"/-->
+    </collection>
+    <collection label="TSTATS">
+      <collection label="Sysmon">
+        <view name="tstats_sysmon_overview"/>
+        <view name="tstats_process_overview"/>
+        <view name="tstats_sysmon_network_connections"/>
+        <view name="tstats_sysmon_network_overview"/>
+        <view name="tstats_sysmon_process_watch"/>
+        <view name="tstats_sysmon_registry_overview"/>
+        <view name="tstats_sysmon_file_creation_overview"/> 
+       </collection>
+      <collection label="Windows Events">
+        <view name="tstats_windows_events_summary"/>
+        <view name="tstats_sysmon_network_connections"/>
+        <view name="tstats_sysmon_network_overview"/>
+      </collection> 
+      <collection label="Zeek">
         <view name="tstats_zeek_conn"/>
         <view name="tstats_zeek_dns"/>
         <view name="tstats_zeek_http"/>
         <view name="tstats_ssl_and_x509"/>
         <view name="tstats_zeek_conn_stats"/>
-        <view name="tstats_zeek_conn_stats_by_ip"/>
-        <view name="tstats_zeek_conn_stats_by_destination_ip"/>
-    </collection>  
-      <view name="easy_ip_search"/>
-      <view name="passive_dns"/>
+      </collection>
+      <view name="tstats_overview"/>
     </collection>
   	<collection label="Drilldowns">
       <collection label="Normal">
@@ -106,15 +114,15 @@
         <view name="parentprocess_guid_drilldown"/>
         <view name="process_guid_drilldown"/>
       </collection>  
+      <collection label="TSTATS datamodel">
+      <view name="tstats_zeek_conn_stats_by_ip"/>
+      <view name="tstats_zeek_conn_stats_by_destination_ip"/>
+      </collection>
     </collection>
     <collection label="Initial Triage">
-      <view name="tstats_intel_string_search"/>
-      <view name="initial_triage_mitre_host_jarvis"/>
-      <view name="initial_triage_mitre_network_jarvis"/>
-      <view name="surricata_alerts"/>
-      <view name="network_anomalies"/>
-      <view name="access_anomalies"/>
-      <view name="six_ioc_event_ids"/>
+      <view name="jarvis"/>
+      <view name="mite_attack_overview_th"/>
+      <view name="Network"/>
     </collection>
     <collection label="WhiteLists">
         <view name="asset_priority"/>
